@@ -1,0 +1,18 @@
+[theme]
+base = "dark"
+primaryColor = "#00a6fb"
+backgroundColor = "#051923"
+secondaryBackgroundColor = "#003554"
+textColor = "#e0e1dd"
+font = "sans serif"
+
+[server]
+enableXsrfProtection = false
+maxUploadSize = 5
+
+[runner]
+magicEnabled = true
+
+[client]
+showErrorDetails = true
+toolbarMode = "auto"
