@@ -239,7 +239,7 @@ def main():
             margin-bottom: 2rem;
         }
         .logo {
-            width: 150px;
+            width: 400px;
             height: auto;
             margin-bottom: 1rem;
             animation: fadeIn 1s ease-out;
