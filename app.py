@@ -41,8 +41,8 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-        'Get Help': 'https://github.com/k-mktr/fedora-workstation-setup/issues',
-        'Report a bug': "https://github.com/k-mktr/fedora-workstation-setup/issues",
+        'Get Help': 'https://github.com/k-mktr/fedora-things-to-do/issues',
+        'Report a bug': "https://github.com/k-mktr/fedora-things-to-do/issues",
         'About': """
         #### Not Yet Another "Things To Do"!    
         **Fedora Workstation Setup Script Builder**
@@ -53,7 +53,7 @@ st.set_page_config(
 
         Created by [Karol Stefan Danisz](https://mktr.sbs/linkedin)        
         
-        [GitHub Repository](https://github.com/k-mktr/fedora-workstation-setup)
+        [GitHub Repository](https://github.com/k-mktr/fedora-things-to-do)
         """
     }
 )
@@ -279,7 +279,7 @@ def main():
         }
     </style>
     <div class="header-container">
-        <img src="https://fedoraproject.org/assets/images/logos/fedora-blue.png" alt="Fedora Logo" class="logo">
+        <img src="https://fedoraproject.org/assets/images/fedora-workstation-logo.png" alt="Fedora Logo" class="logo">
         <h1 class="main-header">Not Yet Another <i>'Things To Do'!</i></h1>
         <h2 class="sub-header">Fedora Workstation Initial System Setup Shell Script Builder</h2>
         <div class="link-bar">

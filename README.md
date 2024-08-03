@@ -1,6 +1,8 @@
-# Fedora Workstation "Not Yet Another Things To Do" Script Builder
+# Fedora Workstation "Not Yet Another Things To Do"!
 
 ![Fedora Workstation Setup](./cover.png)
+
+**Fedora Workstation Initial System Setup Shell Script Builder**
 
 ## Overview
 
@@ -38,7 +40,7 @@ This project provides a Streamlit-based web application that allows users to gen
 
 1. Clone this repository:
    ```
-   git clone https://github.com/k-mktr/fedora-workstation-setup.git
+   git clone https://github.com/k-mktr/fedora-things-to-do.git
    cd fedora-workstation-setup
    ```
 
