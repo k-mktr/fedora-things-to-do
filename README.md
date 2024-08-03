@@ -1,8 +1,17 @@
-# Fedora Workstation "Not Yet Another Things To Do"!
+# Fedora Workstation: Not Yet Another 'Things To Do'!
 
-![Fedora Workstation Setup](./cover.png)
+![Fedora Workstation NYATTD](./cover.png)
 
-**Fedora Workstation Initial System Setup Shell Script Builder**
+<p align="center">
+  <img src="https://img.shields.io/github/v/release/k-mktr/fedora-things-to-do" alt="GitHub release" style="margin-right: 10px;">
+  <img src="https://img.shields.io/github/stars/k-mktr/fedora-things-to-do" alt="GitHub stars" style="margin-right: 10px;">
+  <img src="https://img.shields.io/github/issues/k-mktr/fedora-things-to-do" alt="GitHub issues" style="margin-right: 10px;">
+  <img src="https://img.shields.io/github/license/k-mktr/fedora-things-to-do" alt="GitHub license" style="margin-right: 10px;">
+  <a href="https://nyattd.streamlit.app"><img src="https://img.shields.io/badge/webapp-visit-brightgreen" alt="Webapp"></a>
+</p>
+
+
+**Initial System Setup Shell Script Builder for Fedora Workstation**
 
 ## Overview
 
@@ -41,7 +50,7 @@ This project provides a Streamlit-based web application that allows users to gen
 1. Clone this repository:
    ```
    git clone https://github.com/k-mktr/fedora-things-to-do.git
-   cd fedora-workstation-setup
+   cd fedora-things-to-do
    ```
 
 2. Install the required Python packages:
@@ -112,7 +121,8 @@ Future plans for this project include:
 - ✅ Enhancing user experience with more intuitive interface options
 - ✅ Adding Advanced Section for a custom Shell Commands
 - Implementing predefined configuration Profiles
-- Further organizing the code
+- Further organizing the code, improving readability
+- Improving the Quiet Mode code logic
 - Implementing a feature to save and load custom profiles 
 - Developing versions for other Linux distributions (e.g., Debian/Ubuntu)
 - Adding more applications and configuration options

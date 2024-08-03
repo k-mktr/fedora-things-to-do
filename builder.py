@@ -74,8 +74,10 @@ def should_quiet_redirect(cmd: str) -> bool:
         "printf",
         "read",
         "prompt_",
+        "EOF"
     ]
-    return not any(pattern in cmd for pattern in no_redirect_patterns)
+    # Check if the command starts with any of the patterns or contains "EOF"
+    return not any(cmd.startswith(pattern) or "EOF" in cmd for pattern in no_redirect_patterns)
 
 def build_system_config(options: Dict[str, Any], output_mode: str) -> str:
     config_commands = []

@@ -316,7 +316,7 @@ def main():
         st.download_button(
             label="Download Your Script",
             data=st.session_state.full_script,
-            file_name="fedora_setup_script.sh",
+            file_name="fedora_things_to_do.sh",
             mime="text/plain"
         )
         
@@ -329,12 +329,12 @@ def main():
 
         2. **Make the Script Executable**: Open a terminal, navigate to the directory containing the downloaded script, and run:
            ```
-           chmod +x fedora_setup_script.sh
+           chmod +x fedora_things_to_do.sh
            ```
 
         3. **Run the Script**: Execute the script with sudo privileges:
            ```
-           sudo ./fedora_setup_script.sh
+           sudo ./fedora_things_to_do.sh
            ```
 
         ⚠️ **Caution**: This script will make changes to your system. Please review the script contents before running and ensure you understand the modifications it will make.
