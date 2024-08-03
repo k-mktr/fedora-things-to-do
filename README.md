@@ -56,7 +56,7 @@ This project provides a Streamlit-based web application that allows users to gen
    streamlit run app.py
    ```
 
-2. Open your web browser and navigate to the URL provided by Streamlit (usually `http://localhost:8501`) or use [our official public instance](https://share.streamlit.io/k-mktr/fedora-things-to-do/main/app.py)
+2. Open your web browser and navigate to the URL provided by Streamlit (usually `http://localhost:8501`) or use [our official public instance](https://nyattd.streamlit.app)
 
 3. Use the sidebar to select your desired configuration options.
 
