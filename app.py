@@ -166,13 +166,45 @@ def render_sidebar() -> Dict[str, Any]:
             st.info("Remember to review your custom commands in the script preview before downloading.")
 
     
-    # Create a placeholder at the bottom of the sidebar
+    # Placeholder at the bottom of the sidebar
     sidebar_bottom = st.sidebar.empty()
     sidebar_bottom.markdown("""
-    ---
-    <div style="text-align: center; padding: 21px 0;">
+    <style>
+        .link-bar {
+            display: flex;
+            justify-content: center;
+            animation: fadeIn 1s ease-out 0.9s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+            text-align: center;
+        }
+        .link-bar a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #8da9c4;
+        }
+        .link-bar a:hover {
+            text-decoration: underline;
+        }
+        .separator {
+            width: 100%;
+            border-top: 1px solid #8da9c4;
+            margin: 21px 0;
+        }
+        @media (max-width: 600px) {
+            .link-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+    <div class="link-bar">
+        <a href="https://fedoraproject.org/workstation/" target="_blank" style="text-decoration: none;" aria-label="Fedora Workstation">Still on the fence?<br>Grab your Fedora now!</a>
+    </div>
+    <div class="separator"></div>
+    <div style="text-align: center; padding: 55px 0;">
         <p style="margin-bottom: 5px;">Created with ❤️ for Open Source</p>
-        <a href="https://mktr.sbs/linkedin" target="_blank" style="text-decoration: none; color: #8da9c4;">
+        <a href="https://mktr.sbs/linkedin" target="_blank" style="text-decoration: none; color: #8da9c4;" aria-label="Karol Stefan Danisz LinkedIn">
             <i>by Karol Stefan Danisz</i>
         </a>
     </div>
@@ -262,29 +294,11 @@ def main():
             opacity: 0;
             animation-fill-mode: forwards;
         }
-        .link-bar {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            animation: fadeIn 1s ease-out 0.9s;
-            opacity: 0;
-            animation-fill-mode: forwards;
-        }
-        .link-bar a {
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .link-bar a:hover {
-            text-decoration: underline;
-        }
     </style>
     <div class="header-container">
         <img src="https://fedoraproject.org/assets/images/fedora-workstation-logo.png" alt="Fedora Logo" class="logo">
         <h1 class="main-header">Not Yet Another <i>'Things To Do'!</i></h1>
         <h2 class="sub-header">Fedora Workstation Initial System Setup Shell Script Builder</h2>
-        <div class="link-bar">
-            <a href="https://fedoraproject.org/workstation/" target="_blank" style="text-decoration: none; color: #8da9c4;" >Still on the fence? Grab your Fedora now!</a>
-        </div>
     </div>
     """, unsafe_allow_html=True)
 

@@ -185,7 +185,7 @@
                         "dnf install -y tor",
                         "sleep 5",
                         "systemctl enable --now tor",
-                        "flatpak install -y flathub com.github.micahflee.torbrowser-launcher"
+                        "flatpak install -y flathub org.torproject.torbrowser-launcher"
                     ],
                     "description": "Tor service and Tor Browser Launcher for secure networking"
                 }
@@ -412,7 +412,7 @@
                 },
                 "install_gear_lever": {
                     "name": "Gear Lever",
-                    "command": "flatpak install -y flathub com.it.mijorus.gearlever",
+                    "command": "flatpak install -y flathub it.mijorus.gearlever",
                     "description": "An utility to manage AppImages with ease!"
                 },
                 "install_appimage_launcher": {
