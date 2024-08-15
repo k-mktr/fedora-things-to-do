@@ -68,7 +68,7 @@ def render_sidebar() -> Dict[str, Any]:
         """
         <div style="display: flex; justify-content: center; align-items: center; padding: 10px;">
             <a href="/" target="_self">
-                <img src="https://github.com/k-mktr/fedora-things-to-do/blob/master/assets/logo.png" width="250" alt="Logo">
+                <img src="https://github.com/k-mktr/fedora-things-to-do/blob/master/assets/logo.png?raw=true" width="250" alt="Logo">
             </a>
         </div>
         """,
