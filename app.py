@@ -63,6 +63,17 @@ def load_template() -> str:
         return file.read()
 
 def render_sidebar() -> Dict[str, Any]:
+    # Add centered, clickable logo to the top of the sidebar using HTML
+    st.sidebar.markdown(
+        """
+        <div style="display: flex; justify-content: center; align-items: center; padding: 10px;">
+            <a href="/" target="_self">
+                <img src="https://mktr.sbs/nyattdlogo" width="250" alt="Logo">
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     st.sidebar.header("Configuration Options")
     options = {"system_config": {}, "essential_apps": {}, "additional_apps": {}, "customization": {}}
 

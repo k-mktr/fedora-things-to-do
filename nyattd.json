@@ -108,6 +108,11 @@
                     "command": "flatpak install -y flathub com.google.Chrome",
                     "description": "The web browser from Google."
                 },
+                "install_chromium": {
+                    "name": "Chromium",
+                    "command": "flatpak install -y flathub org.chromium.Chromium",
+                    "description": "An open-source browser project that aims to build a safer, faster, and more stable way to experience the web."
+                },
                 "install_brave": {
                 "name": "Brave",
                 "command": "flatpak install -y flathub com.brave.Browser",
@@ -153,6 +158,15 @@
                     "name": "Betterbird",
                     "command": "flatpak install -y flathub eu.betterbird.Betterbird",
                     "description": "A fast, feature-rich email client with a focus on user experience and security."
+                },
+                "install_webappmanager": {
+                    "name": "WebAppManager",
+                    "command": [
+                        "sudo dnf copr enable risi/risiOS -y",
+                        "echo 'includepkgs=webapp-manager' | sudo tee -a /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:risi:risiOS.repo",
+                        "dnf install webapp-manager -y"
+                    ],
+                    "description": "Run websites as if they were apps."
                 },
                 "install_discord": {
                     "name": "Discord",
@@ -552,9 +566,19 @@
                     "git clone https://github.com/vinceliuice/Tela-icon-theme.git /tmp/Tela-icon-theme",
                     "cd /tmp/Tela-icon-theme && ./install.sh -a",
                     "rm -rf /tmp/Tela-icon-theme",
-                    "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.interface icon-theme \"Tela\""
+                    "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.interface icon-theme \"Tela-orange\""
                 ],
                 "description": "Install Tela icon theme"
+            },
+            "install_qogir_icon_theme": {
+                "name": "Qogir Icon Theme",
+                "command": [
+                    "git clone https://github.com/vinceliuice/Qogir-icon-theme.git /tmp/Qogir-icon-theme",
+                    "cd /tmp/Qogir-icon-theme && ./install.sh -c all -t all",
+                    "rm -rf /tmp/Qogir-icon-theme",
+                    "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.interface icon-theme \"Qogir\""
+                ],
+                "description": "A flat colorful design icon theme for linux desktops"
             },
             "install_zsh_oh_my_zsh": {
                 "name": "Zsh and Oh My Zsh",
