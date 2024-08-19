@@ -1,9 +1,9 @@
-# Fedora Workstation: Not Yet Another 'Things To Do'!
+# Fedora Workstation: Not Another 'Things To Do'!
 
-![Fedora Workstation NYATTD](./assets/cover.png)
+![Fedora Workstation NATTD](./assets/cover.png)
 
 <p align="center">
-  <a href="https://nyattd.streamlit.app"><img src="https://img.shields.io/badge/webapp-visit-brightgreen" alt="Webapp"></a>
+  <a href="https://nattdf.streamlit.app"><img src="https://img.shields.io/badge/webapp-visit-brightgreen" alt="Webapp"></a>
   <img src="https://img.shields.io/github/last-commit/k-mktr/fedora-things-to-do" alt="Last Commit">
   <img src="https://img.shields.io/github/issues/k-mktr/fedora-things-to-do" alt="GitHub issues">
   <img src="https://img.shields.io/github/license/k-mktr/fedora-things-to-do" alt="GitHub license">
@@ -65,7 +65,7 @@ This project offers a Streamlit-based web application for generating a tailored 
    streamlit run app.py
    ```
 
-2. Open your web browser and navigate to the URL provided by Streamlit (usually `http://localhost:8501`) or use [our official public instance](https://nyattd.streamlit.app)
+2. Open your web browser and navigate to the URL provided by Streamlit (usually `http://localhost:8501`) or use [our official public instance](https://nattdf.streamlit.app)
 
 3. Use the sidebar to select your desired configuration options.
 
