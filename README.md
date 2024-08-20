@@ -17,6 +17,22 @@
 
 This project offers a Streamlit-based web application for generating a tailored shell script to set up a new Fedora Workstation installation. The app provides an intuitive interface for choosing system configurations, applications, and customization options. It is currently open for testing and is generally suitable for production use, although minor bug fixes and code improvements are ongoing.
 
+## Latest Changes
+*(As of 2024-08-20)*
+
+We're grateful for the valuable feedback and suggestions from the r/Fedora community. Recent updates include:
+
+- Added VSCodium as an alternative to VS Code
+- Included multimedia, Intel and AMD codecs from the RPM Fusion repository
+- Replaced `bpytop` with `btop`
+- Expanded the list of additional applications and configurations
+- Introduced virtualization tools
+- Addressed inconsistent naming conventions across the project
+
+Special thanks to [u/RedBearAK](https://www.reddit.com/user/RedBearAK/), [u/ScootSchloingo](https://www.reddit.com/user/ScootSchloingo/), [u/charliesbot](https://www.reddit.com/user/charliesbot/), [u/Laughingatyou1000](https://www.reddit.com/user/Laughingatyou1000/), [u/Papercutter0324](https://www.reddit.com/user/Papercutter0324/), [u/ajunior7](https://www.reddit.com/user/ajunior7/), and [u/intulor](https://www.reddit.com/user/intulor/) for their contributions and insights.
+
+We're continuously working to enhance the script and welcome further suggestions from the community.
+
 ## Features
 
 - **System Configuration**: Set hostname, configure DNF, enable auto-updates, install SSH, check for firmware updates, and enable RPM Fusion repositories.
