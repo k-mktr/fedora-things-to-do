@@ -127,7 +127,13 @@
             {"name": "btop", "description": "Resource monitor that shows usage and stats for processor, memory, disks, network and processes"},
             {"name": "htop", "description": "Interactive process viewer and system monitor with a customizable interface"},
             {"name": "rsync", "description": "Fast and versatile file copying tool for local and remote file synchronization"},
-            {"name": "trash-cli", "description": "Delete files to trashcan when using rm command in terminal"},
+            {"name": "trash-cli",
+                "command": [
+                  "echo \\\"alias rm='trash-rm'\\\" >> ~/.bashrc"
+                ],
+                "description": "Delete files to trashcan when using rm command in terminal"
+              },
+              
             {"name": "inxi", "description": "Command-line system information tool for hardware, CPU, drivers, and more"},
             {"name": "ncdu", "description": "NCurses-based disk usage analyzer for quickly finding large files and directories"},
             {"name": "tilix", "description": "Tiling terminal emulator with advanced features like split panes and session management"},
