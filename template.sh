@@ -99,6 +99,7 @@ echo "║                                                                       
 echo "╚═════════════════════════════════════════════════════════════════════════╝";
 echo "";
 log_message "All steps completed. Enjoy!"
+log_message "If you have installed proprietary Nvidia drivers then wait for atleast 5 minutes for module to load"
 
 # Prompt for reboot
 prompt_reboot
