@@ -1,4 +1,4 @@
-# Fedora Workstation NYATTD Not Yet Another "Things To Do"!
+# Fedora Workstation NATTD Not Another "Things To Do"!
 # Initial System Setup Shell Script Builder for Fedora Workstation
 #
 # This application is a Streamlit-based web interface that allows users to customize
@@ -12,7 +12,7 @@
 # This tool aims to simplify the post-installation process for Fedora users,
 # allowing for easy customization and automation of common setup tasks.
 #
-# Author: Karol Stefan Danisz
+# Author: Karl Stefan Danisz
 # Contact: https://mktr.sbs/linkedin
 # Version: 24.08
 #
@@ -44,14 +44,14 @@ st.set_page_config(
         'Get Help': 'https://github.com/k-mktr/fedora-things-to-do/issues',
         'Report a bug': "https://github.com/k-mktr/fedora-things-to-do/issues",
         'About': """
-        #### Not Yet Another "Things To Do"!    
+        #### Not Another "Things To Do"!    
         **Fedora Workstation Setup Script Builder**
         
         A Shell Script Builder for setting up Fedora Workstation after a fresh install.
         
         If you find this tool useful, consider sharing it with others.
 
-        Created by [Karol Stefan Danisz](https://mktr.sbs/linkedin)        
+        Created by [Karl Stefan Danisz](https://mktr.sbs/linkedin)        
         
         [GitHub Repository](https://github.com/k-mktr/fedora-things-to-do)
         """
@@ -63,33 +63,62 @@ def load_template() -> str:
         return file.read()
 
 def render_sidebar() -> Dict[str, Any]:
+    # Add centered, clickable logo to the top of the sidebar using HTML
+    st.sidebar.markdown(
+        """
+        <div style="display: flex; justify-content: center; align-items: center; padding: 10px;">
+            <a href="/" target="_self">
+                <img src="https://github.com/k-mktr/fedora-things-to-do/blob/master/assets/logo.png?raw=true" width="250" alt="Logo">
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     st.sidebar.header("Configuration Options")
     options = {"system_config": {}, "essential_apps": {}, "additional_apps": {}, "customization": {}}
 
     output_mode = st.sidebar.radio("Output Mode", ["Quiet", "Verbose"], index=0, help="Select the output mode for the script.")
 
     all_options = builder.generate_options()
-    nyattd_data = builder.load_nyattd()
+    nattd_data = builder.load_nattd()
 
     logging.debug(f"all_options: {all_options}")
-    logging.debug(f"nyattd_data['system_config']: {nyattd_data['system_config']}")
+    logging.debug(f"nattd_data['system_config']: {nattd_data['system_config']}")
 
     # System Configuration section
     with st.sidebar.expander("System Configuration"):
         for option in all_options["system_config"]:
             logging.debug(f"Processing option: {option}")
-            logging.debug(f"nyattd_data['system_config'][{option}]: {nyattd_data['system_config'][option]}")
-            options["system_config"][option] = st.checkbox(
-                nyattd_data["system_config"][option]["name"],
-                key=f"system_config_{option}",
-                help=nyattd_data["system_config"][option]["description"]
-            )
+            logging.debug(f"nattd_data['system_config'][{option}]: {nattd_data['system_config'][option]}")
+            
+            # Special handling for RPM Fusion
+            if option == "enable_rpmfusion":
+                rpm_fusion_checkbox = st.checkbox(
+                    nattd_data["system_config"][option]["name"],
+                    key=f"system_config_{option}",
+                    help=nattd_data["system_config"][option]["description"]
+                )
+                options["system_config"][option] = rpm_fusion_checkbox
+            else:
+                options["system_config"][option] = st.checkbox(
+                    nattd_data["system_config"][option]["name"],
+                    key=f"system_config_{option}",
+                    help=nattd_data["system_config"][option]["description"]
+                )
+            
             if option == "set_hostname" and options["system_config"][option]:
                 options["hostname"] = st.text_input("Enter the new hostname:")
 
+        # Check if any codec option is selected and update RPM Fusion checkbox
+        codec_options = ["install_multimedia_codecs", "install_intel_codecs", "install_amd_codecs"]
+        if any(options["system_config"].get(option, False) for option in codec_options):
+            options["system_config"]["enable_rpmfusion"] = True
+            if not rpm_fusion_checkbox:
+                st.sidebar.markdown("**RPM Fusion** has been automatically selected due to codec choices.")
+
     # Essential Apps section
     with st.sidebar.expander("Essential Applications"):
-        essential_apps = nyattd_data["essential_apps"]["apps"]
+        essential_apps = nattd_data["essential_apps"]["apps"]
         for app in essential_apps:
             options["essential_apps"][app["name"]] = st.checkbox(
                 app["name"],
@@ -99,7 +128,7 @@ def render_sidebar() -> Dict[str, Any]:
 
     # Additional Applications section
     with st.sidebar.expander("Additional Applications"):
-        for category, category_data in nyattd_data["additional_apps"].items():
+        for category, category_data in nattd_data["additional_apps"].items():
             st.subheader(category_data["name"])
             options["additional_apps"][category] = {}
             for app_id, app_info in category_data["apps"].items():
@@ -116,7 +145,7 @@ def render_sidebar() -> Dict[str, Any]:
 
     # Customization section
     with st.sidebar.expander("Customization"):
-        customization_apps = nyattd_data["customization"]["apps"]
+        customization_apps = nattd_data["customization"]["apps"]
         for app_id, app_info in customization_apps.items():
             options["customization"][app_id] = st.checkbox(
                 app_info['name'],
@@ -297,7 +326,7 @@ def main():
     </style>
     <div class="header-container">
         <img src="https://fedoraproject.org/assets/images/fedora-workstation-logo.png" alt="Fedora Logo" class="logo">
-        <h1 class="main-header">Not Yet Another <i>'Things To Do'!</i></h1>
+        <h1 class="main-header">Not Another <i>'Things To Do'!</i></h1>
         <h2 class="sub-header">Fedora Workstation Initial System Setup Shell Script Builder</h2>
     </div>
     """, unsafe_allow_html=True)

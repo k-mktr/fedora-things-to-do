@@ -1,21 +1,37 @@
-# Fedora Workstation: Not Yet Another 'Things To Do'!
+# Fedora Workstation: Not Another 'Things To Do'!
 
-![Fedora Workstation NYATTD](./cover.png)
+![Fedora Workstation NATTD](./assets/cover.png)
 
 <p align="center">
-  <img src="https://img.shields.io/github/v/release/k-mktr/fedora-things-to-do" alt="GitHub release" style="margin-right: 10px;">
-  <img src="https://img.shields.io/github/stars/k-mktr/fedora-things-to-do" alt="GitHub stars" style="margin-right: 10px;">
-  <img src="https://img.shields.io/github/issues/k-mktr/fedora-things-to-do" alt="GitHub issues" style="margin-right: 10px;">
-  <img src="https://img.shields.io/github/license/k-mktr/fedora-things-to-do" alt="GitHub license" style="margin-right: 10px;">
-  <a href="https://nyattd.streamlit.app"><img src="https://img.shields.io/badge/webapp-visit-brightgreen" alt="Webapp"></a>
+  <a href="https://nattdf.streamlit.app"><img src="https://img.shields.io/badge/webapp-visit-brightgreen" alt="Webapp"></a>
+  <img src="https://img.shields.io/github/last-commit/k-mktr/fedora-things-to-do" alt="Last Commit">
+  <img src="https://img.shields.io/github/issues/k-mktr/fedora-things-to-do" alt="GitHub issues">
+  <img src="https://img.shields.io/github/license/k-mktr/fedora-things-to-do" alt="GitHub license">
+  <a href="https://mktr.sbs/linkedin"><img src="https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat&logo=linkedin" alt="LinkedIn"></a>
+  <img src="https://img.shields.io/github/stars/k-mktr/fedora-things-to-do" alt="GitHub stars">
 </p>
-
 
 **Initial System Setup Shell Script Builder for Fedora Workstation**
 
 ## Overview
 
-This project provides a Streamlit-based web application that allows users to generate a customized shell script for setting up a fresh Fedora Workstation installation. The application offers a user-friendly interface to select various system configurations, applications, and customization options.
+This project offers a Streamlit-based web application for generating a tailored shell script to set up a new Fedora Workstation installation. The app provides an intuitive interface for choosing system configurations, applications, and customization options. It is currently open for testing and is generally suitable for production use, although minor bug fixes and code improvements are ongoing.
+
+## Latest Changes
+*(As of 2024-08-20)*
+
+We're grateful for the valuable feedback and suggestions from the r/Fedora community. Recent updates include:
+
+- Added VSCodium as an alternative to VS Code
+- Included multimedia, Intel and AMD codecs from the RPM Fusion repository
+- Replaced `bpytop` with `btop`
+- Expanded the list of additional applications and configurations
+- Introduced virtualization tools
+- Addressed inconsistent naming conventions across the project
+
+Special thanks to [u/RedBearAK](https://www.reddit.com/user/RedBearAK/), [u/ScootSchloingo](https://www.reddit.com/user/ScootSchloingo/), [u/charliesbot](https://www.reddit.com/user/charliesbot/), [u/Laughingatyou1000](https://www.reddit.com/user/Laughingatyou1000/), [u/Papercutter0324](https://www.reddit.com/user/Papercutter0324/), [u/ajunior7](https://www.reddit.com/user/ajunior7/), and [u/intulor](https://www.reddit.com/user/intulor/) for their contributions and insights.
+
+We're continuously working to enhance the script and welcome further suggestions from the community.
 
 ## Features
 
@@ -65,7 +81,7 @@ This project provides a Streamlit-based web application that allows users to gen
    streamlit run app.py
    ```
 
-2. Open your web browser and navigate to the URL provided by Streamlit (usually `http://localhost:8501`) or use [our official public instance](https://nyattd.streamlit.app)
+2. Open your web browser and navigate to the URL provided by Streamlit (usually `http://localhost:8501`) or use [our official public instance](https://nattdf.streamlit.app)
 
 3. Use the sidebar to select your desired configuration options.
 
@@ -126,5 +142,44 @@ Future plans for this project include:
 - Implementing a feature to save and load custom profiles 
 - Developing versions for other Linux distributions (e.g., Debian/Ubuntu)
 - Adding more applications and configuration options
+
+## FAQ
+
+### Is this script safe to run on my Fedora system?
+
+The script is designed to be safe, but as with any system-wide changes, it's important to review the script contents before running it. We provide a preview feature so you can see exactly what the script will do. Always ensure you understand the changes that will be made to your system.
+
+### Can I use this script on other Linux distributions?
+
+Currently, this script is specifically designed for Fedora Workstation. While some commands might work on other distributions, we don't recommend using it on non-Fedora systems without significant modifications. We're considering developing versions for other distributions in the future.
+
+### How often is the application list updated?
+
+We strive to keep the application list up-to-date with the latest stable versions available for Fedora. However, the exact update frequency may vary. If you notice an outdated application or would like to suggest a new one, please open an issue on our GitHub repository.
+
+### Can I modify the script after it's generated?
+
+Absolutely! The generated script is just a starting point. You're free to modify it to better suit your needs. Just be careful to maintain proper syntax and consider the potential impacts of any changes you make.
+
+### What if I encounter an error while running the script?
+
+The script includes error handling to log issues it encounters. If you run into problems, check the log file (default location: `/var/log/fedora_things_to_do.log`) for more information. If you can't resolve the issue, feel free to open an issue on our GitHub repository with the error details.
+
+### Does this script handle system updates?
+
+Yes, the script includes options for configuring DNF (Fedora's package manager) and enabling automatic updates.
+
+### Can I run the script multiple times?
+
+While the script is designed to be somewhat idempotent (can be run multiple times without causing issues), it's not guaranteed for all operations. It's best to run it once on a fresh Fedora installation. If you need to make changes later, it's safer to generate a new script with only the additional changes you need.
+
+### How can I contribute to this project?
+
+We welcome contributions! You can contribute by suggesting new features, reporting bugs, improving documentation, or submitting pull requests. Check out our "Contributing" section in the README for more details.
+
+### Why not use Ansible instead of a shell script?
+
+While Ansible is a powerful tool for configuration management, our project prioritizes simplicity and transparency for end-users. The shell script approach allows users to easily see and understand exactly what commands will be executed on their system. It doesn't require additional software installation and is more approachable for users who may not be familiar with Ansible. However, for more complex setups or managing multiple systems, Ansible could be a viable alternative.
+
 
 Created with ❤️ for Open Source

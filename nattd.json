@@ -16,7 +16,7 @@
                 "backup_file \"/etc/dnf/dnf.conf\"",
                 "echo \"max_parallel_downloads=10\" | tee -a /etc/dnf/dnf.conf > /dev/null",
                 "echo \"fastestmirror=True\" | tee -a /etc/dnf/dnf.conf > /dev/null",
-                "echo \"deltarpm=True\" | tee -a /etc/dnf/dnf.conf > /dev/null"
+                "dnf -y install dnf-plugins-core"
             ],
             "description": "Optimize DNF package manager for faster downloads and efficient updates"
         },
@@ -50,7 +50,7 @@
             "description": "Check and apply firmware updates to improve hardware compatibility and performance"
         },
         "enable_rpmfusion": {
-            "name": "Enable RPM Fusion Repositories",
+            "name": "RPM Fusion Repositories",
             "command": [
                 "log_message \"Enabling RPM Fusion repositories...\"",
                 "dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm",
@@ -59,8 +59,46 @@
             ],
             "description": "Enable RPM Fusion repositories to access additional software packages and codecs"
         },
+        "install_multimedia_codecs": {
+            "name": "Multimedia Codecs",
+            "command": [
+                "log_message \"Installing multimedia codecs...\"",
+                "dnf swap ffmpeg-free ffmpeg --allowerasing -y",
+                "dnf update @multimedia --setopt=\"install_weak_deps=False\" --exclude=PackageKit-gstreamer-plugin -y",
+                "dnf update @sound-and-video -y"
+            ],
+            "description": "Install multimedia codecs to enhance multimedia capabilities",
+            "dependencies": ["install_rpmfusion"]
+        },
+        "install_intel_codecs": {
+            "name": "Intel Codecs",
+            "command": [
+                "log_message \"Installing Intel Hardware Accelerated Codecs...\"",
+                "dnf -y install intel-media-driver"
+            ],
+            "description": "Install Hardware Accelerated Codecs for Intel integrated GPUs. This improves video playback and encoding performance on systems with Intel graphics.",
+            "dependencies": ["install_rpmfusion"]
+        },
+        "install_amd_codecs": {
+            "name": "AMD Codecs",
+            "command": [
+                "log_message \"Installing AMD Hardware Accelerated Codecs...\"",
+                "dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y",
+                "dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y"
+            ],
+            "description": "Install Hardware Accelerated Codecs for AMD GPUs. This improves video playback and encoding performance on systems with AMD graphics.",
+            "dependencies": ["install_rpmfusion"]
+        },
+        "install_virtualization_tools": {
+            "name": "Virtualization Tools",
+            "command": [
+                "log_message \"Installing virtualization tools...\"",
+                "dnf install -y @virtualization"
+            ],
+            "description": "Install virtualization tools to enable virtual machines and containerization"
+        },
         "configure_power_settings": {
-            "name": "Configure Power Settings",
+            "name": "Power Settings",
             "command": [
                 "log_message \"Configuring power settings...\"",
                 "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.session idle-delay 0",
@@ -70,14 +108,14 @@
                 "sudo -u $ACTUAL_USER gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 0",
                 "sudo -u $ACTUAL_USER gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'suspend'"
             ],
-            "description": "Customize power management settings to balance performance and energy efficiency"
+            "description": "Configure power settings to prevent system sleep and hibernation"
         }
     },
     "essential_apps": {
         "description": "Install a set of essential command-line and graphical applications for system management and productivity",
         "apps": [
             {"name": "mc", "description": "Midnight Commander: Versatile text-based file manager with dual pane interface"},
-            {"name": "bpytop", "description": "Resource monitor that shows usage and stats for processor, memory, disks, network and processes"},
+            {"name": "btop", "description": "Resource monitor that shows usage and stats for processor, memory, disks, network and processes"},
             {"name": "htop", "description": "Interactive process viewer and system monitor with a customizable interface"},
             {"name": "rsync", "description": "Fast and versatile file copying tool for local and remote file synchronization"},
             {"name": "inxi", "description": "Command-line system information tool for hardware, CPU, drivers, and more"},
@@ -107,6 +145,11 @@
                     "name": "Google Chrome",
                     "command": "flatpak install -y flathub com.google.Chrome",
                     "description": "The web browser from Google."
+                },
+                "install_chromium": {
+                    "name": "Chromium",
+                    "command": "flatpak install -y flathub org.chromium.Chromium",
+                    "description": "An open-source browser project that aims to build a safer, faster, and more stable way to experience the web."
                 },
                 "install_brave": {
                 "name": "Brave",
@@ -153,6 +196,15 @@
                     "name": "Betterbird",
                     "command": "flatpak install -y flathub eu.betterbird.Betterbird",
                     "description": "A fast, feature-rich email client with a focus on user experience and security."
+                },
+                "install_webappmanager": {
+                    "name": "WebAppManager",
+                    "command": [
+                        "sudo dnf copr enable risi/risiOS -y",
+                        "echo 'includepkgs=webapp-manager' | sudo tee -a /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:risi:risiOS.repo",
+                        "dnf install webapp-manager -y"
+                    ],
+                    "description": "Run websites as if they were apps."
                 },
                 "install_discord": {
                     "name": "Discord",
@@ -238,6 +290,15 @@
                         "sudo dnf install code"
                     ],
                     "description": "A lightweight but powerful source code editor"
+                },
+                "install_vscodium": {
+                    "name": "VSCodium",
+                    "command": [
+                        "rpmkeys --import https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg",
+                        "printf \"[gitlab.com_paulcarroty_vscodium_repo]\nname=download.vscodium.com\nbaseurl=https://download.vscodium.com/rpms/\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg\nmetadata_expire=1h\" | sudo tee -a /etc/yum.repos.d/vscodium.repo",
+                        "dnf -y install codium"
+                    ],
+                    "description": "A free and open-source distribution of VS Code"
                 },
                 "install_bitwarden": {
                     "name": "Bitwarden",
@@ -552,9 +613,19 @@
                     "git clone https://github.com/vinceliuice/Tela-icon-theme.git /tmp/Tela-icon-theme",
                     "cd /tmp/Tela-icon-theme && ./install.sh -a",
                     "rm -rf /tmp/Tela-icon-theme",
-                    "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.interface icon-theme \"Tela\""
+                    "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.interface icon-theme \"Tela-orange\""
                 ],
                 "description": "Install Tela icon theme"
+            },
+            "install_qogir_icon_theme": {
+                "name": "Qogir Icon Theme",
+                "command": [
+                    "git clone https://github.com/vinceliuice/Qogir-icon-theme.git /tmp/Qogir-icon-theme",
+                    "cd /tmp/Qogir-icon-theme && ./install.sh -c all -t all",
+                    "rm -rf /tmp/Qogir-icon-theme",
+                    "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.interface icon-theme \"Qogir\""
+                ],
+                "description": "A flat colorful design icon theme for linux desktops"
             },
             "install_zsh_oh_my_zsh": {
                 "name": "Zsh and Oh My Zsh",
