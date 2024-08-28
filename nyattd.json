@@ -516,8 +516,8 @@
                         "command": [
                             "dnf install -y wget cabextract xorg-x11-font-utils fontconfig",
                             "wget -O /tmp/winfonts.zip https://mktr.sbs/fonts",
-                            "mkdir -p $ACTUAL_HOME/.fonts/windows",
-                            "unzip /tmp/winfonts.zip -d $ACTUAL_HOME/.fonts/windows",
+                            "mkdir -p $ACTUAL_HOME/.local/share/fonts/windows",
+                            "unzip /tmp/winfonts.zip -d $ACTUAL_HOME/.local/share/fonts/windows",
                             "rm -f /tmp/winfonts.zip",
                             "fc-cache -fv"
                         ]
@@ -528,8 +528,8 @@
                 "name": "Google Fonts",
                 "command": [
                     "wget -O /tmp/google-fonts.zip https://github.com/google/fonts/archive/main.zip",
-                    "mkdir -p $ACTUAL_HOME/.fonts/google",
-                    "unzip /tmp/google-fonts.zip -d $ACTUAL_HOME/.fonts/google",
+                    "mkdir -p $ACTUAL_HOME/.local/share/fonts/google",
+                    "unzip /tmp/google-fonts.zip -d $ACTUAL_HOME/.local/share/fonts/google",
                     "rm -f /tmp/google-fonts.zip",
                     "fc-cache -fv"
                 ],
@@ -538,10 +538,10 @@
             "install_adobe_fonts": {
                 "name": "Adobe Fonts",
                 "command": [
-                    "mkdir -p $ACTUAL_HOME/.fonts/adobe-fonts",
-                    "git clone --depth 1 https://github.com/adobe-fonts/source-sans.git $ACTUAL_HOME/.fonts/adobe-fonts/source-sans",
-                    "git clone --depth 1 https://github.com/adobe-fonts/source-serif.git $ACTUAL_HOME/.fonts/adobe-fonts/source-serif",
-                    "git clone --depth 1 https://github.com/adobe-fonts/source-code-pro.git $ACTUAL_HOME/.fonts/adobe-fonts/source-code-pro",
+                    "mkdir -p $ACTUAL_HOME/.local/share/fonts/adobe-fonts",
+                    "git clone --depth 1 https://github.com/adobe-fonts/source-sans.git $ACTUAL_HOME/.local/share/fonts/adobe-fonts/source-sans",
+                    "git clone --depth 1 https://github.com/adobe-fonts/source-serif.git $ACTUAL_HOME/.local/share/fonts/adobe-fonts/source-serif",
+                    "git clone --depth 1 https://github.com/adobe-fonts/source-code-pro.git $ACTUAL_HOME/.local/share/fonts/adobe-fonts/source-code-pro",
                     "fc-cache -f"
                 ],
                 "description": "Install Adobe fonts collection"
