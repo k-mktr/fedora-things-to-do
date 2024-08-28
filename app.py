@@ -14,6 +14,8 @@
 #
 # Author: Karl Stefan Danisz
 # Contact: https://mktr.sbs/linkedin
+# GitHub: https://mktr.sbs/github
+# Buy me a coffee: https://mktr.sbs/bcoffee
 # Version: 24.08
 #
 #
@@ -231,10 +233,14 @@ def render_sidebar() -> Dict[str, Any]:
         <a href="https://fedoraproject.org/workstation/" target="_blank" style="text-decoration: none;" aria-label="Fedora Workstation">Still on the fence?<br>Grab your Fedora now!</a>
     </div>
     <div class="separator"></div>
-    <div style="text-align: center; padding: 55px 0;">
+    <div style="text-align: center; padding: 21px 0;">
         <p style="margin-bottom: 5px;">Created with ❤️ for Open Source</p>
         <a href="https://mktr.sbs/linkedin" target="_blank" style="text-decoration: none; color: #8da9c4;" aria-label="Karol Stefan Danisz LinkedIn">
             <i>by Karol Stefan Danisz</i>
+        </a>
+        <br><br>
+        <a href="https://mktr.sbs/coffee" target="_blank" style="text-decoration: none; color: #8da9c4;" aria-label="Buy me a coffee">
+            ☕ Buy me a coffee
         </a>
     </div>
     """, unsafe_allow_html=True)
@@ -327,7 +333,7 @@ def main():
     <div class="header-container">
         <img src="https://fedoraproject.org/assets/images/fedora-workstation-logo.png" alt="Fedora Logo" class="logo">
         <h1 class="main-header">Not Another <i>'Things To Do'!</i></h1>
-        <h2 class="sub-header">Fedora Workstation Initial System Setup Shell Script Builder</h2>
+        <h2 class="sub-header">Initial System Setup Shell Script Builder for Fedora Workstation</h2>
     </div>
     """, unsafe_allow_html=True)
 

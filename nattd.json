@@ -153,9 +153,21 @@
                     "description": "An open-source browser project that aims to build a safer, faster, and more stable way to experience the web."
                 },
                 "install_brave": {
-                "name": "Brave",
-                "command": "flatpak install -y flathub com.brave.Browser",
-                "description": "Privacy-focused web browser."
+                    "name": "Brave",
+                    "description": "Privacy-focused web browser.",
+                    "installation_types": {
+                        "DNF": {
+                            "command": [
+                                "dnf install dnf-plugins-core",
+                                "dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo",
+                                "rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc",
+                                "dnf install brave-browser"
+                            ]
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub com.brave.Browser"
+                        }
+                    }
                 },
                 "install_vivaldi": {
                     "name": "Vivaldi",
