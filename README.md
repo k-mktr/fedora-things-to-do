@@ -22,19 +22,16 @@ This project offers a Streamlit-based web application for generating a tailored 
 
 We're grateful for the valuable feedback and suggestions from the r/Fedora community. Recent updates include:
 
-- Added a Bonus Scripts section with standalone scripts for additional customization.
-- Added a File Templates script for creating commonly used file templates.
-- Added a NVIDIA Drivers script for installing NVIDIA drivers.
-- Moved Coding and DevOps tools to the new section
-- Added more Flatpaks to the Additional Apps section
-- Added Docker, Podman and other DevOps tools
-- Restructured the Additional Apps section
-- Added VSCodium as an alternative to VS Code
-- Included multimedia, Intel and AMD codecs from the RPM Fusion repository
-- Replaced `bpytop` with `btop`
-- Expanded the list of additional applications and configurations
-- Introduced virtualization tools
-- Addressed inconsistent naming conventions across the project
+- Restructured the Additional Apps section for better organization
+- Added a new Coding and DevOps section with tools like Docker, Podman, and VSCodium
+- Expanded the list of additional applications, including Pika Backup, Deja Dup, and Tabby Terminal
+- Introduced a Bonus Scripts section for standalone customization scripts, including File Templates and NVIDIA Drivers
+- Included multimedia, Intel, and AMD codecs from the RPM Fusion repository
+- Added virtualization tools for enhanced system capabilities
+- Replaced `bpytop` with `btop` for improved system monitoring
+- Addressed inconsistent naming conventions across the project for better coherence
+- Added more Flatpaks to provide a wider range of application options
+- Introduced VSCodium as an open-source alternative to VS Code
 
 Special thanks to [u/RedBearAK](https://www.reddit.com/user/RedBearAK/), [u/ScootSchloingo](https://www.reddit.com/user/ScootSchloingo/), [u/charliesbot](https://www.reddit.com/user/charliesbot/), [u/Laughingatyou1000](https://www.reddit.com/user/Laughingatyou1000/), [u/Papercutter0324](https://www.reddit.com/user/Papercutter0324/), [u/ajunior7](https://www.reddit.com/user/ajunior7/), and [u/intulor](https://www.reddit.com/user/intulor/) for their contributions and insights.
 
