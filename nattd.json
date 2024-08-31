@@ -293,6 +293,21 @@
                     "command": "flatpak install -y flathub md.obsidian.Obsidian",
                     "description": "A note-taking app with a focus on privacy and security"
                 },
+                "install_bitwarden": {
+                    "name": "Bitwarden",
+                    "command": "flatpak install -y flathub com.bitwarden.desktop",
+                    "description": "A secure and free password manager for all of your devices"
+                },
+                "install_keepassxc": {
+                    "name": "KeePassXC",
+                    "command": "dnf install -y keepassxc",
+                    "description": "A free, open-source, and easy-to-use password manager"
+                }
+            }
+        },
+        "development_tools": {
+            "name": "Coding and DevOps",
+            "apps": {
                 "install_vscode": {
                     "name": "Visual Studio Code",
                     "command": [
@@ -301,7 +316,7 @@
                         "dnf check-update",
                         "dnf install -y code"
                     ],
-                    "description": "A lightweight but powerful source code editor"
+                    "description": "A powerful source code editor"
                 },
                 "install_vscodium": {
                     "name": "VSCodium",
@@ -312,15 +327,72 @@
                     ],
                     "description": "A free and open-source distribution of VS Code"
                 },
-                "install_bitwarden": {
-                    "name": "Bitwarden",
-                    "command": "flatpak install -y flathub com.bitwarden.desktop",
-                    "description": "A secure and free password manager for all of your devices"
+                "install_github_desktop": {
+                    "name": "GitHub Desktop",
+                    "command": "flatpak install flathub io.github.shiftey.Desktop",
+                    "description": "A powerful desktop client for GitHub"
                 },
-                "install_keepassxc": {
-                    "name": "KeePassXC",
-                    "command": "dnf install -y keepassxc",
-                    "description": "A free, open-source, and easy-to-use password manager"
+                "install_gitkraken": {
+                    "name": "GitKraken",
+                    "command": "flatpak install flathub com.axosoft.GitKraken",
+                    "description": "A tool for repo management, in-app code editing & issue tracking"
+                },
+                "install_ansible": {
+                    "name": "Ansible",
+                    "command": "dnf install -y ansible",
+                    "description": "A powerful automation tool for IT"
+                },
+                "install_docker": {
+                    "name": "Docker",
+                    "command": [
+                        "dnf remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine",
+                        "dnf -y install dnf-plugins-core",
+                        "dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo",
+                        "dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
+                        "systemctl enable --now docker",
+                        "systemctl enable --now containerd",
+                        "groupadd docker",
+                        "usermod -aG docker $ACTUAL_USER",
+                        "newgrp docker",
+                        "rm -rf $ACTUAL_HOME/.docker"
+                    ],
+                    "description": "A tool for managing containers and pods"
+                },
+                "install_podman": {
+                    "name": "Podman",
+                    "command": "dnf install -y podman",
+                    "description": "A tool for managing containers and pods"
+                },
+                "install_zsh_oh_my_zsh": {
+                    "name": "Zsh and Oh My Zsh",
+                    "command": [
+                        "dnf install -y zsh",
+                        "sudo -u $ACTUAL_USER sh -c \"RUNZSH=no $(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" \"\" --unattended",
+                        "chsh -s $(which zsh) $ACTUAL_USER",
+                        "sudo -u $ACTUAL_USER bash << EOF",
+                        "git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$ACTUAL_HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions",
+                        "git clone https://github.com/marlonrichert/zsh-autocomplete.git ${ZSH_CUSTOM:-$ACTUAL_HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete",
+                        "git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-$ACTUAL_HOME/.oh-my-zsh/custom}/plugins/zsh-history-substring-search",
+                        "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$ACTUAL_HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting",
+                        "sed -i 's/plugins=(git)/plugins=(dnf aliases genpass git zsh-autosuggestions zsh-autocomplete zsh-history-substring-search z zsh-syntax-highlighting)/' $ACTUAL_HOME/.zshrc",
+                        "sed -i 's/ZSH_THEME=\"robbyrussell\"/ZSH_THEME=\"jonathan\"/' $ACTUAL_HOME/.zshrc",
+                        "EOF"
+                    ],
+                    "description": "Install Zsh shell and Oh My Zsh framework"
+                },
+                "install_miniconda": {
+                    "name": "Miniconda",
+                    "command": [
+                        "sudo -u $ACTUAL_USER bash << EOF",
+                        "mkdir -p $ACTUAL_HOME/.miniconda3",
+                        "wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $ACTUAL_HOME/.miniconda3/miniconda.sh",
+                        "bash $ACTUAL_HOME/.miniconda3/miniconda.sh -b -u -p $ACTUAL_HOME/.miniconda3",
+                        "rm -rf $ACTUAL_HOME/.miniconda3/miniconda.sh",
+                        "$ACTUAL_HOME/.miniconda3/bin/conda init bash",
+                        "$ACTUAL_HOME/.miniconda3/bin/conda init zsh",
+                        "EOF"
+                    ],
+                    "description": "Install Miniconda Python distribution"
                 }
             }
         },
@@ -493,15 +565,6 @@
                     "command": "flatpak install -y flathub it.mijorus.gearlever",
                     "description": "An utility to manage AppImages with ease!"
                 },
-                "install_appimage_launcher": {
-                    "name": "AppImage Launcher",
-                    "command": [
-                        "wget https://github.com/TheAssassin/AppImageLauncher/releases/download/continuous/appimagelauncher-2.2.0-gha111.d9d4c73.x86_64.rpm",
-                        "dnf install -y ./appimagelauncher-2.2.0-gha111.d9d4c73.x86_64.rpm",
-                        "rm -f ./appimagelauncher-2.2.0-gha111.d9d4c73.x86_64.rpm"
-                    ],
-                    "description": "A AppImage launcher and integration tool"
-                },
                 "install_peazip": {
                     "name": "PeaZip",
                     "command": "flatpak install -y flathub io.github.peazip.PeaZip",
@@ -643,37 +706,6 @@
                     "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.interface icon-theme \"Qogir\""
                 ],
                 "description": "A flat colorful design icon theme for linux desktops"
-            },
-            "install_zsh_oh_my_zsh": {
-                "name": "Zsh and Oh My Zsh",
-                "command": [
-                    "dnf install -y zsh",
-                    "sudo -u $ACTUAL_USER sh -c \"RUNZSH=no $(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" \"\" --unattended",
-                    "chsh -s $(which zsh) $ACTUAL_USER",
-                    "sudo -u $ACTUAL_USER bash << EOF",
-                    "git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$ACTUAL_HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions",
-                    "git clone https://github.com/marlonrichert/zsh-autocomplete.git ${ZSH_CUSTOM:-$ACTUAL_HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete",
-                    "git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-$ACTUAL_HOME/.oh-my-zsh/custom}/plugins/zsh-history-substring-search",
-                    "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$ACTUAL_HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting",
-                    "sed -i 's/plugins=(git)/plugins=(dnf aliases genpass git zsh-autosuggestions zsh-autocomplete zsh-history-substring-search z zsh-syntax-highlighting)/' $ACTUAL_HOME/.zshrc",
-                    "sed -i 's/ZSH_THEME=\"robbyrussell\"/ZSH_THEME=\"jonathan\"/' $ACTUAL_HOME/.zshrc",
-                    "EOF"
-                ],
-                "description": "Install Zsh shell and Oh My Zsh framework"
-            },
-            "install_miniconda": {
-                "name": "Miniconda",
-                "command": [
-                    "sudo -u $ACTUAL_USER bash << EOF",
-                    "mkdir -p $ACTUAL_HOME/.miniconda3",
-                    "wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $ACTUAL_HOME/.miniconda3/miniconda.sh",
-                    "bash $ACTUAL_HOME/.miniconda3/miniconda.sh -b -u -p $ACTUAL_HOME/.miniconda3",
-                    "rm -rf $ACTUAL_HOME/.miniconda3/miniconda.sh",
-                    "$ACTUAL_HOME/.miniconda3/bin/conda init bash",
-                    "$ACTUAL_HOME/.miniconda3/bin/conda init zsh",
-                    "EOF"
-                ],
-                "description": "Install Miniconda Python distribution"
             }
         }
     }
