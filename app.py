@@ -15,7 +15,7 @@
 # Author: Karl Stefan Danisz
 # Contact: https://mktr.sbs/linkedin
 # GitHub: https://mktr.sbs/github
-# Buy me a coffee: https://mktr.sbs/bcoffee
+# Buy me a coffee: https://mktr.sbs/coffee
 # Version: 24.09
 #
 #

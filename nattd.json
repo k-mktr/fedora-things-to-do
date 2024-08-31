@@ -364,6 +364,15 @@
                     "command": "dnf install -y podman",
                     "description": "A tool for managing containers and pods"
                 },
+                "install_tabby": {
+                    "name": "Tabby",
+                    "command": [
+                        "wget https://github.com/Eugeny/tabby/releases/download/v1.0.211/tabby-1.0.211-linux-x64.rpm",
+                        "dnf install -y ./tabby-1.0.211-linux-x64.rpm",
+                        "rm -f ./tabby-1.0.211-linux-x64.rpm"
+                    ],
+                    "description": "A terminal for a more modern age"
+                },
                 "install_zsh_oh_my_zsh": {
                     "name": "Zsh and Oh My Zsh",
                     "command": [
@@ -637,6 +646,16 @@
                     "name": "PeaZip",
                     "command": "flatpak install -y flathub io.github.peazip.PeaZip",
                     "description": "A free file archiver utility, based on Open Source technologies of 7-Zip, p7zip, Brotli, FreeArc, PAQ, Zstandard, and PEA projects"
+                },
+                "install_deja_dup": {
+                    "name": "Deja Dup",
+                    "command": "flatpak install -y flathub org.gnome.DejaDup",
+                    "description": "A GNOME archive manager"
+                },
+                "install_pika_backup": {
+                    "name": "Pika Backup",
+                    "command": "flatpak install -y flathub org.gnome.World.PikaBackup",
+                    "description": "A simple backup tool for Linux"
                 }
             }
         }
