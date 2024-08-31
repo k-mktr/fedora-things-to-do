@@ -73,9 +73,15 @@ def load_bonus_scripts():
             with open(os.path.join(bonus_dir, filename), 'r') as file:
                 script_content = file.read()
                 script_name = os.path.splitext(filename)[0].replace("_", " ").title()
+                description = "This script provides additional customization options."  # Default description
+                if filename == "template_files.sh":
+                    description = "Creates common file templates in your home directory for quick access."
+                elif filename == "install_nvidia.sh":
+                    description = "Installs NVIDIA drivers. Run this script only after performing a full system upgrade and reboot of your system."
                 bonus_scripts[script_name] = {
                     "filename": filename,
-                    "content": script_content
+                    "content": script_content,
+                    "description": description
                 }
     return bonus_scripts
 
@@ -190,7 +196,9 @@ def render_sidebar() -> Dict[str, Any]:
 
     # Advanced section for custom script
     with st.sidebar.expander("Advanced"):
-        st.warning("⚠️ **Caution**: This section is for advanced users. Incorrect shell commands can potentially harm your system. Use with care.")
+        st.warning("""
+        ⚠️ **Caution**: This section is for advanced users. Incorrect shell commands can potentially harm your system. Use with care.
+        """)
         
         st.markdown("""
         Guidelines for custom commands:
@@ -213,13 +221,15 @@ def render_sidebar() -> Dict[str, Any]:
 
     # Bonus Scripts section
     with st.sidebar.expander("Bonus Scripts"):
-        st.markdown("""
-        These are standalone scripts for additional customization. 
+        st.warning("""
+        ⚠️ **Caution**: These are standalone scripts for additional customization. 
         Download and run them separately after your initial setup and system reboot.
         """)
 
         bonus_scripts = load_bonus_scripts()
         for script_name, script_data in bonus_scripts.items():
+            st.markdown(f"**{script_name}**")
+            st.markdown(script_data["description"])
             st.download_button(
                 label=f"Download {script_name} Script",
                 data=script_data["content"],
@@ -227,8 +237,7 @@ def render_sidebar() -> Dict[str, Any]:
                 mime="text/plain",
                 key=f"download_{script_name.lower().replace(' ', '_')}"
             )
-            with st.expander(f"View {script_name} Script"):
-                st.code(script_data["content"], language="bash")
+            st.markdown("---")
 
     # Placeholder at the bottom of the sidebar
     sidebar_bottom = st.sidebar.empty()
