@@ -18,10 +18,17 @@
 This project offers a Streamlit-based web application for generating a tailored shell script to set up a new Fedora Workstation installation. The app provides an intuitive interface for choosing system configurations, applications, and customization options. It is currently open for testing and is generally suitable for production use, although minor bug fixes and code improvements are ongoing.
 
 ## Latest Changes
-*(As of 2024-08-20)*
+*(As of 2024-09-01)*
 
 We're grateful for the valuable feedback and suggestions from the r/Fedora community. Recent updates include:
 
+- Added a Bonus Scripts section with standalone scripts for additional customization.
+- Added a File Templates script for creating commonly used file templates.
+- Added a NVIDIA Drivers script for installing NVIDIA drivers.
+- Moved Coding and DevOps tools to the new section
+- Added more Flatpaks to the Additional Apps section
+- Added Docker, Podman and other DevOps tools
+- Restructured the Additional Apps section
 - Added VSCodium as an alternative to VS Code
 - Included multimedia, Intel and AMD codecs from the RPM Fusion repository
 - Replaced `bpytop` with `btop`
@@ -40,6 +47,7 @@ We're continuously working to enhance the script and welcome further suggestions
 - **Additional Apps**: Choose from a wide range of applications categorized by purpose:
   - Internet & Communication (browsers, email clients, messaging apps)
   - Office & Productivity
+  - Coding & DevOps
   - Media & Graphics
   - Gaming & Emulation
   - System Tools

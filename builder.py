@@ -162,6 +162,8 @@ def build_app_install(options: Dict[str, Any], output_mode: str) -> str:
                 else:
                     install_commands.append(f"{commands}{quiet_redirect if should_quiet_redirect(commands) else ''}")
                 install_commands.append(f"log_message \"{app_data['name']} installed successfully.\"")
+                if app_id == "install_docker":
+                    install_commands.append("# Note: Docker group changes will take effect after logging out and back in")
             install_commands.append("")
 
     return "\n".join(install_commands)

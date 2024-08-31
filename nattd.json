@@ -353,10 +353,11 @@
                         "systemctl enable --now containerd",
                         "groupadd docker",
                         "usermod -aG docker $ACTUAL_USER",
-                        "newgrp docker",
-                        "rm -rf $ACTUAL_HOME/.docker"
+                        "rm -rf $ACTUAL_HOME/.docker",
+                        "echo \"Docker installed successfully. Please log out and back in for the group changes to take effect.\""
+
                     ],
-                    "description": "A tool for managing containers and pods"
+                    "description": "A platform for building, shipping, and running applications in containers"
                 },
                 "install_podman": {
                     "name": "Podman",
@@ -527,51 +528,6 @@
                 }
             }
         },
-        "system_tools": {
-            "name": "System Tools",
-            "apps": {
-                "install_mission_center": {
-                    "name": "Mission Center",
-                    "command": "flatpak install -y flathub io.missioncenter.MissionCenter",
-                    "description": "Monitor your CPU, Memory, Disk, Network and GPU usage"
-                },
-                "install_flatseal": {
-                    "name": "Flatseal",
-                    "command": "flatpak install -y flathub com.github.tchx84.Flatseal",
-                    "description": "A graphical utility to review and modify permissions from your Flatpak applications"
-                },
-                "install_extension_manager": {
-                    "name": "Extension Manager",
-                    "command": "flatpak install -y flathub com.mattjakeman.ExtensionManager",
-                    "description": "A utility for browsing and installing GNOME Shell Extensions"
-                },
-                "install_bottles": {
-                    "name": "Bottles",
-                    "command": "flatpak install -y flathub com.usebottles.bottles",
-                    "description": "Lets you run Windows software on Linux, such as applications and games."
-                },
-                "install_protontricks": {
-                    "name": "Protontricks",
-                    "command": "flatpak install -y flathub com.github.Matoking.protontricks",
-                    "description": "A wrapper script that allows you to easily run Winetricks commands for Steam Play/Proton games"
-                },
-                "install_protonup_qt": {
-                    "name": "ProtonUp-Qt",
-                    "command": "flatpak install -y flathub net.davidotek.pupgui2",
-                    "description": "Install and manage Wine- and Proton-based compatibility tools for Steam and Lutris with this graphical user interface"
-                },
-                "install_gear_lever": {
-                    "name": "Gear Lever",
-                    "command": "flatpak install -y flathub it.mijorus.gearlever",
-                    "description": "An utility to manage AppImages with ease!"
-                },
-                "install_peazip": {
-                    "name": "PeaZip",
-                    "command": "flatpak install -y flathub io.github.peazip.PeaZip",
-                    "description": "A free file archiver utility, based on Open Source technologies of 7-Zip, p7zip, Brotli, FreeArc, PAQ, Zstandard, and PEA projects"
-                }
-            }
-        },
         "remote_networking": {
             "name": "Remote Networking",
             "apps": {
@@ -636,6 +592,51 @@
                     "name": "Video Downloader",
                     "command": "flatpak install -y flathub com.github.unrud.VideoDownloader",
                     "description": "Download videos from websites with an easy-to-use interface"
+                }
+            }
+        },
+        "system_tools": {
+            "name": "System Tools",
+            "apps": {
+                "install_mission_center": {
+                    "name": "Mission Center",
+                    "command": "flatpak install -y flathub io.missioncenter.MissionCenter",
+                    "description": "Monitor your CPU, Memory, Disk, Network and GPU usage"
+                },
+                "install_flatseal": {
+                    "name": "Flatseal",
+                    "command": "flatpak install -y flathub com.github.tchx84.Flatseal",
+                    "description": "A graphical utility to review and modify permissions from your Flatpak applications"
+                },
+                "install_extension_manager": {
+                    "name": "Extension Manager",
+                    "command": "flatpak install -y flathub com.mattjakeman.ExtensionManager",
+                    "description": "A utility for browsing and installing GNOME Shell Extensions"
+                },
+                "install_bottles": {
+                    "name": "Bottles",
+                    "command": "flatpak install -y flathub com.usebottles.bottles",
+                    "description": "Lets you run Windows software on Linux, such as applications and games."
+                },
+                "install_protontricks": {
+                    "name": "Protontricks",
+                    "command": "flatpak install -y flathub com.github.Matoking.protontricks",
+                    "description": "A wrapper script that allows you to easily run Winetricks commands for Steam Play/Proton games"
+                },
+                "install_protonup_qt": {
+                    "name": "ProtonUp-Qt",
+                    "command": "flatpak install -y flathub net.davidotek.pupgui2",
+                    "description": "Install and manage Wine- and Proton-based compatibility tools for Steam and Lutris with this graphical user interface"
+                },
+                "install_gear_lever": {
+                    "name": "Gear Lever",
+                    "command": "flatpak install -y flathub it.mijorus.gearlever",
+                    "description": "An utility to manage AppImages with ease!"
+                },
+                "install_peazip": {
+                    "name": "PeaZip",
+                    "command": "flatpak install -y flathub io.github.peazip.PeaZip",
+                    "description": "A free file archiver utility, based on Open Source technologies of 7-Zip, p7zip, Brotli, FreeArc, PAQ, Zstandard, and PEA projects"
                 }
             }
         }

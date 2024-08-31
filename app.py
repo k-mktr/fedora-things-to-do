@@ -16,12 +16,13 @@
 # Contact: https://mktr.sbs/linkedin
 # GitHub: https://mktr.sbs/github
 # Buy me a coffee: https://mktr.sbs/bcoffee
-# Version: 24.08
+# Version: 24.09
 #
 #
 # Use responsibly, and always check the script you are about to run.
 # This script is licensed under the GNU General Public License v3.0
 #
+import os
 import logging
 import streamlit as st
 from typing import Dict, Any
@@ -63,6 +64,20 @@ st.set_page_config(
 def load_template() -> str:
     with open(SCRIPT_TEMPLATE_PATH, 'r') as file:
         return file.read()
+    
+def load_bonus_scripts():
+    bonus_scripts = {}
+    bonus_dir = "bonus"
+    for filename in os.listdir(bonus_dir):
+        if filename.endswith(".sh"):
+            with open(os.path.join(bonus_dir, filename), 'r') as file:
+                script_content = file.read()
+                script_name = os.path.splitext(filename)[0].replace("_", " ").title()
+                bonus_scripts[script_name] = {
+                    "filename": filename,
+                    "content": script_content
+                }
+    return bonus_scripts
 
 def render_sidebar() -> Dict[str, Any]:
     # Add centered, clickable logo to the top of the sidebar using HTML
@@ -196,7 +211,25 @@ def render_sidebar() -> Dict[str, Any]:
         if options["custom_script"].strip() != default_custom_script:
             st.info("Remember to review your custom commands in the script preview before downloading.")
 
-    
+    # Bonus Scripts section
+    with st.sidebar.expander("Bonus Scripts"):
+        st.markdown("""
+        These are standalone scripts for additional customization. 
+        Download and run them separately after your initial setup and system reboot.
+        """)
+
+        bonus_scripts = load_bonus_scripts()
+        for script_name, script_data in bonus_scripts.items():
+            st.download_button(
+                label=f"Download {script_name} Script",
+                data=script_data["content"],
+                file_name=script_data["filename"],
+                mime="text/plain",
+                key=f"download_{script_name.lower().replace(' ', '_')}"
+            )
+            with st.expander(f"View {script_name} Script"):
+                st.code(script_data["content"], language="bash")
+
     # Placeholder at the bottom of the sidebar
     sidebar_bottom = st.sidebar.empty()
     sidebar_bottom.markdown("""
@@ -387,6 +420,22 @@ def main():
            ```
 
         ⚠️ **Caution**: This script will make changes to your system. Please review the script contents before running and ensure you understand the modifications it will make.
+        """)
+
+        st.markdown("""
+        ### Bonus Scripts
+        
+        In the sidebar, you'll find a "Bonus Scripts" section with additional standalone scripts for further customization. These scripts include:
+        
+        - **File Templates Script**: Creates a set of commonly used file templates in your home directory.
+        - **NVIDIA Drivers Script**: Installs NVIDIA drivers (should be run after full system upgrade and reboot).
+        
+        To use these scripts:
+        1. Download the desired script from the sidebar.
+        2. Make it executable: `chmod +x script_name.sh`
+        3. Run it: `./script_name.sh` (or with sudo if required)
+        
+        ⚠️ **Note**: Run these scripts after completing the main setup and rebooting your system.
         """)
 
     logging.info("Main function completed")
