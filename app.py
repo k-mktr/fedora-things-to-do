@@ -27,6 +27,7 @@ import logging
 import streamlit as st
 from typing import Dict, Any
 import builder
+import re
 
 # Configure logging
 logging.basicConfig(
@@ -108,29 +109,43 @@ def render_sidebar() -> Dict[str, Any]:
     logging.debug(f"all_options: {all_options}")
     logging.debug(f"nattd_data['system_config']: {nattd_data['system_config']}")
 
+    # Add search bar at the top of the sidebar
+    search_query = st.sidebar.text_input("Search options and apps", "")
+
+    # Function to check if an item matches the search query
+    def matches_search(item_name: str, description: str) -> bool:
+        if not search_query:
+            return True
+        pattern = re.compile(search_query, re.IGNORECASE)
+        return pattern.search(item_name) is not None or pattern.search(description) is not None
+
     # System Configuration section
-    with st.sidebar.expander("System Configuration"):
+    system_config_matches = any(matches_search(nattd_data["system_config"][option]["name"], nattd_data["system_config"][option]["description"]) for option in all_options["system_config"])
+    with st.sidebar.expander("System Configuration", expanded=system_config_matches and bool(search_query)):
         for option in all_options["system_config"]:
-            logging.debug(f"Processing option: {option}")
-            logging.debug(f"nattd_data['system_config'][{option}]: {nattd_data['system_config'][option]}")
-            
-            # Special handling for RPM Fusion
-            if option == "enable_rpmfusion":
-                rpm_fusion_checkbox = st.checkbox(
-                    nattd_data["system_config"][option]["name"],
-                    key=f"system_config_{option}",
-                    help=nattd_data["system_config"][option]["description"]
-                )
-                options["system_config"][option] = rpm_fusion_checkbox
-            else:
-                options["system_config"][option] = st.checkbox(
-                    nattd_data["system_config"][option]["name"],
-                    key=f"system_config_{option}",
-                    help=nattd_data["system_config"][option]["description"]
-                )
-            
-            if option == "set_hostname" and options["system_config"][option]:
-                options["hostname"] = st.text_input("Enter the new hostname:")
+            if matches_search(nattd_data["system_config"][option]["name"], nattd_data["system_config"][option]["description"]):
+                logging.debug(f"Processing option: {option}")
+                logging.debug(f"nattd_data['system_config'][{option}]: {nattd_data['system_config'][option]}")
+                
+                # Special handling for RPM Fusion
+                if option == "enable_rpmfusion":
+                    rpm_fusion_checkbox = st.checkbox(
+                        nattd_data["system_config"][option]["name"],
+                        key=f"system_config_{option}",
+                        help=nattd_data["system_config"][option]["description"]
+                    )
+                    options["system_config"][option] = rpm_fusion_checkbox
+                else:
+                    options["system_config"][option] = st.checkbox(
+                        nattd_data["system_config"][option]["name"],
+                        key=f"system_config_{option}",
+                        help=nattd_data["system_config"][option]["description"]
+                    )
+                
+                if option == "set_hostname" and options["system_config"][option]:
+                    options["hostname"] = st.text_input("Enter the new hostname:")
+            elif search_query:
+                st.empty()  # Placeholder to keep expander visible
 
         # Check if any codec option is selected and update RPM Fusion checkbox
         codec_options = ["install_multimedia_codecs", "install_intel_codecs", "install_amd_codecs"]
@@ -140,59 +155,75 @@ def render_sidebar() -> Dict[str, Any]:
                 st.sidebar.markdown("**RPM Fusion** has been automatically selected due to codec choices.")
 
     # Essential Apps section
-    with st.sidebar.expander("Essential Applications"):
+    essential_apps_matches = any(matches_search(app["name"], app["description"]) for app in nattd_data["essential_apps"]["apps"])
+    with st.sidebar.expander("Essential Applications", expanded=essential_apps_matches and bool(search_query)):
         essential_apps = nattd_data["essential_apps"]["apps"]
         for app in essential_apps:
-            options["essential_apps"][app["name"]] = st.checkbox(
-                app["name"],
-                key=f"essential_app_{app['name']}",
-                help=app["description"]
-            )
+            if matches_search(app["name"], app["description"]):
+                options["essential_apps"][app["name"]] = st.checkbox(
+                    app["name"],
+                    key=f"essential_app_{app['name']}",
+                    help=app["description"]
+                )
+            elif search_query:
+                st.empty()  # Placeholder to keep expander visible
 
     # Additional Applications section
-    with st.sidebar.expander("Additional Applications"):
+    additional_apps_matches = any(matches_search(app_info['name'], app_info['description']) 
+                                  for category_data in nattd_data["additional_apps"].values() 
+                                  for app_info in category_data["apps"].values())
+    with st.sidebar.expander("Additional Applications", expanded=additional_apps_matches and bool(search_query)):
         for category, category_data in nattd_data["additional_apps"].items():
             st.subheader(category_data["name"])
             options["additional_apps"][category] = {}
+            category_has_matches = False
             for app_id, app_info in category_data["apps"].items():
-                app_selected = st.checkbox(app_info['name'], key=f"app_{category}_{app_id}", help=app_info['description'])
-                options["additional_apps"][category][app_id] = {'selected': app_selected}
-                
-                if app_selected and 'installation_types' in app_info:
-                    installation_type = st.radio(
-                        f"Choose {app_info['name']} installation type:",
-                        list(app_info['installation_types'].keys()),
-                        key=f"{category}_{app_id}_install_type"
-                    )
-                    options["additional_apps"][category][app_id]['installation_type'] = installation_type
+                if matches_search(app_info['name'], app_info['description']):
+                    app_selected = st.checkbox(app_info['name'], key=f"app_{category}_{app_id}", help=app_info['description'])
+                    options["additional_apps"][category][app_id] = {'selected': app_selected}
+                    
+                    if app_selected and 'installation_types' in app_info:
+                        installation_type = st.radio(
+                            f"Choose {app_info['name']} installation type:",
+                            list(app_info['installation_types'].keys()),
+                            key=f"{category}_{app_id}_install_type"
+                        )
+                        options["additional_apps"][category][app_id]['installation_type'] = installation_type
+                    category_has_matches = True
+            if not category_has_matches and search_query:
+                st.empty()  # Placeholder to keep category visible
 
     # Customization section
-    with st.sidebar.expander("Customization"):
+    customization_matches = any(matches_search(app_info['name'], app_info['description']) for app_info in nattd_data["customization"]["apps"].values())
+    with st.sidebar.expander("Customization", expanded=customization_matches and bool(search_query)):
         customization_apps = nattd_data["customization"]["apps"]
         for app_id, app_info in customization_apps.items():
-            options["customization"][app_id] = st.checkbox(
-                app_info['name'],
-                key=f"customization_{app_id}",
-                help=app_info['description']
-            )
-            
-            # Special handling for Windows Fonts
-            if app_id == "install_microsoft_fonts" and options["customization"][app_id]:
-                options["customization"][app_id] = {
-                    'selected': True,
-                    'installation_type': st.radio(
-                        "Windows Fonts Installation Method",
-                        ('core', 'windows'),
-                        format_func=lambda x: "Core Fonts" if x == "core" else "Windows Fonts",
-                        key=f"customization_{app_id}_install_type",
-                        help="Choose how to install Windows fonts."
-                    )
-                }
+            if matches_search(app_info['name'], app_info['description']):
+                options["customization"][app_id] = st.checkbox(
+                    app_info['name'],
+                    key=f"customization_{app_id}",
+                    help=app_info['description']
+                )
                 
-                if options["customization"][app_id]['installation_type'] == 'windows':
-                    st.warning("⚠️ This method requires a valid Windows license. "
-                               "Please ensure you comply with Microsoft's licensing terms.")
-                    st.markdown("[Learn more about Windows fonts licensing](https://learn.microsoft.com/en-us/typography/fonts/font-faq)")
+                # Special handling for Windows Fonts
+                if app_id == "install_microsoft_fonts" and options["customization"][app_id]:
+                    options["customization"][app_id] = {
+                        'selected': True,
+                        'installation_type': st.radio(
+                            "Windows Fonts Installation Method",
+                            ('core', 'windows'),
+                            format_func=lambda x: "Core Fonts" if x == "core" else "Windows Fonts",
+                            key=f"customization_{app_id}_install_type",
+                            help="Choose how to install Windows fonts."
+                        )
+                    }
+                    
+                    if options["customization"][app_id]['installation_type'] == 'windows':
+                        st.warning("⚠️ This method requires a valid Windows license. "
+                                   "Please ensure you comply with Microsoft's licensing terms.")
+                        st.markdown("[Learn more about Windows fonts licensing](https://learn.microsoft.com/en-us/typography/fonts/font-faq)")
+            elif search_query:
+                st.empty()  # Placeholder to keep expander visible
 
     # Advanced section for custom script
     with st.sidebar.expander("Advanced"):
@@ -432,19 +463,19 @@ def main():
         """)
 
         st.markdown("""
-        ### Bonus Scripts
+        ### Optional Bonus Scripts
         
-        In the sidebar, you'll find a "Bonus Scripts" section with additional standalone scripts for further customization. These scripts include:
+        If you want to further customize your system, you can find a "Bonus Scripts" section in the sidebar. This section includes additional standalone scripts that are not mandatory but can be useful for extra customization. The scripts available are:
         
+        - **NVIDIA Drivers Script**: Installs NVIDIA drivers. It's recommended to run this script after performing a full system upgrade and rebooting your system.
         - **File Templates Script**: Creates a set of commonly used file templates in your home directory.
-        - **NVIDIA Drivers Script**: Installs NVIDIA drivers (should be run after full system upgrade and reboot).
         
-        To use these scripts:
+        If you decide to use these scripts, follow these steps:
         1. Download the desired script from the sidebar.
         2. Make it executable: `chmod +x script_name.sh`
         3. Run it: `./script_name.sh` (or with sudo if required)
         
-        ⚠️ **Note**: Run these scripts after completing the main setup and rebooting your system.
+        **Important**: These scripts are optional and should be run after completing the main setup and rebooting your system.
         """)
 
     logging.info("Main function completed")

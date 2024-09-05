@@ -18,10 +18,11 @@
 This project offers a Streamlit-based web application for generating a tailored shell script to set up a new Fedora Workstation installation. The app provides an intuitive interface for choosing system configurations, applications, and customization options. It is currently open for testing and is generally suitable for production use, although minor bug fixes and code improvements are ongoing.
 
 ## Latest Changes
-*(As of 2024-09-01)*
+*(As of 2024-09-05)*
 
 We're grateful for the valuable feedback and suggestions from the r/Fedora community. Recent updates include:
 
+- Added a search to the sidebar for easier navigation between available options and applications
 - Restructured the Additional Apps section for better organization
 - Added a new Coding and DevOps section with tools like Docker, Podman, and VSCodium
 - Expanded the list of additional applications, including Pika Backup, Deja Dup, and Tabby Terminal
