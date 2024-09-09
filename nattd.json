@@ -293,6 +293,16 @@
                     "command": "flatpak install -y flathub md.obsidian.Obsidian",
                     "description": "A note-taking app with a focus on privacy and security"
                 },
+                "install_dialect": {
+                    "name": "Dialect",
+                    "command": "flatpak install -y flathub app.drey.Dialect",
+                    "description": "A translation app for GNOME supporting multiple services"
+                },
+                "install_decoder": {
+                    "name": "Decoder",
+                    "command": "flatpak install -y flathub com.belmoussaoui.Decoder",
+                    "description": "Fancy yet simple QR Codes scanner and generator."
+                },
                 "install_bitwarden": {
                     "name": "Bitwarden",
                     "command": "flatpak install -y flathub com.bitwarden.desktop",
