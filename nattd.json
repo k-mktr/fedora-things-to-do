@@ -736,6 +736,30 @@
                     "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.interface icon-theme \"Qogir\""
                 ],
                 "description": "A flat colorful design icon theme for linux desktops"
+            },
+            "install_papirus_icon_theme": {
+                "name": "Papirus Icon Theme",
+                "command": [
+                    "dnf install -y papirus-icon-theme",
+                    "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.interface icon-theme \"Papirus\""
+                ],
+                "description": "A flat colorful design icon theme for linux desktops"
+            },
+            "install_numix_icon_theme": {
+                "name": "Numix Icon Theme",
+                "command": [
+                    "dnf install -y numix-icon-theme",
+                    "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.interface icon-theme \"Numix\""
+                ],
+                "description": "A flat colorful design icon theme for linux desktops"
+            },
+            "install_numix_circle_icon_theme": {
+                "name": "Numix Circle Icon Theme",
+                "command": [
+                    "dnf install -y numix-circle-icon-theme",
+                    "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.interface icon-theme \"Numix-Circle\""
+                ],
+                "description": "A flat colorful design icon theme for linux desktops"
             }
         }
     }
