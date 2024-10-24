@@ -16,7 +16,7 @@
 # Contact: https://mktr.sbs/linkedin
 # GitHub: https://mktr.sbs/github
 # Buy me a coffee: https://mktr.sbs/coffee
-# Version: 24.09
+# Version: 24.10
 #
 #
 # Use responsibly, and always check the script you are about to run.
@@ -79,6 +79,8 @@ def load_bonus_scripts():
                     description = "Creates common file templates in your home directory for quick access."
                 elif filename == "install_nvidia.sh":
                     description = "Installs NVIDIA drivers. Run this script only after performing a full system upgrade and reboot of your system."
+                elif filename == "system_cleanup.sh":
+                    description = "Cleans up your system from unnecessary files."
                 bonus_scripts[script_name] = {
                     "filename": filename,
                     "content": script_content,
@@ -310,10 +312,6 @@ def render_sidebar() -> Dict[str, Any]:
         <p style="margin-bottom: 5px;">Created with ❤️ for Open Source</p>
         <a href="https://mktr.sbs/linkedin" target="_blank" style="text-decoration: none; color: #8da9c4;" aria-label="Karol Stefan Danisz LinkedIn">
             <i>by Karol Stefan Danisz</i>
-        </a>
-        <br><br>
-        <a href="https://mktr.sbs/coffee" target="_blank" style="text-decoration: none; color: #8da9c4;" aria-label="Buy me a coffee">
-            ☕ Buy me a coffee
         </a>
     </div>
     """, unsafe_allow_html=True)

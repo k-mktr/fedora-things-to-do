@@ -158,7 +158,7 @@
                         "DNF": {
                             "command": [
                                 "dnf install -y dnf-plugins-core",
-                                "dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo",
+                                "dnf4 config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo",
                                 "rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc",
                                 "dnf install -y brave-browser"
                             ]
@@ -355,9 +355,9 @@
                 "install_docker": {
                     "name": "Docker",
                     "command": [
-                        "dnf remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine",
+                        "dnf remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine --noautoremove",
                         "dnf -y install dnf-plugins-core",
-                        "dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo",
+                        "dnf4 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo",
                         "dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
                         "systemctl enable --now docker",
                         "systemctl enable --now containerd",
@@ -577,7 +577,7 @@
                 "install_mullvad_vpn": {
                     "name": "Mullvad VPN",
                     "command": [
-                        "dnf config-manager --add-repo https://repository.mullvad.net/rpm/stable/mullvad.repo",
+                        "dnf4 config-manager --add-repo https://repository.mullvad.net/rpm/stable/mullvad.repo",
                         "dnf install -y mullvad-vpn"
                     ],
                     "description": "A VPN client, that provides a secure and private connection to the internet"
