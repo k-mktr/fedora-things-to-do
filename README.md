@@ -18,6 +18,27 @@
 This project offers a Streamlit-based web application for generating a tailored shell script to set up a new Fedora Workstation installation. The app provides an intuitive interface for choosing system configurations, applications, and customization options. It is currently open for testing and is generally suitable for production use, although minor bug fixes and code improvements are ongoing.
 
 ## Latest Changes
+
+*(As of 2025-02-28)*
+
+- Restructured the entire codebase into a modular architecture:
+  - Created separate modules for UI components, script generation, and utilities
+  - Implemented a proper state management system using Streamlit's session state
+  - Enhanced error handling throughout the application
+  - Added comprehensive logging for better debugging
+- Fixed log messages being redirected to /dev/null in quiet mode, ensuring users can see progress messages
+- Added option to remove Fedora Flatpak repository and replace it with Flathub repository for better compatibility and stability
+  - This addresses ongoing drama where the Fedora Flatpak repository can cause conflicts and instability
+- Added option to install RustDesk, a remote desktop software
+- Added caching for data loading to improve application performance
+- Improved search functionality in the sidebar for easier navigation
+- Enhanced the bonus scripts handling with better error management
+- Fixed Zerotier installation command
+- Updated version specific installers for the following applications:
+  - Vivaldi Browser
+  - Tabby Terminal
+  - NoMachine
+
 *(As of 2024-09-05)*
 
 We're grateful for the valuable feedback and suggestions from the r/Fedora community. Recent updates include:
@@ -103,7 +124,7 @@ We're continuously working to enhance the script and welcome further suggestions
 
 ## Script Template
 
-The `script_template.sh` file serves as the base for the generated script. It includes:
+The `template.sh` file serves as the base for the generated script. It includes:
 
 - Error handling and logging functionality
 - User prompts for optional steps
@@ -142,9 +163,9 @@ For questions, feedback, or support, please:
 Future plans for this project include:
 - ✅ Enhancing user experience with more intuitive interface options
 - ✅ Adding Advanced Section for a custom Shell Commands
+- ✅ Further organizing the code, improving readability
+- ✅ Improving the Quiet Mode code logic
 - Implementing predefined configuration Profiles
-- Further organizing the code, improving readability
-- Improving the Quiet Mode code logic
 - Implementing a feature to save and load custom profiles 
 - Developing versions for other Linux distributions (e.g., Debian/Ubuntu)
 - Adding more applications and configuration options
