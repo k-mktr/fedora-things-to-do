@@ -1,11 +1,26 @@
 #!/bin/bash
 # "Things To Do!" script for a fresh Fedora Workstation installation
 
+
+
 # Check if the script is run with sudo
 if [ "$EUID" -ne 0 ]; then
     echo "Please run this script with sudo"
     exit 1
 fi
+
+# Funtion to echo colored text
+color_echo() {
+    local color="$1"
+    local text="$2"
+    case "$color" in
+        "red")     echo -e "\033[0;31m$text\033[0m" ;;
+        "green")   echo -e "\033[0;32m$text\033[0m" ;;
+        "yellow")  echo -e "\033[1;33m$text\033[0m" ;;
+        "blue")    echo -e "\033[0;34m$text\033[0m" ;;
+        *)         echo "$text" ;;
+    esac
+}
 
 # Set variables
 ACTUAL_USER=$SUDO_USER
@@ -28,7 +43,7 @@ handle_error() {
     local exit_code=$?
     local message="$1"
     if [ $exit_code -ne 0 ]; then
-        log_message "ERROR: $message"
+        color_echo "red" "ERROR: $message"
         exit $exit_code
     fi
 }
@@ -37,10 +52,10 @@ handle_error() {
 prompt_reboot() {
     sudo -u $ACTUAL_USER bash -c 'read -p "It is time to reboot the machine. Would you like to do it now? (y/n): " choice; [[ $choice == [yY] ]]'
     if [ $? -eq 0 ]; then
-        log_message "Rebooting..."
+        color_echo "green" "Rebooting..."
         reboot
     else
-        log_message "Reboot canceled."
+        color_echo "red" "Reboot canceled."
     fi
 }
 
@@ -50,7 +65,7 @@ backup_file() {
     if [ -f "$file" ]; then
         cp "$file" "$file.bak"
         handle_error "Failed to backup $file"
-        log_message "Backed up $file"
+        color_echo "green" "Backed up $file"
     fi
 }
 
@@ -98,7 +113,7 @@ echo "║   ░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀�
 echo "║                                                                         ║";
 echo "╚═════════════════════════════════════════════════════════════════════════╝";
 echo "";
-log_message "All steps completed. Enjoy!"
+color_echo "green" "All steps completed. Enjoy!"
 
 # Prompt for reboot
 prompt_reboot

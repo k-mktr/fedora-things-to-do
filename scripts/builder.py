@@ -43,7 +43,7 @@ def build_system_upgrade(options: Dict[str, Any], output_mode: str) -> str:
     quiet_redirect = " > /dev/null 2>&1" if output_mode == "Quiet" else ""
     
     upgrade_commands = [
-        "log_message \"Performing system upgrade... This may take a while...\"",
+        'color_echo "blue" "Performing system upgrade... This may take a while..."',
         f"dnf upgrade -y{quiet_redirect}",
         ""  # Add an empty line for readability
     ]
@@ -145,9 +145,9 @@ def build_app_install(options: Dict[str, Any], output_mode: str) -> str:
             if essential_apps:
                 install_commands.append("# Install essential applications")
                 app_names = " ".join([app["name"] for app in essential_apps])
-                install_commands.append(f"log_message \"Installing essential applications...\"")
+                install_commands.append('color_echo "yellow" "Installing essential applications..."')
                 install_commands.append(f"dnf install -y {app_names}{quiet_redirect}")
-                install_commands.append(f"log_message \"Essential applications installed successfully.\"")
+                install_commands.append('color_echo "green" "Essential applications installed successfully."')
                 install_commands.append("")
 
         # Additional apps
@@ -171,7 +171,7 @@ def build_app_install(options: Dict[str, Any], output_mode: str) -> str:
                             
                         app_data = nattd_data['additional_apps'][category]['apps'][app_id]
                         app_name = app_data.get('name', app_id)
-                        install_commands.append(f"log_message \"Installing {app_name}...\"")
+                        install_commands.append(f'color_echo "yellow" "Installing {app_name}..."')
                         
                         # Handle different installation types
                         if ('installation_types' in app_data and 
@@ -197,7 +197,7 @@ def build_app_install(options: Dict[str, Any], output_mode: str) -> str:
                         else:
                             install_commands.append(f"{commands}{quiet_redirect if should_quiet_redirect(commands) else ''}")
                         
-                        install_commands.append(f"log_message \"{app_name} installed successfully.\"")
+                        install_commands.append(f'color_echo "green" "{app_name} installed successfully."')
                         
                         # Add special note for Docker
                         if app_id == "install_docker":
@@ -255,7 +255,7 @@ def build_customization(options: Dict[str, Any], output_mode: str) -> str:
                     description = app_data.get('description', f"Installing {app_name}")
                     
                     customization_commands.append(f"# {description} ({install_type})")
-                    customization_commands.append(f"log_message \"Installing {app_name} ({install_type})...\"")
+                    customization_commands.append(f'color_echo "yellow" "Installing {app_name} ({install_type})..."')
                     
                     if isinstance(commands, list):
                         for cmd in commands:
@@ -263,7 +263,7 @@ def build_customization(options: Dict[str, Any], output_mode: str) -> str:
                     else:
                         customization_commands.append(f"{commands}{quiet_redirect if should_quiet_redirect(commands) else ''}")
                     
-                    customization_commands.append(f"log_message \"{app_name} ({install_type}) installed successfully.\"")
+                    customization_commands.append(f'color_echo "green" "{app_name} ({install_type}) installed successfully."')
                     customization_commands.append("")  # Add an empty line for readability
             
             # Handle apps without installation types
@@ -272,7 +272,7 @@ def build_customization(options: Dict[str, Any], output_mode: str) -> str:
                 description = app_data.get('description', f"Installing {app_name}")
                 
                 customization_commands.append(f"# {description}")
-                customization_commands.append(f"log_message \"Installing {app_name}...\"")
+                customization_commands.append(f'color_echo "yellow" "Installing {app_name}..."')
                 
                 commands = app_data['command']
                 if isinstance(commands, list):
@@ -281,7 +281,7 @@ def build_customization(options: Dict[str, Any], output_mode: str) -> str:
                 else:
                     customization_commands.append(f"{commands}{quiet_redirect if should_quiet_redirect(commands) else ''}")
                 
-                customization_commands.append(f"log_message \"{app_name} installed successfully.\"")
+                customization_commands.append(f'color_echo "green" "{app_name} installed successfully."')
                 customization_commands.append("")  # Add an empty line for readability
     except Exception as e:
         logging.error(f"Error building customization: {str(e)}", exc_info=True)
@@ -379,4 +379,128 @@ def build_full_script(template: str, options: Dict[str, Any], output_mode: str) 
         error_script = "#!/bin/bash\n\n"
         error_script += f"echo \"Error building script: {str(e)}\"\n"
         error_script += "echo \"Please check the logs for more information.\"\n"
-        return error_script 
+        return error_script
+
+#!/usr/bin/env python3
+import json
+import os
+
+def load_config():
+    """Load the configuration from nattd.json"""
+    with open('nattd.json', 'r') as f:
+        return json.load(f)
+
+def generate_system_upgrade():
+    """Generate system upgrade commands"""
+    commands = [
+        'color_echo "yellow" "Upgrading the system..."',
+        'dnf upgrade --refresh -y',
+        'dnf autoremove -y'
+    ]
+    return '\n'.join(commands)
+
+def generate_system_config(config):
+    """Generate system configuration commands"""
+    if 'system_config' not in config:
+        return ''
+    
+    commands = []
+    for key, item in config['system_config'].items():
+        if isinstance(item, dict) and 'command' in item:
+            commands.append(f'# {item["name"]}')
+            if isinstance(item['command'], list):
+                commands.extend(item['command'])
+            else:
+                commands.append(item['command'])
+            commands.append('')
+    
+    return '\n'.join(commands)
+
+def generate_app_install(config):
+    """Generate app installation commands"""
+    commands = []
+    
+    # Essential apps
+    if 'essential_apps' in config and 'apps' in config['essential_apps']:
+        commands.append('color_echo "yellow" "Installing essential applications..."')
+        apps = [app['name'] for app in config['essential_apps']['apps']]
+        commands.append(f'dnf install -y {" ".join(apps)}')
+        commands.append('')
+    
+    # Additional apps
+    if 'additional_apps' in config:
+        for category, category_data in config['additional_apps'].items():
+            if 'apps' in category_data:
+                commands.append(f'color_echo "blue" "Installing {category_data["name"]}..."')
+                for app_key, app_data in category_data['apps'].items():
+                    if isinstance(app_data, dict):
+                        app_name = app_data.get('name', '')
+                        if 'command' in app_data:
+                            if isinstance(app_data['command'], list):
+                                commands.extend(app_data['command'])
+                            else:
+                                commands.append(app_data['command'])
+                        elif 'installation_types' in app_data:
+                            install_type = 'DNF'  # Default to DNF
+                            install_commands = app_data['installation_types'].get(install_type, {}).get('command', [])
+                            if isinstance(install_commands, list):
+                                commands.append(f'color_echo "yellow" "Installing {app_name} ({install_type})..."')
+                                commands.extend(install_commands)
+                            else:
+                                commands.append(f'color_echo "yellow" "Installing {app_name} ({install_type})..."')
+                                commands.append(install_commands)
+                commands.append('')
+    
+    return '\n'.join(commands)
+
+def generate_customization(config):
+    """Generate customization commands"""
+    if 'customization' not in config:
+        return ''
+    
+    commands = []
+    if 'apps' in config['customization']:
+        for app_key, app_data in config['customization']['apps'].items():
+            if isinstance(app_data, dict):
+                app_name = app_data.get('name', '')
+                if 'command' in app_data:
+                    commands.append(f'color_echo "yellow" "Installing {app_name}..."')
+                    if isinstance(app_data['command'], list):
+                        commands.extend(app_data['command'])
+                    else:
+                        commands.append(app_data['command'])
+                elif 'installation_types' in app_data:
+                    install_type = next(iter(app_data['installation_types']))
+                    install_commands = app_data['installation_types'][install_type]['command']
+                    commands.append(f'color_echo "yellow" "Installing {app_name} ({install_type})..."')
+                    if isinstance(install_commands, list):
+                        commands.extend(install_commands)
+                    else:
+                        commands.append(install_commands)
+                commands.append('')
+    
+    return '\n'.join(commands)
+
+def main():
+    """Main function to generate the script"""
+    config = load_config()
+    
+    with open('template.sh', 'r') as f:
+        template = f.read()
+    
+    # Generate sections
+    script = template.replace('{{system_upgrade}}', generate_system_upgrade())
+    script = script.replace('{{system_config}}', generate_system_config(config))
+    script = script.replace('{{app_install}}', generate_app_install(config))
+    script = script.replace('{{customization}}', generate_customization(config))
+    
+    # Write the output script
+    with open('fedora_things_to_do.sh', 'w') as f:
+        f.write(script)
+    
+    # Make the script executable
+    os.chmod('fedora_things_to_do.sh', 0o755)
+    print("Script generated successfully!")
+
+if __name__ == "__main__":
+    main()
