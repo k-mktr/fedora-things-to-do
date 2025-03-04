@@ -632,7 +632,7 @@
                     "command": [
                         "dnf config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo",
                         "dnf install tailscale",
-                        "sudo systemctl enable --now tailscaled"
+                        "systemctl enable --now tailscaled"
                     ],
                     "description": "Tailscale is a mesh VPN (Virtual Private Network) service that streamlines connecting devices and services securely across different networks"
                 }
