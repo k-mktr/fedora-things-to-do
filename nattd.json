@@ -215,6 +215,11 @@
                     "command": "flatpak install -y flathub com.opera.Opera",
                     "description": "A fast, feature-rich web browser with a focus on user experience and security."
                 },
+                "install_zen_browser": {
+                    "name": "Zen Browser",
+                    "command": "flatpak install -y flathub app.zen_browser.zen",
+                    "description": "A beautifully designed web browser, privacy-focused, and packed with features."
+                },
                 "install_thunderbird": {
                     "name": "Thunderbird",
                     "command": "flatpak install -y flathub org.mozilla.Thunderbird",
