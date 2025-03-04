@@ -334,10 +334,6 @@ def build_script(options: Dict[str, Any], output_mode: str) -> str:
         
         preview_script += "(...)  # Script footer"
         
-        # Replace the hostname placeholder if it exists
-        if "hostname" in options:
-            preview_script = preview_script.replace("{hostname}", options["hostname"])
-        
         return preview_script
     except Exception as e:
         logging.error(f"Error building script preview: {str(e)}", exc_info=True)

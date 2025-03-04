@@ -53,7 +53,21 @@ def render_sidebar() -> None:
         "Output Mode", 
         ["Quiet", "Verbose"], 
         index=1, 
-        help="Select the output mode for the script."
+        help="""
+        Choose how the script will display its progress:
+        
+        **Verbose** (Recommended):
+        - Shows all command outputs
+        - Displays detailed progress information
+        - Helps you understand what's happening
+        - Better for troubleshooting
+        
+        **Quiet**:
+        - Hides most command outputs
+        - Shows only essential messages
+        - Cleaner terminal output
+        - Faster execution
+        """
     )
     app_state.output_mode = output_mode
     
@@ -119,7 +133,9 @@ def render_sidebar() -> None:
                         )
                     
                     if option == "set_hostname" and options["system_config"][option]:
-                        options["hostname"] = st.text_input("Enter the new hostname:")
+                        hostname = st.text_input("Enter the new hostname:", value=app_state.hostname or "")
+                        options["hostname"] = hostname
+                        app_state.hostname = hostname
             except Exception as e:
                 st.sidebar.error(f"Error rendering option '{option}': {str(e)}")
                 logging.error(f"Error rendering option '{option}': {str(e)}", exc_info=True)
