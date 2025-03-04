@@ -72,7 +72,11 @@ def render_sidebar() -> None:
     app_state.output_mode = output_mode
     
     # Add search bar at the top of the sidebar
-    search_query = st.sidebar.text_input("Search options and apps", "")
+    search_query = st.sidebar.text_input(
+        "🔍 Search options and apps", 
+        "",
+        help="Search through all available options and applications. The sidebar will automatically expand matching sections."
+    )
     
     # System Configuration section
     try:
@@ -150,7 +154,10 @@ def render_sidebar() -> None:
                   for option in codec_options):
                 options["system_config"]["enable_rpmfusion"] = True
                 if not rpm_fusion_checkbox:
-                    st.sidebar.markdown("**RPM Fusion** has been automatically selected due to codec choices.")
+                    st.sidebar.info("""
+                    **RPM Fusion** has been automatically selected because you chose to install codecs.
+                    This is required for proper multimedia support on Fedora.
+                    """)
         except Exception as e:
             logging.error(f"Error in codec options check: {str(e)}", exc_info=True)
 
