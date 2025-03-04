@@ -19,13 +19,15 @@ This project offers a Streamlit-based web application for generating a tailored 
 
 ## Latest Changes
 
-*(As of 2025-02-28)*
+*(As of 2025-03-04)*
 
 - Restructured the entire codebase into a modular architecture:
   - Created separate modules for UI components, script generation, and utilities
   - Implemented a proper state management system using Streamlit's session state
   - Enhanced error handling throughout the application
   - Added comprehensive logging for better debugging
+- Changed the default output mode to Verbose
+- Fixed minor bugs
 - Fixed log messages being redirected to /dev/null in quiet mode, ensuring users can see progress messages
 - Added option to remove Fedora Flatpak repository and replace it with Flathub repository for better compatibility and stability
   - This addresses ongoing drama where the Fedora Flatpak repository can cause conflicts and instability

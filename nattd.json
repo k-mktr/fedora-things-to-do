@@ -36,7 +36,9 @@
                 "log_message \"Replacing Fedora Flatpak Repo with Flathub...\"",
                 "dnf install -y flatpak",
                 "flatpak remote-delete fedora --force || true",
-                "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo"
+                "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo",
+                "sudo flatpak repair",
+                "flatpak update"
             ],
             "description": "Replace Fedora Flatpak Repo with Flathub for better package management and apps stability"
         },

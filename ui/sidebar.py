@@ -52,7 +52,7 @@ def render_sidebar() -> None:
     output_mode = st.sidebar.radio(
         "Output Mode", 
         ["Quiet", "Verbose"], 
-        index=0, 
+        index=1, 
         help="Select the output mode for the script."
     )
     app_state.output_mode = output_mode

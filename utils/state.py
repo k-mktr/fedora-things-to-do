@@ -12,7 +12,7 @@ class AppState:
     additional_apps: Dict[str, Any] = field(default_factory=dict)
     customization: Dict[str, Any] = field(default_factory=dict)
     hostname: Optional[str] = None
-    output_mode: str = "Quiet"
+    output_mode: str = "Verbose"
     script_built: bool = False
     full_script: Optional[str] = None
     

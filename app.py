@@ -15,8 +15,7 @@
 # Author: Karl Stefan Danisz
 # Contact: https://mktr.sbs/linkedin
 # GitHub: https://mktr.sbs/github
-# Buy me a coffee: https://mktr.sbs/coffee
-# Version: 24.10
+# Version: 25.03
 #
 #
 # Use responsibly, and always check the script you are about to run.
