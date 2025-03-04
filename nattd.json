@@ -19,7 +19,7 @@
                 "echo \"defaultyes=True\" | tee -a /etc/dnf/dnf.conf > /dev/null",
                 "dnf -y install dnf-plugins-core"
             ],
-            "description": "Optimize DNF package manager for faster downloads and efficient updates"
+            "description": "Optimize DNF package manager for faster downloads and efficient updates also the default response is changed to yes"
         },
         "enable_dnf_autoupdate": {
             "name": "Enable DNF Autoupdate",
