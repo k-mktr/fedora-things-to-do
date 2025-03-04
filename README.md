@@ -32,6 +32,7 @@ This project offers a Streamlit-based web application for generating a tailored 
 - Added option to remove Fedora Flatpak repository and replace it with Flathub repository for better compatibility and stability
   - This addresses ongoing drama where the Fedora Flatpak repository can cause conflicts and instability
 - Added option to install RustDesk, a remote desktop software
+- Added option to install VeraCrypt, a free and open-source encryption software
 - Added caching for data loading to improve application performance
 - Improved search functionality in the sidebar for easier navigation
 - Enhanced the bonus scripts handling with better error management

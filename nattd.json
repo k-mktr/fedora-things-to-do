@@ -398,6 +398,15 @@
                     ],
                     "description": "A terminal for a more modern age"
                 },
+                "install_veracrypt": {
+                    "name": "VeraCrypt",
+                    "command": [
+                        "wget https://launchpad.net/veracrypt/trunk/1.26.20/+download/veracrypt-1.26.20-Fedora-40-x86_64.rpm",
+                        "dnf install -y ./veracrypt-1.26.20-Fedora-40-x86_64.rpm",
+                        "rm -f ./veracrypt-1.26.20-Fedora-40-x86_64.rpm"
+                    ],
+                    "description": "A free and open-source encryption software"
+                },
                 "install_zsh_oh_my_zsh": {
                     "name": "Zsh and Oh My Zsh",
                     "command": [
