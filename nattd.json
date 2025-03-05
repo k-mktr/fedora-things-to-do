@@ -673,7 +673,7 @@
                         "if command -v dnf4 &>/dev/null; then",
                         "  dnf4 config-manager --add-repo https://repository.mullvad.net/rpm/stable/mullvad.repo",
                         "else",
-                        "  dnf config-manager --add-repo https://repository.mullvad.net/rpm/stable/mullvad.repo",
+                        "  dnf config-manager addrepo --from-repofile=https://repository.mullvad.net/rpm/stable/mullvad.repo",
                         "fi",
                         "dnf install -y mullvad-vpn"
                     ],
