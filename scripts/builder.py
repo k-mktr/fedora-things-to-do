@@ -43,7 +43,7 @@ def build_system_upgrade(options: Dict[str, Any], output_mode: str) -> str:
     quiet_redirect = " > /dev/null 2>&1" if output_mode == "Quiet" else ""
     
     upgrade_commands = [
-        "log_message \"Performing system upgrade... This may take a while...\"",
+        'color_echo "blue" "Performing system upgrade... This may take a while..."',
         f"dnf upgrade -y{quiet_redirect}",
         ""  # Add an empty line for readability
     ]
@@ -145,9 +145,9 @@ def build_app_install(options: Dict[str, Any], output_mode: str) -> str:
             if essential_apps:
                 install_commands.append("# Install essential applications")
                 app_names = " ".join([app["name"] for app in essential_apps])
-                install_commands.append(f"log_message \"Installing essential applications...\"")
+                install_commands.append('color_echo "yellow" "Installing essential applications..."')
                 install_commands.append(f"dnf install -y {app_names}{quiet_redirect}")
-                install_commands.append(f"log_message \"Essential applications installed successfully.\"")
+                install_commands.append('color_echo "green" "Essential applications installed successfully."')
                 install_commands.append("")
 
         # Additional apps
@@ -171,7 +171,7 @@ def build_app_install(options: Dict[str, Any], output_mode: str) -> str:
                             
                         app_data = nattd_data['additional_apps'][category]['apps'][app_id]
                         app_name = app_data.get('name', app_id)
-                        install_commands.append(f"log_message \"Installing {app_name}...\"")
+                        install_commands.append(f'color_echo "yellow" "Installing {app_name}..."')
                         
                         # Handle different installation types
                         if ('installation_types' in app_data and 
@@ -197,7 +197,7 @@ def build_app_install(options: Dict[str, Any], output_mode: str) -> str:
                         else:
                             install_commands.append(f"{commands}{quiet_redirect if should_quiet_redirect(commands) else ''}")
                         
-                        install_commands.append(f"log_message \"{app_name} installed successfully.\"")
+                        install_commands.append(f'color_echo "green" "{app_name} installed successfully."')
                         
                         # Add special note for Docker
                         if app_id == "install_docker":
@@ -255,7 +255,7 @@ def build_customization(options: Dict[str, Any], output_mode: str) -> str:
                     description = app_data.get('description', f"Installing {app_name}")
                     
                     customization_commands.append(f"# {description} ({install_type})")
-                    customization_commands.append(f"log_message \"Installing {app_name} ({install_type})...\"")
+                    customization_commands.append(f'color_echo "yellow" "Installing {app_name} ({install_type})..."')
                     
                     if isinstance(commands, list):
                         for cmd in commands:
@@ -263,7 +263,7 @@ def build_customization(options: Dict[str, Any], output_mode: str) -> str:
                     else:
                         customization_commands.append(f"{commands}{quiet_redirect if should_quiet_redirect(commands) else ''}")
                     
-                    customization_commands.append(f"log_message \"{app_name} ({install_type}) installed successfully.\"")
+                    customization_commands.append(f'color_echo "green" "{app_name} ({install_type}) installed successfully."')
                     customization_commands.append("")  # Add an empty line for readability
             
             # Handle apps without installation types
@@ -272,7 +272,7 @@ def build_customization(options: Dict[str, Any], output_mode: str) -> str:
                 description = app_data.get('description', f"Installing {app_name}")
                 
                 customization_commands.append(f"# {description}")
-                customization_commands.append(f"log_message \"Installing {app_name}...\"")
+                customization_commands.append(f'color_echo "yellow" "Installing {app_name}..."')
                 
                 commands = app_data['command']
                 if isinstance(commands, list):
@@ -281,7 +281,7 @@ def build_customization(options: Dict[str, Any], output_mode: str) -> str:
                 else:
                     customization_commands.append(f"{commands}{quiet_redirect if should_quiet_redirect(commands) else ''}")
                 
-                customization_commands.append(f"log_message \"{app_name} installed successfully.\"")
+                customization_commands.append(f'color_echo "green" "{app_name} installed successfully."')
                 customization_commands.append("")  # Add an empty line for readability
     except Exception as e:
         logging.error(f"Error building customization: {str(e)}", exc_info=True)
@@ -379,4 +379,4 @@ def build_full_script(template: str, options: Dict[str, Any], output_mode: str) 
         error_script = "#!/bin/bash\n\n"
         error_script += f"echo \"Error building script: {str(e)}\"\n"
         error_script += "echo \"Please check the logs for more information.\"\n"
-        return error_script 
+        return error_script
