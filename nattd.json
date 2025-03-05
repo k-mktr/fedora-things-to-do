@@ -229,8 +229,23 @@
                 },
                 "install_edge": {
                     "name": "Microsoft Edge",
-                    "command": "flatpak install -y flathub com.microsoft.Edge",
-                    "description": "The web browser from Microsoft."
+                    "description": "The web browser from Microsoft.",
+                    "installation_types": {
+                        "DNF": {
+                            "command": [
+                                "rpm --import https://packages.microsoft.com/keys/microsoft.asc",
+                                "if command -v dnf4 &>/dev/null; then",
+                                "  dnf4 config-manager --add-repo https://packages.microsoft.com/yumrepos/edge",
+                                "else",
+                                "  dnf config-manager addrepo --from-repofile=https://packages.microsoft.com/yumrepos/edge",
+                                "fi",
+                                "dnf install -y microsoft-edge-stable"
+                            ]
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub com.microsoft.Edge"
+                        }
+                    }
                 },
                 "install_librewolf": {
                     "name": "LibreWolf",
