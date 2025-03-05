@@ -11,6 +11,7 @@ fi
 ACTUAL_USER=$SUDO_USER
 ACTUAL_HOME=$(eval echo ~$SUDO_USER)
 LOG_FILE="/var/log/fedora_things_to_do.log"
+INITIAL_DIR=$(pwd)
 
 # Function to generate timestamps
 get_timestamp() {
@@ -87,6 +88,9 @@ read -p "Press Enter to continue or CTRL+C to cancel..."
 
 # Custom user-defined commands
 {{custom_script}}
+
+# Before finishing, ensure we're in a safe directory
+cd /tmp || cd $ACTUAL_HOME || cd /
 
 # Finish
 echo "";
