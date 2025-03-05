@@ -149,18 +149,46 @@
             "apps": {
                 "install_firefox": {
                     "name": "Firefox",
-                    "command": "flatpak install -y flathub org.mozilla.firefox",
-                    "description": "Fast, private & safe web browser."
+                    "description": "Fast, private & safe web browser.",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y firefox"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.mozilla.firefox"
+                        }
+                    }
                 },
                 "install_chrome": {
                     "name": "Google Chrome",
-                    "command": "flatpak install -y flathub com.google.Chrome",
-                    "description": "The web browser from Google."
+                    "description": "The web browser from Google.",
+                    "installation_types": {
+                        "DNF": {
+                            "command": [
+                                "if command -v dnf4 &>/dev/null; then",
+                                "  dnf4 config-manager --set-enabled google-chrome",
+                                "else",
+                                "  dnf config-manager setopt google-chrome.enabled=1",
+                                "fi",
+                                "dnf install -y google-chrome-stable"
+                            ]
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub com.google.Chrome"
+                        }
+                    }
                 },
                 "install_chromium": {
                     "name": "Chromium",
-                    "command": "flatpak install -y flathub org.chromium.Chromium",
-                    "description": "An open-source browser project that aims to build a safer, faster, and more stable way to experience the web."
+                    "description": "An open-source browser project that aims to build a safer, faster, and more stable way to experience the web.",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y chromium"                            
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.chromium.Chromium"
+                        }
+                    }
                 },
                 "install_brave": {
                     "name": "Brave",
@@ -201,13 +229,38 @@
                 },
                 "install_edge": {
                     "name": "Microsoft Edge",
-                    "command": "flatpak install -y flathub com.microsoft.Edge",
-                    "description": "The web browser from Microsoft."
+                    "description": "The web browser from Microsoft.",
+                    "installation_types": {
+                        "DNF": {
+                            "command": [
+                                "rpm --import https://packages.microsoft.com/keys/microsoft.asc",
+                                "if command -v dnf4 &>/dev/null; then",
+                                "  dnf4 config-manager --add-repo https://packages.microsoft.com/yumrepos/edge",
+                                "else",
+                                "  dnf config-manager addrepo --from-repofile=https://packages.microsoft.com/yumrepos/edge",
+                                "fi",
+                                "dnf install -y microsoft-edge-stable"
+                            ]
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub com.microsoft.Edge"
+                        }
+                    }
                 },
                 "install_librewolf": {
                     "name": "LibreWolf",
-                    "command": "flatpak install -y flathub io.gitlab.librewolf-community",
-                    "description": "A privacy-focused fork of Firefox, emphasizing security and user freedom."
+                    "description": "A privacy-focused fork of Firefox, emphasizing security and user freedom.",
+                    "installation_types": {
+                        "DNF": {
+                            "command": [
+                                "curl -fsSL https://repo.librewolf.net/librewolf.repo | pkexec tee /etc/yum.repos.d/librewolf.repo",
+                                "dnf install -y librewolf"
+                            ]
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub io.gitlab.librewolf-community"
+                        }
+                    }
                 },
                 "install_opera": {
                     "name": "Opera",
@@ -221,8 +274,15 @@
                 },
                 "install_thunderbird": {
                     "name": "Thunderbird",
-                    "command": "flatpak install -y flathub org.mozilla.Thunderbird",
-                    "description": "The email client from Mozilla."
+                    "description": "The email client from Mozilla.",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y thunderbird"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.mozilla.Thunderbird"
+                        }
+                    }    
                 },
                 "install_betterbird": {
                     "name": "Betterbird",
@@ -613,7 +673,7 @@
                         "if command -v dnf4 &>/dev/null; then",
                         "  dnf4 config-manager --add-repo https://repository.mullvad.net/rpm/stable/mullvad.repo",
                         "else",
-                        "  dnf config-manager --add-repo https://repository.mullvad.net/rpm/stable/mullvad.repo",
+                        "  dnf config-manager addrepo --from-repofile=https://repository.mullvad.net/rpm/stable/mullvad.repo",
                         "fi",
                         "dnf install -y mullvad-vpn"
                     ],
