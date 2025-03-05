@@ -161,8 +161,22 @@
                 },
                 "install_chrome": {
                     "name": "Google Chrome",
-                    "command": "flatpak install -y flathub com.google.Chrome",
-                    "description": "The web browser from Google."
+                    "description": "The web browser from Google.",
+                    "installation_types": {
+                        "DNF": {
+                            "command": [
+                                "if command -v dnf4 &>/dev/null; then",
+                                "  dnf4 config-manager --set-enabled google-chrome",
+                                "else",
+                                "  dnf config-manager setopt google-chrome.enabled=1",
+                                "fi",
+                                "dnf install -y google-chrome-stable"
+                            ]
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub com.google.Chrome"
+                        }
+                    }
                 },
                 "install_chromium": {
                     "name": "Chromium",
