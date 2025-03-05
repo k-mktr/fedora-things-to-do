@@ -281,7 +281,8 @@
                         },
                         "Flatpak": {
                             "command": "flatpak install -y flathub org.mozilla.Thunderbird"
-                    }
+                        }
+                    }    
                 },
                 "install_betterbird": {
                     "name": "Betterbird",
