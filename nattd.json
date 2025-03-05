@@ -15,7 +15,6 @@
                 "log_message \"Configuring DNF Package Manager...\"",
                 "backup_file \"/etc/dnf/dnf.conf\"",
                 "echo \"max_parallel_downloads=10\" | tee -a /etc/dnf/dnf.conf > /dev/null",
-                "echo \"fastestmirror=True\" | tee -a /etc/dnf/dnf.conf > /dev/null",
                 "dnf -y install dnf-plugins-core"
             ],
             "description": "Optimize DNF package manager for faster downloads and efficient updates"
