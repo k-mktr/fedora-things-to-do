@@ -180,8 +180,15 @@
                 },
                 "install_chromium": {
                     "name": "Chromium",
-                    "command": "flatpak install -y flathub org.chromium.Chromium",
-                    "description": "An open-source browser project that aims to build a safer, faster, and more stable way to experience the web."
+                    "description": "An open-source browser project that aims to build a safer, faster, and more stable way to experience the web.",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y chromium"                            
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.chromium.Chromium"
+                        }
+                    }
                 },
                 "install_brave": {
                     "name": "Brave",
