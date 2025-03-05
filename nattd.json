@@ -5,7 +5,7 @@
             "name": "Set Hostname",
             "command": [
                 "log_message \"Setting hostname...\"",
-                "hostnamectl set-hostname"
+                "hostnamectl set-hostname {hostname}"
             ],
             "description": "Set the system hostname to uniquely identify the machine on the network"
         },

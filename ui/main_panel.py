@@ -46,7 +46,7 @@ def render_header():
     <div class="header-container">
         <img src="https://fedoraproject.org/assets/images/fedora-workstation-logo.png" alt="Fedora Logo" class="logo">
         <h1 class="main-header">Not Another <i>'Things To Do'!</i></h1>
-        <h2 class="sub-header">Initial System Setup Shell Script Builder for Fedora Workstation</h2>
+        <h3 class="sub-header">Initial System Setup Shell Script Builder for Fedora Workstation</h3>
     </div>
     """, unsafe_allow_html=True)
 

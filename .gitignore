@@ -7,19 +7,63 @@ __pycache__/
 venv/
 env/
 .env
+.venv/
+ENV/
 
 # IDE-specific files
 .vscode/
 .idea/
+*.swp
+*.swo
+.project
+.pydevproject
+.settings/
 
 # OS-specific files
 .DS_Store
 Thumbs.db
+.directory
+*.desktop
 
 # Logs
 *.log
+logs/
+log/
 
 # Temporary files
 *.tmp
+*.bak
+*.swp
+*~
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Local development settings
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Streamlit specific
+.streamlit/secrets.toml
 
 # Note: We're not ignoring the .streamlit directory to keep custom UI theme

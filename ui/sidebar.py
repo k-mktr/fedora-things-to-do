@@ -53,12 +53,30 @@ def render_sidebar() -> None:
         "Output Mode", 
         ["Quiet", "Verbose"], 
         index=1, 
-        help="Select the output mode for the script."
+        help="""
+        Choose how the script will display its progress:
+        
+        **Verbose** (Recommended):
+        - Shows all command outputs
+        - Displays detailed progress information
+        - Helps you understand what's happening
+        - Better for troubleshooting
+        
+        **Quiet**:
+        - Hides most command outputs
+        - Shows only essential messages
+        - Cleaner terminal output
+        - Faster execution
+        """
     )
     app_state.output_mode = output_mode
     
     # Add search bar at the top of the sidebar
-    search_query = st.sidebar.text_input("Search options and apps", "")
+    search_query = st.sidebar.text_input(
+        "🔍 Search options and apps", 
+        "",
+        help="Search through all available options and applications. The sidebar will automatically expand matching sections."
+    )
     
     # System Configuration section
     try:
@@ -119,7 +137,9 @@ def render_sidebar() -> None:
                         )
                     
                     if option == "set_hostname" and options["system_config"][option]:
-                        options["hostname"] = st.text_input("Enter the new hostname:")
+                        hostname = st.text_input("Enter the new hostname:", value=app_state.hostname or "")
+                        options["hostname"] = hostname
+                        app_state.hostname = hostname
             except Exception as e:
                 st.sidebar.error(f"Error rendering option '{option}': {str(e)}")
                 logging.error(f"Error rendering option '{option}': {str(e)}", exc_info=True)
@@ -134,7 +154,10 @@ def render_sidebar() -> None:
                   for option in codec_options):
                 options["system_config"]["enable_rpmfusion"] = True
                 if not rpm_fusion_checkbox:
-                    st.sidebar.markdown("**RPM Fusion** has been automatically selected due to codec choices.")
+                    st.sidebar.info("""
+                    **RPM Fusion** has been automatically selected because you chose to install codecs.
+                    This is required for proper multimedia support on Fedora.
+                    """)
         except Exception as e:
             logging.error(f"Error in codec options check: {str(e)}", exc_info=True)
 
