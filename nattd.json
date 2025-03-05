@@ -274,8 +274,14 @@
                 },
                 "install_thunderbird": {
                     "name": "Thunderbird",
-                    "command": "flatpak install -y flathub org.mozilla.Thunderbird",
-                    "description": "The email client from Mozilla."
+                    "description": "The email client from Mozilla.",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y thunderbird"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.mozilla.Thunderbird"
+                    }
                 },
                 "install_betterbird": {
                     "name": "Betterbird",
