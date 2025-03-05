@@ -625,6 +625,15 @@
                         "curl -s 'https://raw.githubusercontent.com/zerotier/ZeroTierOne/main/doc/contact%40zerotier.com.gpg' | gpg --import && if z=$(curl -s 'https://install.zerotier.com/' | gpg); then echo \"$z\" | sudo bash; fi"
                     ],
                     "description": "A secure network overlay that allows you to manage all of your network resources as if they were on the same LAN"
+                },
+                "install_tailscale": {
+                    "name": "Tailscale",
+                    "command": [
+                        "dnf config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo",
+                        "dnf install tailscale -y",
+                        "systemctl enable --now tailscaled"
+                    ],
+                    "description": "Tailscale is a mesh VPN (Virtual Private Network) service that streamlines connecting devices and services securely across different networks"
                 }
             }
         },
