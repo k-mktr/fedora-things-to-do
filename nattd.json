@@ -206,7 +206,7 @@
                 },
                 "install_librewolf": {
                     "name": "LibreWolf",
-                    "command": "flatpak install -y flathub io.gitlab.librewolf",
+                    "command": "flatpak install -y flathub io.gitlab.librewolf-community",
                     "description": "A privacy-focused fork of Firefox, emphasizing security and user freedom."
                 },
                 "install_opera": {
@@ -359,7 +359,7 @@
                 },
                 "install_github_desktop": {
                     "name": "GitHub Desktop",
-                    "command": "flatpak install flathub io.github.shiftey.Desktop",
+                    "command": "flatpak install -y flathub io.github.shiftey.Desktop",
                     "description": "A powerful desktop client for GitHub"
                 },
                 "install_ansible": {
@@ -508,7 +508,7 @@
                 },
                 "install_freetube": {
                     "name": "FreeTube",
-                    "command": "flatpak install -y flathub com.freetubeapp.FreeTube",
+                    "command": "flatpak install -y flathub io.freetubeapp.FreeTube",
                     "description": "An open source desktop YouTube player built with privacy in mind."
                 }
             }
@@ -594,12 +594,12 @@
                 },
                 "install_rustdesk": {
                     "name": "RustDesk",
-                    "command": "flatpak install flathub com.rustdesk.RustDesk",
+                    "command": "flatpak install -y flathub com.rustdesk.RustDesk",
                     "description": "A remote desktop software, that enables fast and secure access to your remote PC or desktop computer"
                 },
                 "install_anydesk": {
                     "name": "AnyDesk",
-                    "command": "flatpak install -y flathub com.anydesk.AnyDesk",
+                    "command": "flatpak install -y flathub com.anydesk.Anydesk",
                     "description": "Ensures secure and reliable remote desktop connections for IT professionals and on-the-go individuals alike"
                 },
                 "install_proton_vpn": {
