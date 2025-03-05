@@ -149,8 +149,15 @@
             "apps": {
                 "install_firefox": {
                     "name": "Firefox",
-                    "command": "flatpak install -y flathub org.mozilla.firefox",
-                    "description": "Fast, private & safe web browser."
+                    "description": "Fast, private & safe web browser.",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y firefox"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.mozilla.firefox"
+                        }
+                    }
                 },
                 "install_chrome": {
                     "name": "Google Chrome",
