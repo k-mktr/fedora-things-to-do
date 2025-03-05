@@ -249,8 +249,18 @@
                 },
                 "install_librewolf": {
                     "name": "LibreWolf",
-                    "command": "flatpak install -y flathub io.gitlab.librewolf-community",
-                    "description": "A privacy-focused fork of Firefox, emphasizing security and user freedom."
+                    "description": "A privacy-focused fork of Firefox, emphasizing security and user freedom.",
+                    "installation_types": {
+                        "DNF": {
+                            "command": [
+                                "curl -fsSL https://repo.librewolf.net/librewolf.repo | pkexec tee /etc/yum.repos.d/librewolf.repo",
+                                "dnf install -y librewolf"
+                            ]
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub io.gitlab.librewolf-community"
+                        }
+                    }
                 },
                 "install_opera": {
                     "name": "Opera",
