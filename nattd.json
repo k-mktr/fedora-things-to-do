@@ -4,7 +4,7 @@
         "set_hostname": {
             "name": "Set Hostname",
             "command": [
-                "log_message \"Setting hostname...\"",
+                "color_echo \"yellow\" \"Setting hostname...\"",
                 "hostnamectl set-hostname {hostname}"
             ],
             "description": "Set the system hostname to uniquely identify the machine on the network"
@@ -12,7 +12,7 @@
         "configure_dnf": {
             "name": "Configure DNF",
             "command": [
-                "log_message \"Configuring DNF Package Manager...\"",
+                "color_echo \"yellow\" \"Configuring DNF Package Manager...\"",
                 "backup_file \"/etc/dnf/dnf.conf\"",
                 "echo \"max_parallel_downloads=10\" | tee -a /etc/dnf/dnf.conf > /dev/null",
                 "dnf -y install dnf-plugins-core"
@@ -22,7 +22,7 @@
         "enable_dnf_autoupdate": {
             "name": "Enable DNF Autoupdate",
             "command": [
-                "log_message \"Enabling DNF autoupdate...\"",
+                "color_echo \"yellow\" \"Enabling DNF autoupdate...\"",
                 "dnf install dnf-automatic -y",
                 "sed -i 's/apply_updates = no/apply_updates = yes/' /etc/dnf/automatic.conf",
                 "systemctl enable --now dnf-automatic.timer"
@@ -32,7 +32,7 @@
         "remove_fedora_flatpak_repos": {
             "name": "Replace Fedora Flatpak Repo with Flathub",
             "command": [
-                "log_message \"Replacing Fedora Flatpak Repo with Flathub...\"",
+                "color_echo \"yellow\" \"Replacing Fedora Flatpak Repo with Flathub...\"",
                 "dnf install -y flatpak",
                 "flatpak remote-delete fedora --force || true",
                 "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo",
@@ -44,7 +44,7 @@
         "install_ssh": {
             "name": "Install and Enable SSH",
             "command": [
-                "log_message \"Installing and enabling SSH...\"",
+                "color_echo \"yellow\" \"Installing and enabling SSH...\"",
                 "dnf install -y openssh-server",
                 "systemctl enable --now sshd"
             ],
@@ -53,7 +53,7 @@
         "firmware_updates": {
             "name": "Update Firmware",
             "command": [
-                "log_message \"Checking for firmware updates...\"",
+                "color_echo \"yellow\" \"Checking for firmware updates...\"",
                 "fwupdmgr refresh --force",
                 "fwupdmgr get-updates",
                 "fwupdmgr update -y"
@@ -63,7 +63,7 @@
         "enable_rpmfusion": {
             "name": "RPM Fusion Repositories",
             "command": [
-                "log_message \"Enabling RPM Fusion repositories...\"",
+                "color_echo \"yellow\" \"Enabling RPM Fusion repositories...\"",
                 "dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm",
                 "dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm",
                 "dnf group update core -y"
@@ -73,7 +73,7 @@
         "install_multimedia_codecs": {
             "name": "Multimedia Codecs",
             "command": [
-                "log_message \"Installing multimedia codecs...\"",
+                "color_echo \"yellow\" \"Installing multimedia codecs...\"",
                 "dnf swap ffmpeg-free ffmpeg --allowerasing -y",
                 "dnf update @multimedia --setopt=\"install_weak_deps=False\" --exclude=PackageKit-gstreamer-plugin -y",
                 "dnf update @sound-and-video -y"
@@ -84,7 +84,7 @@
         "install_intel_codecs": {
             "name": "Intel Codecs",
             "command": [
-                "log_message \"Installing Intel Hardware Accelerated Codecs...\"",
+                "color_echo \"yellow\" \"Installing Intel Hardware Accelerated Codecs...\"",
                 "dnf -y install intel-media-driver"
             ],
             "description": "Install Hardware Accelerated Codecs for Intel integrated GPUs. This improves video playback and encoding performance on systems with Intel graphics.",
@@ -93,7 +93,7 @@
         "install_amd_codecs": {
             "name": "AMD Codecs",
             "command": [
-                "log_message \"Installing AMD Hardware Accelerated Codecs...\"",
+                "color_echo \"yellow\" \"Installing AMD Hardware Accelerated Codecs...\"",
                 "dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y",
                 "dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y"
             ],
@@ -103,7 +103,7 @@
         "install_virtualization_tools": {
             "name": "Virtualization Tools",
             "command": [
-                "log_message \"Installing virtualization tools...\"",
+                "color_echo \"yellow\" \"Installing virtualization tools...\"",
                 "dnf install -y @virtualization"
             ],
             "description": "Install virtualization tools to enable virtual machines and containerization"
@@ -111,7 +111,7 @@
         "configure_power_settings": {
             "name": "Power Settings",
             "command": [
-                "log_message \"Configuring power settings...\"",
+                "color_echo \"yellow\" \"Configuring power settings...\"",
                 "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.session idle-delay 0",
                 "sudo -u $ACTUAL_USER gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'",
                 "sudo -u $ACTUAL_USER gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'nothing'",

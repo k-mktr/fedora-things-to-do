@@ -13,7 +13,7 @@ get_timestamp() {
 }
 
 # Function to log messages
-log_message() {
+color_echo "blue"() {
     local message="$1"
     echo "$(get_timestamp) - $message" | tee -a "$LOG_FILE"
 }
@@ -23,7 +23,7 @@ handle_error() {
     local exit_code=$?
     local message="$1"
     if [ $exit_code -ne 0 ]; then
-        log_message "ERROR: $message"
+        color_echo "red" "ERROR: $message"
         exit $exit_code
     fi
 }
@@ -125,7 +125,7 @@ create_template() {
             ;;
     esac
     
-    log_message "Created template: $filename"
+    color_echo "green" "Created template: $filename"
 }
 
 echo "";
@@ -201,10 +201,10 @@ else
         if [ "$choice" -ge 1 ] && [ "$choice" -le "${#templates[@]}" ]; then
             create_template "${templates[$((choice-1))]}"
         else
-            log_message "Invalid choice: $choice"
+            color_echo "red" "Invalid choice: $choice"
         fi
     done
 fi
 
-log_message "File templates creation completed."
+color_echo "green" "File templates creation completed."
 echo "File templates have been created in $TEMPLATES_DIR"

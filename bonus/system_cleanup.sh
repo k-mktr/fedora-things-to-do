@@ -18,7 +18,7 @@ get_timestamp() {
 }
 
 # Function to log messages
-log_message() {
+color_echo "blue"() {
     local message="$1"
     echo "$(get_timestamp) - $message" | tee -a "$LOG_FILE"
 }
@@ -28,7 +28,7 @@ handle_error() {
     local exit_code=$?
     local message="$1"
     if [ $exit_code -ne 0 ]; then
-        log_message "ERROR: $message"
+        color_echo "red" "ERROR: $message"
         exit $exit_code
     fi
 }
@@ -46,7 +46,7 @@ echo "║                                                               ║";
 echo "║   ██████╗██╗     ███████╗ █████╗ ███╗   ██╗██╗   ██╗██████╗   ║";
 echo "║  ██╔════╝██║     ██╔════╝██╔══██╗████╗  ██║██║   ██║██╔══██╗  ║";
 echo "║  ██║     ██║     █████╗  ███████║██╔██╗ ██║██║   ██║██████╔╝  ║";
-echo "║  ██║     ██║     ██╔══╝  ██╔══██║██║╚██╗██║██║   ██║██╔═══╝   ║";
+echo "║  ██║     ██╔══╝  ██╔══╝  ██╔══██║██║╚██╗██║██║   ██║██╔═══╝   ║";
 echo "║  ╚██████╗███████╗███████╗██║  ██║██║ ╚████║╚██████╔╝██║       ║";
 echo "║   ╚═════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝       ║";
 echo "║                                                               ║";
@@ -57,7 +57,7 @@ echo ""
 
 # Function to remove old kernels
 remove_old_kernels() {
-    log_message "Removing old kernels..."
+    color_echo "yellow" "Removing old kernels..."
     # Get the current kernel version
     current_kernel=$(uname -r | sed 's/-.*//g')
     # List all installed kernels, sort them, and keep only the version numbers
@@ -66,7 +66,7 @@ remove_old_kernels() {
     kernel_count=$(echo "$installed_kernels" | wc -l)
 
     if [ $kernel_count -le 2 ]; then
-        log_message "There are 2 or fewer kernels installed. No kernels will be removed."
+        color_echo "blue" "There are 2 or fewer kernels installed. No kernels will be removed."
         return 0
     fi
 
@@ -75,32 +75,32 @@ remove_old_kernels() {
 
     for kernel in $kernels_to_remove; do
         if [ "$kernel" != "$current_kernel" ]; then
-            log_message "Removing kernel $kernel"
+            color_echo "yellow" "Removing kernel $kernel"
             dnf remove -y kernel-$kernel kernel-core-$kernel kernel-modules-$kernel kernel-modules-extra-$kernel
             handle_error "Failed to remove kernel $kernel"
         fi
     done
 
-    log_message "Old kernel removal completed."
+    color_echo "green" "Old kernel removal completed."
 }
 
 # Function to clear DNF cache
 clear_dnf_cache() {
-    log_message "Clearing DNF cache..."
+    color_echo "yellow" "Clearing DNF cache..."
     dnf clean all
     handle_error "Failed to clear DNF cache"
 }
 
 # Function to remove orphaned packages
 remove_orphaned_packages() {
-    log_message "Removing orphaned packages..."
+    color_echo "yellow" "Removing orphaned packages..."
     dnf autoremove -y
     handle_error "Failed to remove orphaned packages"
 }
 
 # Function to clear user cache
 clear_user_cache() {
-    log_message "Clearing user cache..."
+    color_echo "yellow" "Clearing user cache..."
     if [ -d "$ACTUAL_HOME/.cache" ]; then
         find "$ACTUAL_HOME/.cache" -type f -delete
         find "$ACTUAL_HOME/.cache" -type d -empty -delete
@@ -110,21 +110,21 @@ clear_user_cache() {
 
 # Function to clear systemd journal logs
 clear_journal_logs() {
-    log_message "Clearing systemd journal logs..."
+    color_echo "yellow" "Clearing systemd journal logs..."
     journalctl --vacuum-time=7d
     handle_error "Failed to clear systemd journal logs"
 }
 
 # Function to clear temporary files
 clear_temp_files() {
-    log_message "Clearing temporary files..."
+    color_echo "yellow" "Clearing temporary files..."
     rm -rf /tmp/*
     handle_error "Failed to clear temporary files"
 }
 
 # Function to update the system
 update_system() {
-    log_message "Updating the system..."
+    color_echo "blue" "Updating the system..."
     dnf upgrade -y
     handle_error "Failed to update the system"
 }
@@ -162,11 +162,11 @@ while true; do
             update_system
             ;;
         9) 
-            log_message "Exiting system cleanup script."
+            color_echo "blue" "Exiting system cleanup script."
             exit 0
             ;;
         *)
-            echo "Invalid option. Please try again."
+            color_echo "red" "Invalid option. Please try again."
             ;;
     esac
 done

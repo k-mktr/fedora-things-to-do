@@ -65,8 +65,12 @@ def should_quiet_redirect(command: str) -> bool:
     # List of patterns that should not have quiet redirection
     noisy_patterns = ['dnf update', 'dnf upgrade', 'reboot']
     
-    # Never redirect log messages
-    if command.strip().startswith('log_message'):
+    # Never redirect color_echo messages with supported colors
+    command_clean = command.strip()
+    if command_clean.startswith('color_echo') and any(
+        command_clean.startswith(f'color_echo "{color}"') 
+        for color in ['red', 'green', 'yellow', 'blue']
+    ):
         return False
         
     return not any(pattern in command for pattern in noisy_patterns)
