@@ -7,6 +7,19 @@ ACTUAL_HOME=$(eval echo ~$SUDO_USER)
 TEMPLATES_DIR="$ACTUAL_HOME/Templates"
 LOG_FILE="/var/log/fedora_file_templates.log"
 
+# Funtion to echo colored text
+color_echo() {
+    local color="$1"
+    local text="$2"
+    case "$color" in
+        "red")     echo -e "\033[0;31m$text\033[0m" ;;
+        "green")   echo -e "\033[0;32m$text\033[0m" ;;
+        "yellow")  echo -e "\033[1;33m$text\033[0m" ;;
+        "blue")    echo -e "\033[0;34m$text\033[0m" ;;
+        *)         echo "$text" ;;
+    esac
+}
+
 # Function to generate timestamps
 get_timestamp() {
     date +"%Y-%m-%d %H:%M:%S"
