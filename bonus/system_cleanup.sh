@@ -7,6 +7,19 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+# Funtion to echo colored text
+color_echo() {
+    local color="$1"
+    local text="$2"
+    case "$color" in
+        "red")     echo -e "\033[0;31m$text\033[0m" ;;
+        "green")   echo -e "\033[0;32m$text\033[0m" ;;
+        "yellow")  echo -e "\033[1;33m$text\033[0m" ;;
+        "blue")    echo -e "\033[0;34m$text\033[0m" ;;
+        *)         echo "$text" ;;
+    esac
+}
+
 # Set variables
 ACTUAL_USER=$SUDO_USER
 ACTUAL_HOME=$(eval echo ~$SUDO_USER)
