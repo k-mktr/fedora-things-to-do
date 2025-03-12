@@ -25,12 +25,6 @@ get_timestamp() {
     date +"%Y-%m-%d %H:%M:%S"
 }
 
-# Function to log messages
-color_echo "blue"() {
-    local message="$1"
-    echo "$(get_timestamp) - $message" | tee -a "$LOG_FILE"
-}
-
 # Function to handle errors
 handle_error() {
     local exit_code=$?
