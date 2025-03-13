@@ -105,7 +105,7 @@ case $choice in
         read -p "Do you want to install CUDA? (y/n): " install_cuda
         if [[ $install_cuda =~ ^[Yy]$ ]]; then
             color_echo "yellow" "Installing CUDA..."
-            dnf install -y cuda
+            dnf install -y xorg-x11-drv-nvidia-cuda
             handle_error "Failed to install CUDA"
         fi
         ;;
