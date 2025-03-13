@@ -383,6 +383,9 @@ def render_sidebar() -> None:
         <a href="https://fedoraproject.org/workstation/" target="_blank" style="text-decoration: none;" aria-label="Fedora Workstation">Still on the fence?<br>Grab your Fedora now!</a>
     </div>
     <div class="separator"></div>
+    <div style="display: flex; justify-content: center; align-items: center; padding: 10px;">
+        <iframe src="https://github.com/sponsors/k-mktr/button" title="Sponsor k-mktr" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
+    </div>
     <div style="text-align: center; padding: 21px 0;">
         <p style="margin-bottom: 5px;">Created with ❤️ for Open Source</p>
         <a href="https://mktr.sbs/linkedin" target="_blank" style="text-decoration: none; color: #8da9c4;" aria-label="Karol Stefan Danisz LinkedIn">
