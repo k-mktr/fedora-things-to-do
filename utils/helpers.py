@@ -5,7 +5,7 @@ from typing import Dict, Any, Optional
 
 # Configure logging
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
@@ -21,7 +21,7 @@ def load_nattd() -> Dict[str, Any]:
     try:
         with open('nattd.json', 'r') as file:
             data = json.load(file)
-            logging.debug("NATTD data loaded successfully")
+            logging.info("NATTD data loaded successfully")
             return data
     except Exception as e:
         logging.error(f"Error loading NATTD data: {str(e)}")
@@ -83,7 +83,7 @@ def generate_options() -> Dict[str, Any]:
         Dict[str, Any]: A dictionary containing the options structure.
     """
     nattd_data = load_nattd()
-    logging.debug(f"Generating options from NATTD data: {nattd_data}")
+    logging.info(f"Generating options from NATTD data: {nattd_data}")
     
     options = {
         "system_config": list(nattd_data.get("system_config", {}).keys()),
@@ -103,5 +103,5 @@ def generate_options() -> Dict[str, Any]:
     # Add customization options
     options["customization"] = list(nattd_data.get("customization", {}).get("apps", {}).keys())
     
-    logging.debug(f"Generated options: {options}")
+    logging.info(f"Generated options: {options}")
     return options 

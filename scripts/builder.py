@@ -25,7 +25,7 @@ def check_dependencies(options: Dict[str, Any]) -> Dict[str, Any]:
            for option in codec_options):
         # Ensure RPM Fusion is enabled
         updated_options["system_config"]["enable_rpmfusion"] = True
-        logging.debug("RPM Fusion automatically enabled due to codec selection")
+        logging.info("RPM Fusion automatically enabled due to codec selection")
     
     return updated_options
 

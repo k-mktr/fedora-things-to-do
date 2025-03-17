@@ -45,7 +45,7 @@ def load_bonus_scripts() -> Dict[str, Dict[str, Any]]:
                             "description": description
                         }
                         
-                        logging.debug(f"Loaded bonus script: {script_name}")
+                        logging.info(f"Loaded bonus script: {script_name}")
                 except Exception as e:
                     logging.error(f"Error loading bonus script '{filename}': {str(e)}")
     except Exception as e:

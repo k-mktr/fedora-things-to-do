@@ -28,7 +28,7 @@ from utils import AppState
 
 # Configure logging
 logging.basicConfig(
-    level=logging.DEBUG,  # Change to INFO in production
+    level=logging.INFO,  # Changed from DEBUG to INFO
     format='%(asctime)s - %(levelname)s - %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )

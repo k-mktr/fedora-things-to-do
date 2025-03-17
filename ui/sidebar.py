@@ -119,8 +119,6 @@ def render_sidebar() -> None:
                         search_query
                     )):
                     
-                    logging.debug(f"Processing option: {option}")
-                    
                     # Special handling for RPM Fusion
                     if option == "enable_rpmfusion":
                         rpm_fusion_checkbox = st.checkbox(
@@ -365,12 +363,31 @@ def render_sidebar() -> None:
             color: #8da9c4;
         }
         .link-bar a:hover {
-            text-decoration: underline;
+            text-decoration: none;
+            opacity: 0.9;
         }
         .separator {
             width: 100%;
             border-top: 1px solid #8da9c4;
             margin: 21px 0;
+        }
+        .support-button {
+            display: block;
+            margin: 15px auto;
+            padding: 10px 20px;
+            background-color: #00a6fb;
+            color: white !important;
+            border-radius: 5px;
+            text-decoration: none !important;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            width: fit-content;
+        }
+        .support-button:hover {
+            text-decoration: none !important;
+            background-color: #0077b6;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         @media (max-width: 600px) {
             .link-bar {
@@ -384,7 +401,12 @@ def render_sidebar() -> None:
     </div>
     <div class="separator"></div>
     <div style="display: flex; justify-content: center; align-items: center; padding: 10px;">
-        <iframe src="https://github.com/sponsors/k-mktr/button" title="Sponsor k-mktr" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
+        <a href="https://github.com/sponsors/k-mktr" 
+           target="_blank" 
+           class="support-button"
+           aria-label="Support the project on GitHub Sponsors">
+            ☕ Support This Project
+        </a>
     </div>
     <div style="text-align: center; padding: 21px 0;">
         <p style="margin-bottom: 5px;">Created with ❤️ for Open Source</p>
