@@ -33,7 +33,7 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-# Configure Streamlit page with optimized settings
+# Configure Streamlit page
 st.set_page_config(
     page_title="Fedora Things To Do",
     page_icon="🛠️",
@@ -57,14 +57,9 @@ st.set_page_config(
     }
 )
 
-# Disable file watcher for better performance
-st.set_option('deprecation.showfileUploaderEncoding', False)
-st.set_option('deprecation.showPyplotGlobalUse', False)
-
-@st.cache_resource(show_spinner=False)
 def initialize_state():
     """
-    Initialize the application state with caching.
+    Initialize the application state.
     """
     if 'app_state' not in st.session_state:
         # Create AppState instance
