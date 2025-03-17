@@ -1,10 +1,12 @@
 import os
 import logging
 from typing import Dict, Any
+import streamlit as st
 
+@st.cache_data(ttl=3600, show_spinner=False)  # Cache for 1 hour, no spinner
 def load_bonus_scripts() -> Dict[str, Dict[str, Any]]:
     """
-    Load bonus scripts from the bonus directory.
+    Load bonus scripts from the bonus directory with caching.
     
     Returns:
         Dict[str, Dict[str, Any]]: A dictionary of bonus scripts with their names,

@@ -10,7 +10,7 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-@st.cache_data(ttl=3600)  # Cache for 1 hour
+@st.cache_data(ttl=3600, show_spinner=False)  # Cache for 1 hour, no spinner
 def load_nattd() -> Dict[str, Any]:
     """
     Load and cache NATTD data from nattd.json file.
@@ -33,9 +33,10 @@ def load_nattd() -> Dict[str, Any]:
             "customization": {"apps": {}}
         }
 
+@st.cache_data(ttl=3600, show_spinner=False)  # Cache for 1 hour, no spinner
 def safely_load_file(file_path: str, default_content: str = "") -> str:
     """
-    Safely load a file with error handling.
+    Safely load a file with error handling and caching.
     
     Args:
         file_path (str): Path to the file to load.
