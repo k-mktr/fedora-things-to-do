@@ -609,7 +609,14 @@
                 },
                 "install_kdenlive": {
                     "name": "Kdenlive",
-                    "command": "flatpak install -y flathub org.kde.kdenlive",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y kdenlive"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.kde.kdenlive"
+                        }
+                    },
                     "description": "A video editing application with support for many audio and video formats"
                 },
                 "install_freetube": {
