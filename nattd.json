@@ -300,7 +300,15 @@
                 },
                 "install_discord": {
                     "name": "Discord",
-                    "command": "flatpak install -y flathub com.discordapp.Discord",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y discord",
+                            "dependencies": ["enable_rpmfusion"]
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub com.discordapp.Discord"
+                        }
+                    },
                     "description": "A popular communication platform for gamers and communities"
                 },
                 "install_element": {
@@ -383,7 +391,14 @@
                 },
                 "install_dialect": {
                     "name": "Dialect",
-                    "command": "flatpak install -y flathub app.drey.Dialect",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y dialect"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub app.drey.Dialect"
+                        }
+                    },
                     "description": "A translation app for GNOME supporting multiple services"
                 },
                 "install_decoder": {
@@ -517,7 +532,14 @@
             "apps": {
                 "install_vlc": {
                     "name": "VLC",
-                    "command": "flatpak install -y flathub org.videolan.VLC",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y vlc"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.videolan.VLC"
+                        }
+                    },
                     "description": "A media player with a focus on privacy and security"
                 },
                 "install_stremio": {
@@ -556,22 +578,52 @@
                 },
                 "install_krita": {
                     "name": "Krita",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y krita"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.kde.krita"
+                        }
+                    },
                     "command": "flatpak install -y flathub org.kde.krita",
                     "description": "A full-featured digital art studio."
                 },
                 "install_blender": {
                     "name": "Blender",
-                    "command": "flatpak install -y flathub org.blender.Blender",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y blender"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.blender.Blender"
+                        }
+                    },
                     "description": "A free and open source 3D creation suite."
                 },
                 "install_obs": {
                     "name": "OBS Studio",
-                    "command": "flatpak install -y flathub com.obsproject.Studio",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y obs-studio",
+                            "dependencies": ["enable_rpmfusion"]
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub com.obsproject.Studio"
+                        }
+                    },
                     "description": "Free and open source software for video capturing, recording, and live streaming."
                 },
                 "install_kdenlive": {
                     "name": "Kdenlive",
-                    "command": "flatpak install -y flathub org.kde.kdenlive",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y kdenlive"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.kde.kdenlive"
+                        }
+                    },
                     "description": "A video editing application with support for many audio and video formats"
                 },
                 "install_freetube": {
@@ -589,7 +641,8 @@
                     "description": "A software distribution service with an online store, automated installation, automatic updates, achievements, SteamCloud synchronized savegame and screenshot functionality, and many social features",
                     "installation_types": {
                         "DNF": {
-                            "command": "dnf install -y steam"
+                            "command": "dnf install -y steam",
+                            "dependencies": ["enable_rpmfusion"]
                         },
                         "Flatpak": {
                             "command": "flatpak install -y flathub com.valvesoftware.Steam"
@@ -598,7 +651,14 @@
                 },
                 "install_lutris": {
                     "name": "Lutris",
-                    "command": "flatpak install -y flathub net.lutris.Lutris",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y lutris"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub net.lutris.Lutris"
+                        }
+                    },
                     "description": "Helps you install and play video games from all eras and from most gaming systems"
                 },
                 "install_heroic": {
@@ -608,7 +668,14 @@
                 },
                 "install_retroarch": {
                     "name": "RetroArch",
-                    "command": "flatpak install -y flathub org.libretro.RetroArch",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y retroarch"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.libretro.RetroArch"
+                        }
+                    },
                     "description": "Enables you to run classic games on a wide range of computers and consoles"
                 },
                 "install_dolphin": {
@@ -648,8 +715,15 @@
             "apps": {
                 "install_remmina": {
                     "name": "Remmina",
-                    "command": "flatpak install -y flathub org.remmina.Remmina",
-                "description": "A remote-desktop client written in GTK, to use other desktops remotely, from a tiny screen or large monitors"
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y remmina"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.remmina.Remmina"
+                        }
+                    },
+                    "description": "A remote-desktop client written in GTK, to use other desktops remotely, from a tiny screen or large monitors"
                 },
                 "install_nomachine": {
                     "name": "NoMachine",
