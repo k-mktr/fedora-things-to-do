@@ -591,7 +591,14 @@
                 },
                 "install_blender": {
                     "name": "Blender",
-                    "command": "flatpak install -y flathub org.blender.Blender",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y blender"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.blender.Blender"
+                        }
+                    },
                     "description": "A free and open source 3D creation suite."
                 },
                 "install_obs": {
