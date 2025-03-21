@@ -578,6 +578,14 @@
                 },
                 "install_krita": {
                     "name": "Krita",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y krita"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.kde.krita"
+                        }
+                    },
                     "command": "flatpak install -y flathub org.kde.krita",
                     "description": "A full-featured digital art studio."
                 },
