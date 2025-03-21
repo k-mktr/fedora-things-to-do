@@ -141,6 +141,13 @@ def render_main_panel():
     """
     Render the main panel of the application.
     """
+    # Get app state and check for notifications
+    app_state = AppState.get_instance()
+    
+    # Display any dependency notifications in the sidebar
+    for notification in app_state.dependency_notifications:
+        st.sidebar.info(notification)
+    
     render_header()
     render_script_preview()
     render_build_button()

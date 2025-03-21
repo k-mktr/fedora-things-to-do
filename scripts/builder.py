@@ -1,10 +1,27 @@
+"""Script builder module for Fedora Workstation NATTD.
+
+This module handles the generation of shell scripts based on user selections,
+including dependency resolution and script composition.
+"""
+
 import logging
-from typing import Dict, Any, List, Union
+import copy
+from typing import Dict, Any, List, Union, Optional, Tuple
 from utils import load_nattd, should_quiet_redirect
+
+# Constants for dependencies and configurations
+DEPENDENCY_RPMFUSION = "enable_rpmfusion"
+CODEC_OPTIONS = ["install_multimedia_codecs", "install_intel_codecs", "install_amd_codecs"]
+DEFAULT_HOSTNAME = "fedora-workstation"
+
+# Dependency descriptions for notifications
+DEPENDENCY_MESSAGES = {
+    DEPENDENCY_RPMFUSION: "RPM Fusion has been automatically enabled because it's required for {app_name}. This provides necessary packages and codecs."
+}
 
 def check_dependencies(options: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Check and handle dependencies between options.
+    Check and handle system-level dependencies.
     
     Args:
         options: The selected options
@@ -12,19 +29,18 @@ def check_dependencies(options: Dict[str, Any]) -> Dict[str, Any]:
     Returns:
         Updated options with dependencies resolved
     """
-    # Make a copy of options to avoid modifying the original
-    updated_options = {k: v.copy() if isinstance(v, dict) else v for k, v in options.items()}
+    # Make a deep copy of options to avoid modifying the original
+    updated_options = copy.deepcopy(options)
     
     # Initialize system_config if it doesn't exist
     if "system_config" not in updated_options:
         updated_options["system_config"] = {}
     
     # Check if multimedia codecs or GPU codecs are selected
-    codec_options = ["install_multimedia_codecs", "install_intel_codecs", "install_amd_codecs"]
     if any(option in updated_options["system_config"] and updated_options["system_config"].get(option, False) 
-           for option in codec_options):
+           for option in CODEC_OPTIONS):
         # Ensure RPM Fusion is enabled
-        updated_options["system_config"]["enable_rpmfusion"] = True
+        updated_options["system_config"][DEPENDENCY_RPMFUSION] = True
         logging.info("RPM Fusion automatically enabled due to codec selection")
     
     return updated_options
@@ -61,8 +77,6 @@ def build_system_config(options: Dict[str, Any], output_mode: str) -> str:
     Returns:
         The system configuration commands as a string
     """
-    # Ensure dependencies are resolved
-    options = check_dependencies(options)
     config_commands = []
     quiet_redirect = " > /dev/null 2>&1" if output_mode == "Quiet" else ""
 
@@ -116,6 +130,45 @@ def build_system_config(options: Dict[str, Any], output_mode: str) -> str:
         return f"# Error building system configuration: {str(e)}\n"
 
     return "\n".join(config_commands)
+
+def process_installation_dependencies(app_data: Dict[str, Any], install_type: str, options: Dict[str, Any]) -> Tuple[Dict[str, Any], List[str]]:
+    """
+    Process installation-type-specific dependencies for an app.
+    
+    Args:
+        app_data: The application data from nattd.json
+        install_type: The selected installation type (e.g., 'DNF', 'Flatpak')
+        options: The selected options dictionary
+        
+    Returns:
+        Tuple containing:
+        - Updated options with dependencies resolved
+        - List of notification messages about enabled dependencies
+    """
+    # Make a deep copy of options to avoid modifying the original
+    updated_options = copy.deepcopy(options)
+    notifications = []
+    
+    if ('installation_types' in app_data and 
+        install_type in app_data['installation_types'] and 
+        'dependencies' in app_data['installation_types'][install_type]):
+        
+        deps = app_data['installation_types'][install_type]['dependencies']
+        if not isinstance(deps, list):
+            deps = [deps]
+            
+        for dep in deps:
+            if dep == DEPENDENCY_RPMFUSION:
+                if "system_config" not in updated_options:
+                    updated_options["system_config"] = {}
+                # Only add notification if RPM Fusion wasn't already enabled
+                if not updated_options["system_config"].get(DEPENDENCY_RPMFUSION, False):
+                    updated_options["system_config"][DEPENDENCY_RPMFUSION] = True
+                    app_name = app_data.get('name', 'this application')
+                    notifications.append(DEPENDENCY_MESSAGES[DEPENDENCY_RPMFUSION].format(app_name=app_name))
+                    logging.info(f"RPM Fusion automatically enabled due to {app_name} dependency")
+    
+    return updated_options, notifications
 
 def build_app_install(options: Dict[str, Any], output_mode: str) -> str:
     """
@@ -305,6 +358,48 @@ def build_custom_script(options: Dict[str, Any], output_mode: str) -> str:
         return f"# Custom user-defined commands\n{custom_script}\n"
     return ""
 
+def process_all_dependencies(options: Dict[str, Any], nattd_data: Dict[str, Any]) -> Tuple[Dict[str, Any], List[str]]:
+    """
+    Process all dependencies for all selected apps.
+    
+    Args:
+        options: The selected options
+        nattd_data: The NATTD configuration data
+        
+    Returns:
+        Tuple containing:
+        - Updated options with all dependencies resolved
+        - List of notification messages about enabled dependencies
+    """
+    # Make a deep copy of options to avoid modifying the original
+    updated_options = copy.deepcopy(options)
+    all_notifications = []
+    
+    # First check system-level dependencies
+    updated_options = check_dependencies(updated_options)
+    
+    # Process app-specific dependencies
+    if "additional_apps" in updated_options and "additional_apps" in nattd_data:
+        for category, category_data in updated_options["additional_apps"].items():
+            if category not in nattd_data["additional_apps"]:
+                continue
+                
+            for app_id, app_data in category_data.items():
+                if not isinstance(app_data, dict) or not app_data.get('selected', False):
+                    continue
+                    
+                if app_id not in nattd_data['additional_apps'][category]['apps']:
+                    continue
+                    
+                app_config = nattd_data['additional_apps'][category]['apps'][app_id]
+                if ('installation_types' in app_config and 
+                    'installation_type' in app_data):
+                    install_type = app_data['installation_type']
+                    updated_options, notifications = process_installation_dependencies(app_config, install_type, updated_options)
+                    all_notifications.extend(notifications)
+    
+    return updated_options, all_notifications
+
 def build_script(options: Dict[str, Any], output_mode: str) -> str:
     """
     Build a preview of the script based on selected options.
@@ -317,6 +412,12 @@ def build_script(options: Dict[str, Any], output_mode: str) -> str:
         A preview of the generated script
     """
     try:
+        # Load NATTD data once
+        nattd_data = load_nattd()
+        
+        # Process all dependencies first
+        options, notifications = process_all_dependencies(options, nattd_data)
+        
         script_parts = {
             "system_upgrade": build_system_upgrade(options, output_mode),
             "system_config": build_system_config(options, output_mode),
@@ -352,6 +453,12 @@ def build_full_script(template: str, options: Dict[str, Any], output_mode: str) 
         The complete generated script
     """
     try:
+        # Load NATTD data once
+        nattd_data = load_nattd()
+        
+        # Process all dependencies first
+        options, notifications = process_all_dependencies(options, nattd_data)
+        
         script_parts = {
             "system_upgrade": build_system_upgrade(options, output_mode),
             "system_config": build_system_config(options, output_mode),

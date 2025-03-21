@@ -310,8 +310,16 @@
                 },
                 "install_telegram": {
                     "name": "Telegram Desktop",
-                    "command": "flatpak install -y flathub org.telegram.desktop",
-                    "description": "A messaging app with a focus on speed and security"
+                    "description": "A messaging app with a focus on speed and security",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y telegram-desktop",
+                            "dependencies": ["enable_rpmfusion"]
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.telegram.desktop"
+                        }
+                    }
                 },
                 "install_signal": {
                     "name": "Signal Desktop",

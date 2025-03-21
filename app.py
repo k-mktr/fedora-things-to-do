@@ -1,26 +1,40 @@
-# Fedora Workstation NATTD Not Another "Things To Do"!
-# Initial System Setup Shell Script Builder for Fedora Workstation
-#
-# This application is a Streamlit-based web interface that allows users to customize
-# and generate a shell script for setting up a fresh Fedora Workstation installation.
-# It provides options for system configuration, essential and additional app installation,
-# and system customization. The app uses predefined profiles and allows users to select
-# individual options or apply preset profiles. It generates a downloadable shell script
-# based on the user's selections, which can be run on a Fedora system to automate the
-# setup process.
-#
-# This tool aims to simplify the post-installation process for Fedora users,
-# allowing for easy customization and automation of common setup tasks.
-#
-# Author: Karl Stefan Danisz
-# Contact: https://mktr.sbs/linkedin
-# GitHub: https://mktr.sbs/github
-# Version: 25.03
-#
-#
-# Use responsibly, and always check the script you are about to run.
-# This script is licensed under the GNU General Public License v3.0
-#
+"""Fedora Workstation NATTD (Not Another 'Things To Do'!)
+
+A Streamlit-based web application for generating customized setup scripts for Fedora Workstation.
+This tool simplifies the post-installation process by providing an intuitive interface for:
+- System configuration
+- Essential and additional app installation
+- System customization
+- Script generation and download
+
+The application allows users to:
+1. Select system configurations
+2. Choose essential and additional applications
+3. Customize system settings
+4. Generate and download a shell script
+5. Apply predefined profiles
+
+Features:
+- Interactive web interface
+- Modular script generation
+- Dependency management
+- Profile-based configurations
+- Customizable installation options
+
+Author: Karl Stefan Danisz
+Contact: https://mktr.sbs/linkedin
+GitHub: https://mktr.sbs/github
+Version: 25.03
+License: GNU General Public License v3.0
+
+Usage:
+    streamlit run app.py
+
+Note:
+    Always review generated scripts before execution. This tool provides automation
+    but requires user verification for system safety.
+"""
+
 import logging
 import streamlit as st
 from ui import render_sidebar, render_main_panel
