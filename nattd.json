@@ -714,8 +714,15 @@
             "apps": {
                 "install_remmina": {
                     "name": "Remmina",
-                    "command": "flatpak install -y flathub org.remmina.Remmina",
-                "description": "A remote-desktop client written in GTK, to use other desktops remotely, from a tiny screen or large monitors"
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y remmina"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.remmina.Remmina"
+                        }
+                    },
+                    "description": "A remote-desktop client written in GTK, to use other desktops remotely, from a tiny screen or large monitors"
                 },
                 "install_nomachine": {
                     "name": "NoMachine",
