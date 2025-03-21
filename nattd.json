@@ -532,7 +532,14 @@
             "apps": {
                 "install_vlc": {
                     "name": "VLC",
-                    "command": "flatpak install -y flathub org.videolan.VLC",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y vlc"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.videolan.VLC"
+                        }
+                    },
                     "description": "A media player with a focus on privacy and security"
                 },
                 "install_stremio": {
