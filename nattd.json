@@ -391,7 +391,14 @@
                 },
                 "install_dialect": {
                     "name": "Dialect",
-                    "command": "flatpak install -y flathub app.drey.Dialect",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y dialect"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub app.drey.Dialect"
+                        }
+                    },
                     "description": "A translation app for GNOME supporting multiple services"
                 },
                 "install_decoder": {
