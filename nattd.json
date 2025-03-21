@@ -641,7 +641,8 @@
                     "description": "A software distribution service with an online store, automated installation, automatic updates, achievements, SteamCloud synchronized savegame and screenshot functionality, and many social features",
                     "installation_types": {
                         "DNF": {
-                            "command": "dnf install -y steam"
+                            "command": "dnf install -y steam",
+                            "dependencies": ["enable_rpmfusion"]
                         },
                         "Flatpak": {
                             "command": "flatpak install -y flathub com.valvesoftware.Steam"
