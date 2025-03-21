@@ -650,7 +650,14 @@
                 },
                 "install_lutris": {
                     "name": "Lutris",
-                    "command": "flatpak install -y flathub net.lutris.Lutris",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y lutris"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub net.lutris.Lutris"
+                        }
+                    },
                     "description": "Helps you install and play video games from all eras and from most gaming systems"
                 },
                 "install_heroic": {
