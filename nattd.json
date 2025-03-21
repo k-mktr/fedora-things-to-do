@@ -596,7 +596,15 @@
                 },
                 "install_obs": {
                     "name": "OBS Studio",
-                    "command": "flatpak install -y flathub com.obsproject.Studio",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y obs-studio",
+                            "dependencies": ["enable_rpmfusion"]
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub com.obsproject.Studio"
+                        }
+                    },
                     "description": "Free and open source software for video capturing, recording, and live streaming."
                 },
                 "install_kdenlive": {
