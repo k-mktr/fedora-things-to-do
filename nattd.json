@@ -667,7 +667,14 @@
                 },
                 "install_retroarch": {
                     "name": "RetroArch",
-                    "command": "flatpak install -y flathub org.libretro.RetroArch",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y retroarch"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub org.libretro.RetroArch"
+                        }
+                    },
                     "description": "Enables you to run classic games on a wide range of computers and consoles"
                 },
                 "install_dolphin": {
