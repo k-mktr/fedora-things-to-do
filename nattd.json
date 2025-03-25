@@ -776,6 +776,11 @@
                         "systemctl enable --now tailscaled"
                     ],
                     "description": "Tailscale is a mesh VPN (Virtual Private Network) service that streamlines connecting devices and services securely across different networks"
+                },
+                "install_netbird": {
+                    "name": "NetBird",
+                    "command": "curl -fsSL https://pkgs.netbird.io/install.sh | sh",
+                    "description": "NetBird is an open-source mesh VPN that simplifies secure, peer-to-peer networking using WireGuard and Zero Trust principles."
                 }
             }
         },
