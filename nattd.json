@@ -66,7 +66,7 @@
                 "color_echo \"yellow\" \"Enabling RPM Fusion repositories...\"",
                 "dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm",
                 "dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm",
-                "dnf group update core -y"
+                "dnf update @core -y"
             ],
             "description": "Enable RPM Fusion repositories to access additional software packages and codecs"
         },
@@ -120,6 +120,16 @@
                 "sudo -u $ACTUAL_USER gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'suspend'"
             ],
             "description": "Configure power settings to prevent system sleep and hibernation"
+        },
+        "tpm2": {
+            "name": "Enable TP2 Unlock",
+            "command": [
+                "echo \"add_dracutmodules+=\\\" tpm2-tss \\\"\" | tee /etc/dracut.conf.d/tpm2.conf",
+                "dracut -f",
+                "systemd-cryptenroll --wipe-slot tpm2 --tpm2-device auto --tpm2-pcrs \"7+11\" /dev/nvme0n1p3",
+                "sed -i 's/\bdiscard\b/tpm2-device=auto,tpm2-pcrs=7+11/' /etc/crypttab"
+            ],
+            "description": "Enable TPM2 to unlock LUKS installation"
         }
     },
     "essential_apps": {
