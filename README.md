@@ -1,4 +1,5 @@
 # Fedora Workstation: Not Another 'Things To Do'!
+**Initial System Setup Shell Script Builder for Fedora Workstation**
 
 ![Fedora Workstation NATTD](./assets/cover.png)
 
@@ -16,8 +17,6 @@
 Thank you to our amazing community for your support and contributions! As we celebrate this milestone, I've added even more great features to make your Fedora setup experience better than ever.
 
 Check out my [Medium publication](https://mktr.sbs/nattd) for additional tweaks and configurations beyond what NATTD provides.
-
-**Initial System Setup Shell Script Builder for Fedora Workstation**
 
 ## Overview
 
