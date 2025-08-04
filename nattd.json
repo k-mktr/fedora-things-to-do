@@ -66,7 +66,7 @@
                 "color_echo \"yellow\" \"Enabling RPM Fusion repositories...\"",
                 "dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm",
                 "dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm",
-                "dnf group update core -y"
+                "dnf update @core -y"
             ],
             "description": "Enable RPM Fusion repositories to access additional software packages and codecs"
         },
@@ -348,6 +348,11 @@
                         "flatpak install -y flathub org.torproject.torbrowser-launcher"
                     ],
                     "description": "Tor service and Tor Browser Launcher for secure networking"
+                },
+                "install_simplex": {
+                    "name": "SimpleX",
+                    "command": "flatpak install -y flathub chat.simplex.simplex",
+                    "description": "A secure, private messaging app with end-to-end encryption"
                 }
             }
         },
@@ -479,11 +484,20 @@
                 "install_tabby": {
                     "name": "Tabby",
                     "command": [
-                        "wget https://github.com/Eugeny/tabby/releases/download/v1.0.221/tabby-1.0.221-linux-x64.rpm",
-                        "dnf install -y ./tabby-1.0.221-linux-x64.rpm",
-                        "rm -f ./tabby-1.0.221-linux-x64.rpm"
+                        "wget https://github.com/Eugeny/tabby/releases/download/v1.0.223/tabby-1.0.223-linux-x64.rpm",
+                        "dnf install -y ./tabby-1.0.223-linux-x64.rpm",
+                        "rm -f ./tabby-1.0.223-linux-x64.rpm"
                     ],
                     "description": "A terminal for a more modern age"
+                },
+                "install_wave_terminal": {
+                    "name": "Wave Terminal",
+                    "command": [
+                        "wget https://dl.waveterm.dev/releases-w2/waveterm-linux-x86_64-0.11.2.rpm",
+                        "dnf install -y ./waveterm-linux-x86_64-0.11.2.rpm",
+                        "rm -f ./waveterm-linux-x86_64-0.11.2.rpm"
+                    ],
+                    "description": "An open-source terminal with superpowers, integrating file previews, file editing, AI, web browsing, and workspace organization"
                 },
                 "install_veracrypt": {
                     "name": "VeraCrypt",
@@ -524,6 +538,11 @@
                         "EOF"
                     ],
                     "description": "Install Miniconda Python distribution"
+                },
+                "install_android_studio": {
+                    "name": "Android Studio",
+                    "command": "flatpak install -y flathub com.google.AndroidStudio",
+                    "description": "The official Integrated Development Environment (IDE) for Android app development"
                 }
             }
         },
@@ -630,6 +649,23 @@
                     "name": "FreeTube",
                     "command": "flatpak install -y flathub io.freetubeapp.FreeTube",
                     "description": "An open source desktop YouTube player built with privacy in mind."
+                },
+                "install_mpv": {
+                    "name": "MPV",
+                    "installation_types": {
+                        "DNF": {
+                            "command": "dnf install -y mpv"
+                        },
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub io.mpv.Mpv"
+                        }
+                    },
+                    "description": "A free, open source, and cross-platform media player with a minimal GUI and advanced features"
+                },
+                "install_sly": {
+                    "name": "Sly",
+                    "command": "flatpak install -y flathub page.kramo.Sly",
+                    "description": "A friendly image editor that requires no internet connection or preexisting expertise"
                 }
             }
         },
@@ -728,9 +764,9 @@
                 "install_nomachine": {
                     "name": "NoMachine",
                     "command": [
-                        "wget https://download.nomachine.com/download/8.16/Linux/nomachine_8.16.1_1_x86_64.rpm",
-                        "dnf install -y ./nomachine_8.16.1_1_x86_64.rpm",
-                        "rm -f ./nomachine_8.16.1_1_x86_64.rpm"
+                        "wget https://web9001.nomachine.com/download/9.1/Linux/nomachine_9.1.24_6_x86_64.rpm",
+                        "dnf install -y ./nomachine_9.1.24_6_x86_64.rpm",
+                        "rm -f ./nomachine_9.1.24_6_x86_64.rpm"
                     ],
                     "description": "A remote desktop software, that enables fast and secure access to your remote PC or desktop computer"
                 },
@@ -798,6 +834,16 @@
                     "name": "Video Downloader",
                     "command": "flatpak install -y flathub com.github.unrud.VideoDownloader",
                     "description": "Download videos from websites with an easy-to-use interface"
+                },
+                "install_onionshare": {
+                    "name": "OnionShare",
+                    "command": "flatpak install -y flathub org.onionshare.OnionShare",
+                    "description": "An anonymous file sharing tool that uses the Tor network to securely transfer files"
+                },
+                "install_warp": {
+                    "name": "Warp",
+                    "command": "flatpak install -y flathub app.drey.Warp",
+                    "description": "Securely send files via the internet or local network by exchanging a word-based code"
                 }
             }
         },
@@ -853,6 +899,16 @@
                     "name": "Pika Backup",
                     "command": "flatpak install -y flathub org.gnome.World.PikaBackup",
                     "description": "A simple backup tool for Linux"
+                },
+                "install_netpeek": {
+                    "name": "NetPeek",
+                    "command": "flatpak install -y flathub io.github.zingytomato.netpeek",
+                    "description": "A simple network scanner that helps you discover active devices on your local network"
+                },
+                "install_qpdf_tools": {
+                    "name": "Qpdf Tools",
+                    "command": "flatpak install -y flathub br.eng.silas.qpdftools",
+                    "description": "A Qt interface for Ghostscript and QPDF"
                 }
             }
         }

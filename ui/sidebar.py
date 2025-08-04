@@ -48,6 +48,33 @@ def render_sidebar() -> None:
     # Initialize options in the app state if not already present
     options = app_state.get_options()
     
+    # Preserve all existing selections from the current app state
+    # This ensures that selections are not lost when searching for different items
+    current_app_state = app_state.get_options()
+    
+    # Preserve system_config selections
+    for key, value in current_app_state["system_config"].items():
+        if key not in options["system_config"]:
+            options["system_config"][key] = value
+    
+    # Preserve essential_apps selections
+    for key, value in current_app_state["essential_apps"].items():
+        if key not in options["essential_apps"]:
+            options["essential_apps"][key] = value
+    
+    # Preserve additional_apps selections
+    for category, category_data in current_app_state["additional_apps"].items():
+        if category not in options["additional_apps"]:
+            options["additional_apps"][category] = {}
+        for app_id, app_data in category_data.items():
+            if app_id not in options["additional_apps"][category]:
+                options["additional_apps"][category][app_id] = app_data
+    
+    # Preserve customization selections
+    for key, value in current_app_state["customization"].items():
+        if key not in options["customization"]:
+            options["customization"][key] = value
+    
     # Output mode selection
     output_mode = st.sidebar.radio(
         "Output Mode", 
@@ -123,6 +150,7 @@ def render_sidebar() -> None:
                     if option == "enable_rpmfusion":
                         rpm_fusion_checkbox = st.checkbox(
                             nattd_data["system_config"][option]["name"],
+                            value=options["system_config"].get(option, False),
                             key=f"system_config_{option}",
                             help=nattd_data["system_config"][option]["description"]
                         )
@@ -130,6 +158,7 @@ def render_sidebar() -> None:
                     else:
                         options["system_config"][option] = st.checkbox(
                             nattd_data["system_config"][option]["name"],
+                            value=options["system_config"].get(option, False),
                             key=f"system_config_{option}",
                             help=nattd_data["system_config"][option]["description"]
                         )
@@ -179,6 +208,7 @@ def render_sidebar() -> None:
                     if isinstance(app, dict) and "name" in app and "description" in app and matches_search(app["name"], app["description"], search_query):
                         options["essential_apps"][app["name"]] = st.checkbox(
                             app["name"],
+                            value=options["essential_apps"].get(app["name"], False),
                             key=f"essential_app_{app['name']}",
                             help=app["description"]
                         )
@@ -213,13 +243,16 @@ def render_sidebar() -> None:
                 for category, category_data in nattd_data["additional_apps"].items():
                     if isinstance(category_data, dict) and "name" in category_data and "apps" in category_data:
                         st.subheader(category_data["name"])
-                        options["additional_apps"][category] = {}
+                        # Initialize category dictionary if it doesn't exist
+                        if category not in options["additional_apps"]:
+                            options["additional_apps"][category] = {}
                         category_has_matches = False
                         
                         for app_id, app_info in category_data["apps"].items():
                             if isinstance(app_info, dict) and "name" in app_info and "description" in app_info and matches_search(app_info['name'], app_info['description'], search_query):
                                 app_selected = st.checkbox(
                                     app_info['name'], 
+                                    value=options["additional_apps"][category][app_id].get('selected', False) if category in options["additional_apps"] and app_id in options["additional_apps"][category] else False,
                                     key=f"app_{category}_{app_id}", 
                                     help=app_info['description']
                                 )
@@ -263,6 +296,7 @@ def render_sidebar() -> None:
                     if isinstance(app_info, dict) and "name" in app_info and "description" in app_info and matches_search(app_info['name'], app_info['description'], search_query):
                         options["customization"][app_id] = st.checkbox(
                             app_info['name'],
+                            value=options["customization"].get(app_id, False),
                             key=f"customization_{app_id}",
                             help=app_info['description']
                         )
@@ -417,4 +451,4 @@ def render_sidebar() -> None:
     """, unsafe_allow_html=True)
     
     # Update the app state with the current options
-    app_state.update_options(options) 
+    app_state.update_options(options)

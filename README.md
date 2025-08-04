@@ -19,7 +19,23 @@ This project offers a Streamlit-based web application for generating a tailored 
 
 ## Latest Changes
 
-*(As of 2025-03-04)*
+*(As of 2025-08-04)*
+
+- Added Sly image editor to the Media & Graphics category with Flatpak installation option
+- Added NetPeek network scanner to the System Tools category with Flatpak installation option
+- Added Android Studio IDE to the Development Tools category with Flatpak installation option
+- Added Qpdf Tools to the System Tools category with Flatpak installation option
+- Added MPV media player to the Media & Graphics category with both DNF and Flatpak installation options
+- Added Wave Terminal to the Development Tools category with DNF installation option
+- Added Onion Share to the File Sharing & Download category with Flatpak installation option
+- Added Warp to the File Sharing & Download category with Flatpak installation option
+- Added SimpleX to the Internet & Communication category with Flatpak installation option
+- Updated NoMachine to latest version
+- Updated Tabby to latest version
+- Fixed bug where selected options were getting reset when performing new searches in the sidebar (Issue #17)
+
+<details>
+<summary>Previous changes (2025-03-04)</summary>
 
 - Restructured the entire codebase into a modular architecture:
   - Created separate modules for UI components, script generation, and utilities
@@ -42,7 +58,10 @@ This project offers a Streamlit-based web application for generating a tailored 
   - Tabby Terminal
   - NoMachine
 
-*(As of 2024-09-05)*
+</details>
+
+<details>
+<summary>Previous changes (2024-09-05)</summary>
 
 We're grateful for the valuable feedback and suggestions from the r/Fedora community. Recent updates include:
 
@@ -59,6 +78,8 @@ We're grateful for the valuable feedback and suggestions from the r/Fedora commu
 - Introduced VSCodium as an open-source alternative to VS Code
 
 Special thanks to [u/RedBearAK](https://www.reddit.com/user/RedBearAK/), [u/ScootSchloingo](https://www.reddit.com/user/ScootSchloingo/), [u/charliesbot](https://www.reddit.com/user/charliesbot/), [u/Laughingatyou1000](https://www.reddit.com/user/Laughingatyou1000/), [u/Papercutter0324](https://www.reddit.com/user/Papercutter0324/), [u/ajunior7](https://www.reddit.com/user/ajunior7/), and [u/intulor](https://www.reddit.com/user/intulor/) for their contributions and insights.
+
+</details>
 
 We're continuously working to enhance the script and welcome further suggestions from the community.
 

@@ -24,7 +24,7 @@ Features:
 Author: Karl Stefan Danisz
 Contact: https://mktr.sbs/linkedin
 GitHub: https://mktr.sbs/github
-Version: 25.03
+Version: 25.08 / 100 Stars Edition
 License: GNU General Public License v3.0
 
 Usage:
