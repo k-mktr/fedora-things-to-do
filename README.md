@@ -11,6 +11,12 @@
   <img src="https://img.shields.io/github/stars/k-mktr/fedora-things-to-do" alt="GitHub stars">
 </p>
 
+🎉 **Celebrating 100+ GitHub Stars!** 🎉
+
+Thank you to our amazing community for your support and contributions! As we celebrate this milestone, I've added even more great features to make your Fedora setup experience better than ever.
+
+Check out my [Medium publication](https://mktr.sbs/nattd) for additional tweaks and configurations beyond what NATTD provides.
+
 **Initial System Setup Shell Script Builder for Fedora Workstation**
 
 ## Overview
@@ -82,6 +88,14 @@ Special thanks to [u/RedBearAK](https://www.reddit.com/user/RedBearAK/), [u/Scoo
 </details>
 
 We're continuously working to enhance the script and welcome further suggestions from the community.
+
+## Debian Version Available
+
+🎉 **Great News for Debian Users!** 🎉
+
+If you love the Fedora version of NATTD, you'll be excited to know that there's now a Debian fork available! As we celebrate reaching 100+ stars on GitHub for the Fedora edition, I'm happy to announce that you can now enjoy the same streamlined setup experience on Debian-based systems.
+
+Check out the [Debian Things To Do](https://github.com/k-mktr/debian-things-to-do) project to get started with your Debian workstation setup.
 
 ## Features
 

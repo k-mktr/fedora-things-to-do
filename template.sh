@@ -83,7 +83,7 @@ echo "║                                                                       
 echo "╚═════════════════════════════════════════════════════════════════════════════╝";
 echo "";
 echo "This script automates \"Things To Do!\" steps after a fresh Fedora Workstation installation"
-echo "ver. 25.03"
+echo "ver. 25.08 / 100 Stars Edition"
 echo ""
 echo "Don't run this script if you didn't build it yourself or don't know what it does."
 echo ""
