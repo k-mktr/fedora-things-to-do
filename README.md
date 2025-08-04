@@ -26,7 +26,7 @@ This project offers a Streamlit-based web application for generating a tailored 
 
 *(As of 2025-08-04)*
 
-- Added NetBird to the Remote Access & Networking category with official script installation option, thanks @The-Sp4rt4cus
+- Added NetBird to the Remote Access & Networking category. Thanks @The-Sp4rt4cus
 - Added Sly image editor to the Media & Graphics category with Flatpak installation option
 - Added NetPeek network scanner to the System Tools category with Flatpak installation option
 - Added Android Studio IDE to the Development Tools category with Flatpak installation option
