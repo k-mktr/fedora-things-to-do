@@ -26,6 +26,7 @@ This project offers a Streamlit-based web application for generating a tailored 
 
 *(As of 2025-08-04)*
 
+- Added NetBird to the Remote Access & Networking category with official script installation option, thanks @The-Sp4rt4cus
 - Added Sly image editor to the Media & Graphics category with Flatpak installation option
 - Added NetPeek network scanner to the System Tools category with Flatpak installation option
 - Added Android Studio IDE to the Development Tools category with Flatpak installation option
@@ -201,10 +202,15 @@ Future plans for this project include:
 - ✅ Adding Advanced Section for a custom Shell Commands
 - ✅ Further organizing the code, improving readability
 - ✅ Improving the Quiet Mode code logic
-- Implementing predefined configuration Profiles
+- 🚧 Adding more applications and configuration options
+- 🚧 Implementing predefined configuration Profiles
+- 🚧 Developing versions for other Linux distributions (e.g., Debian/Ubuntu)
 - Implementing a feature to save and load custom profiles 
-- Developing versions for other Linux distributions (e.g., Debian/Ubuntu)
-- Adding more applications and configuration options
+
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=k-mktr/fedora-things-to-do&type=Date)](https://www.star-history.com/#k-mktr/fedora-things-to-do&Date)
 
 ## FAQ
 
