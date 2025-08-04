@@ -36,8 +36,7 @@ This project offers a Streamlit-based web application for generating a tailored 
 - Added Onion Share to the File Sharing & Download category with Flatpak installation option
 - Added Warp to the File Sharing & Download category with Flatpak installation option
 - Added SimpleX to the Internet & Communication category with Flatpak installation option
-- Updated NoMachine to latest version
-- Updated Tabby to latest version
+- Updated Vivaldi, NoMachine and Tabby installation URLs to latest version
 - Fixed bug where selected options were getting reset when performing new searches in the sidebar (Issue #17)
 
 <details>

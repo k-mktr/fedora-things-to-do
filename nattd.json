@@ -217,9 +217,9 @@
                     "installation_types": {
                         "DNF": {
                             "command": [
-                                "wget https://downloads.vivaldi.com/stable/vivaldi-stable-7.1.3570.58-1.x86_64.rpm",
-                                "dnf install -y ./vivaldi-stable-7.1.3570.58-1.x86_64.rpm",
-                                "rm -f ./vivaldi-stable-7.1.3570.58-1.x86_64.rpm"
+                                "wget https://downloads.vivaldi.com/stable/vivaldi-stable-7.5.3735.58-1.x86_64.rpm",
+                                "dnf install -y ./vivaldi-stable-7.5.3735.58-1.x86_64.rpm",
+                                "rm -f ./vivaldi-stable-7.5.3735.58-1.x86_64.rpm"
                             ]
                         },
                         "Flatpak": {
