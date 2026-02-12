@@ -167,6 +167,23 @@ def render_sidebar() -> None:
                         hostname = st.text_input("Enter the new hostname:", value=app_state.hostname or "")
                         options["hostname"] = hostname
                         app_state.hostname = hostname
+
+                    if option == "configure_dnf" and options["system_config"][option]:
+                        dnf_data = nattd_data["system_config"][option]
+                        if "suboptions" in dnf_data:
+                            _, indent = st.columns([0.05, 0.95])
+
+                            with indent:
+                                st.caption("Select Optimizations:")
+                                selections = {}
+                                for sub_key, sub_val in dnf_data["suboptions"].items():
+                                    selections[sub_key] = st.checkbox(
+                                        sub_val["name"],
+                                        value=True,
+                                        key=f"dnf_{sub_key}",
+                                        help=sub_val.get("description")
+                                    )
+                                options["system_config"]["configure_dnf_suboptions"] = selections
             except Exception as e:
                 st.sidebar.error(f"Error rendering option '{option}': {str(e)}")
                 logging.error(f"Error rendering option '{option}': {str(e)}", exc_info=True)

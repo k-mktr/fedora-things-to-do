@@ -14,9 +14,25 @@
             "command": [
                 "color_echo \"yellow\" \"Configuring DNF Package Manager...\"",
                 "backup_file \"/etc/dnf/dnf.conf\"",
-                "echo \"max_parallel_downloads=10\" | tee -a /etc/dnf/dnf.conf > /dev/null",
                 "dnf -y install dnf-plugins-core"
             ],
+            "suboptions": {
+                "max_parallel_downloads": {
+                    "name": "Max Parallel Downloads",
+                    "description": "Set maximum parallel downloads to 10 for faster downloads",
+                    "command": "echo \"max_parallel_downloads=10\" | tee -a /etc/dnf/dnf.conf > /dev/null"
+                },
+                "fastest_mirror": {
+                    "name": "Select Fastest Mirror",
+                    "description": "Selects the fastest download server",
+                    "command": "echo \"fastestmirror=True\" | tee -a /etc/dnf/dnf.conf > /dev/null"
+                },
+                "default_yes": {
+                    "name": "Default Yes",
+                    "description": "Defaults prompts to yes, which is how most other package managers behave",
+                    "command": "echo \"defaultyes=True\" | tee -a /etc/dnf/dnf.conf > /dev/null"
+                }
+            },
             "description": "Optimize DNF package manager for faster downloads and efficient updates"
         },
         "enable_dnf_autoupdate": {
@@ -183,7 +199,7 @@
                     "description": "An open-source browser project that aims to build a safer, faster, and more stable way to experience the web.",
                     "installation_types": {
                         "DNF": {
-                            "command": "dnf install -y chromium"                            
+                            "command": "dnf install -y chromium"
                         },
                         "Flatpak": {
                             "command": "flatpak install -y flathub org.chromium.Chromium"
@@ -282,7 +298,7 @@
                         "Flatpak": {
                             "command": "flatpak install -y flathub org.mozilla.Thunderbird"
                         }
-                    }    
+                    }
                 },
                 "install_betterbird": {
                     "name": "Betterbird",
@@ -917,7 +933,7 @@
                 }
             }
         }
-    },    
+    },
     "customization": {
         "name": "Customization",
         "apps": {

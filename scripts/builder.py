@@ -105,17 +105,10 @@ def build_system_config(options: Dict[str, Any], output_mode: str) -> str:
                 config_commands.append(f"# {description}")
                 commands = system_config[option]["command"]
                 
-                if isinstance(commands, list):
-                    for cmd in commands:
-                        if option == "set_hostname" and "hostnamectl set-hostname" in cmd:
-                            # Use a placeholder for the hostname
-                            hostname = options.get("hostname", "fedora-workstation")
-                            cmd = cmd.replace("{hostname}", hostname)
-                        if output_mode == "Quiet" and should_quiet_redirect(cmd):
-                            cmd += quiet_redirect
-                        config_commands.append(cmd)
-                else:
-                    cmd = commands
+                if not isinstance(commands, list):
+                    commands = [commands]
+
+                for cmd in commands:
                     if option == "set_hostname" and "hostnamectl set-hostname" in cmd:
                         # Use a placeholder for the hostname
                         hostname = options.get("hostname", "fedora-workstation")
@@ -123,6 +116,23 @@ def build_system_config(options: Dict[str, Any], output_mode: str) -> str:
                     if output_mode == "Quiet" and should_quiet_redirect(cmd):
                         cmd += quiet_redirect
                     config_commands.append(cmd)
+
+                if option == "configure_dnf" and "configure_dnf_suboptions" in options["system_config"]:
+                    selected = options["system_config"]["configure_dnf_suboptions"]
+                    if "suboptions" in system_config[option]:
+                        for sub_key, sub_enabled in selected.items():
+                            if sub_enabled and sub_key in system_config[option]["suboptions"]:
+                                data = system_config[option]["suboptions"][sub_key]
+                                cmd = data["command"]
+
+                                config_commands.append(f"# {data.get('name', sub_key)}")
+
+                                if not isinstance(cmd, list):
+                                    cmd = [cmd]
+
+                                for c in cmd:
+                                    # shouldnt need to be quiet since we're tee'ing
+                                    config_commands.append(c)
                 
                 config_commands.append("")  # Add an empty line for readability
     except Exception as e:
