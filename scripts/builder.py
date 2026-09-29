@@ -196,7 +196,39 @@ def build_app_install(options: Dict[str, Any], output_mode: str) -> str:
 
     try:
         nattd_data = load_nattd()
-        
+
+        # Ensure the Flathub remote exists before any flatpak install command runs.
+        # A fresh Fedora only ships Flathub in "filtered" mode, and users who did not
+        # select the "Replace Fedora Flatpak Repo" option would otherwise get silent
+        # failures on every Flatpak application.
+        uses_flatpak = any(
+            "flatpak install" in (cmd if isinstance(cmd, str) else " ".join(cmd))
+            for category, category_data in (options.get("additional_apps") or {}).items()
+            if category in nattd_data.get("additional_apps", {})
+            for app_id, app_data in category_data.items()
+            if isinstance(app_data, dict) and app_data.get("selected", False)
+            and app_id in nattd_data["additional_apps"][category]["apps"]
+            for cmd in [
+                app_data_cmd
+                for app_config in [nattd_data["additional_apps"][category]["apps"][app_id]]
+                for app_data_cmd in (
+                    [it.get("command", "") for it in app_config.get("installation_types", {}).values()]
+                    + ([app_config["command"]] if "command" in app_config else [])
+                )
+            ]
+        )
+        flathub_already_ensured = bool(
+            (options.get("system_config") or {}).get("remove_fedora_flatpak_repos", False)
+        )
+        if uses_flatpak and not flathub_already_ensured:
+            install_commands.append("# Ensure Flathub remote is available for Flatpak applications")
+            install_commands.append("if ! command -v flatpak &>/dev/null; then")
+            install_commands.append("    dnf install -y flatpak")
+            install_commands.append("fi")
+            install_commands.append("flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo")
+            install_commands.append('color_echo "green" "Flathub repository ready."')
+            install_commands.append("")
+
         # Essential apps
         if "essential_apps" in options and "essential_apps" in nattd_data and "apps" in nattd_data["essential_apps"]:
             essential_apps = [

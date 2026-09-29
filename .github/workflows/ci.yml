@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install streamlit pytest
+
+      - name: Validate nattd.json structure
+        run: python -m pytest tests/test_nattd_structure.py -v
+
+      - name: Builder end-to-end tests
+        run: python -m pytest tests/test_builder.py -v
+
+      - name: Shell syntax check (template + bonus scripts)
+        run: |
+          bash -n template.sh
+          for f in bonus/*.sh; do bash -n "$f"; done
+
+  # Lint the Python application code; non-blocking for now so existing
+  # issues don't gate unrelated PRs.
+  lint:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Ruff (non-blocking)
+        run: ruff check .
