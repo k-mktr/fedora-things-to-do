@@ -1,0 +1,3 @@
+# NATTD runs on Streamlit + stdlib only.
+# Pin the major version so cloud deploys stay predictable.
+streamlit>=1.49,<2

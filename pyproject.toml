@@ -1,9 +1,0 @@
-# Project configuration
-[tool.ruff]
-target-version = "py312"
-
-[tool.ruff.lint]
-# Core correctness ruleset: pycodestyle errors, pyflakes, ambiguous names.
-# Kept explicit (not ruff's ever-widening defaults) so CI is deterministic;
-# extend deliberately when a new rule family is adopted.
-select = ["E4", "E7", "E9", "F"]
