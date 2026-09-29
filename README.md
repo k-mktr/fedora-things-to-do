@@ -24,7 +24,24 @@ This project offers a Streamlit-based web application for generating a tailored 
 
 ## Latest Changes
 
-*(As of 2025-08-04)*
+*(As of 2026-09-29)*
+
+- Fixed multimedia codec installation on Fedora 43/44: DNF5 no longer accepts `@group` syntax in `dnf update`, switched to `dnf group install` (Issue #35)
+- Fixed RPM Fusion enabling step (`dnf update @core` → `dnf group install core`) for the same reason
+- Fixed Microsoft fonts installation on Fedora 43+ (`rpm --nodigest --nofiledigest -i`) (Issue #31)
+- Fixed Docker installation conflicting with Fedora's own `moby-engine`/`docker-compose` packages (Issue #22)
+- Added a safeguard for legacy NVIDIA GPUs (Maxwell/Pascal/Volta): the bonus script now detects the GPU and installs the `akmod-nvidia-580xx` legacy branch instead of the mainline driver that would break the GUI (Issue #34)
+- Added Prism Launcher to Gaming & Emulation (Flatpak) (Issue #33)
+- Added Dropbox to File Sharing & Download with Flatpak and RPM Fusion (DNF) options (Issue #33)
+- Added a Wake-on-LAN option to System Configuration, persisted via NetworkManager (Issue #30)
+- Added a Nerd Fonts installer with JetBrainsMono, FiraCode and MesloLGS variants (Issue #23)
+- Added a warning about AMD freeworld codec performance regressions, with a one-line revert command (Issue #24)
+- Kept RPM Fusion URLs on `download1.rpmfusion.org`: the `mirrors.` hostname does not serve repository metadata
+- Fixed quiet-mode script generation redirecting `if`/`else`/`fi` control-flow lines
+- New logo (F45 / 200+ Stars Edition) and refreshed README
+
+<details>
+<summary>Previous changes (2025-08-04)</summary>
 
 - Added NetBird to the Remote Access & Networking category. Thanks @The-Sp4rt4cus
 - Added Sly image editor to the Media & Graphics category with Flatpak installation option
@@ -38,6 +55,7 @@ This project offers a Streamlit-based web application for generating a tailored 
 - Added SimpleX to the Internet & Communication category with Flatpak installation option
 - Updated Vivaldi, NoMachine and Tabby installation URLs to latest version
 - Fixed bug where selected options were getting reset when performing new searches in the sidebar (Issue #17)
+</details>
 
 <details>
 <summary>Previous changes (2025-03-04)</summary>

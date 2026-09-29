@@ -82,7 +82,7 @@
                 "color_echo \"yellow\" \"Enabling RPM Fusion repositories...\"",
                 "dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm",
                 "dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm",
-                "dnf update @core -y"
+                "dnf group install core -y"
             ],
             "description": "Enable RPM Fusion repositories to access additional software packages and codecs"
         },
@@ -91,8 +91,8 @@
             "command": [
                 "color_echo \"yellow\" \"Installing multimedia codecs...\"",
                 "dnf swap ffmpeg-free ffmpeg --allowerasing -y",
-                "dnf update @multimedia --setopt=\"install_weak_deps=False\" --exclude=PackageKit-gstreamer-plugin -y",
-                "dnf update @sound-and-video -y"
+                "dnf group install multimedia --setopt=\"install_weak_deps=False\" --exclude=PackageKit-gstreamer-plugin -y",
+                "dnf group install sound-and-video -y"
             ],
             "description": "Install multimedia codecs to enhance multimedia capabilities",
             "dependencies": ["enable_rpmfusion"]
@@ -110,6 +110,7 @@
             "name": "AMD Codecs",
             "command": [
                 "color_echo \"yellow\" \"Installing AMD Hardware Accelerated Codecs...\"",
+                "color_echo \"blue\" \"Note: on some AMD GPUs the freeworld VA-API drivers can cause a performance regression in games. If you notice lower FPS afterwards, revert with: sudo dnf swap mesa-va-drivers-freeworld mesa-va-drivers -y && sudo dnf swap mesa-vdpau-drivers-freeworld mesa-vdpau-drivers -y\"",
                 "dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y",
                 "dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y"
             ],
@@ -136,6 +137,25 @@
                 "sudo -u $ACTUAL_USER gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'suspend'"
             ],
             "description": "Configure power settings to prevent system sleep and hibernation"
+        },
+        "enable_wake_on_lan": {
+            "name": "Enable Wake-on-LAN",
+            "command": [
+                "color_echo \"yellow\" \"Enabling Wake-on-LAN...\"",
+                "dnf install -y ethtool",
+                "WOL_DEV=$(nmcli -t -f DEVICE,TYPE c show --active 2>/dev/null | grep ':ethernet' | head -1 | cut -d: -f1)",
+                "WOL_DEV=${WOL_DEV:-$(ls /sys/class/net 2>/dev/null | grep -E '^en' | head -1)}",
+                "if [ -n \"$WOL_DEV\" ]; then",
+                "  WOL_CON=$(nmcli -t -f NAME,DEVICE c show --active 2>/dev/null | grep \":$WOL_DEV\" | head -1 | cut -d: -f1)",
+                "  if [ -n \"$WOL_CON\" ]; then nmcli connection modify \"$WOL_CON\" 802-3-ethernet.wake-on-lan magic; fi",
+                "  ethtool -s \"$WOL_DEV\" wol g",
+                "  color_echo \"green\" \"Wake-on-LAN enabled on $WOL_DEV (persisted via NetworkManager).\"",
+                "  color_echo \"blue\" \"Note: Wake-on-LAN must also be enabled in the BIOS/UEFI settings of your machine.\"",
+                "else",
+                "  color_echo \"red\" \"No Ethernet interface detected - Wake-on-LAN not configured.\"",
+                "fi"
+            ],
+            "description": "Enable Wake-on-LAN (magic packet) on the primary Ethernet interface, persisted via NetworkManager. Requires WOL support in BIOS/UEFI."
         }
     },
     "essential_apps": {
@@ -474,20 +494,24 @@
                 "install_docker": {
                     "name": "Docker",
                     "command": [
-                        "dnf remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine --noautoremove",
-                        "dnf -y install dnf-plugins-core",
-                        "if command -v dnf4 &>/dev/null; then",
-                        "  dnf4 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo",
+                        "if rpm -q docker-ce >/dev/null 2>&1; then",
+                        "  color_echo \"yellow\" \"Docker is already installed - skipping installation.\"",
                         "else",
-                        "  dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo",
-                        "fi",
-                        "dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
-                        "systemctl enable --now docker",
-                        "systemctl enable --now containerd",
-                        "groupadd docker",
-                        "usermod -aG docker $ACTUAL_USER",
-                        "rm -rf $ACTUAL_HOME/.docker",
-                        "echo \"Docker installed successfully. Please log out and back in for the group changes to take effect.\""
+                        "  dnf remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine --noautoremove",
+                        "  dnf -y install dnf-plugins-core",
+                        "  if command -v dnf4 &>/dev/null; then",
+                        "    dnf4 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo",
+                        "  else",
+                        "    dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo",
+                        "  fi",
+                        "  dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
+                        "  systemctl enable --now docker",
+                        "  systemctl enable --now containerd",
+                        "  groupadd docker 2>/dev/null || true",
+                        "  usermod -aG docker $ACTUAL_USER",
+                        "  rm -rf $ACTUAL_HOME/.docker",
+                        "  echo \"Docker installed successfully. Please log out and back in for the group changes to take effect.\"",
+                        "fi"
 
                     ],
                     "description": "A platform for building, shipping, and running applications in containers"
@@ -759,6 +783,11 @@
                     "name": "xemu",
                     "command": "flatpak install -y flathub app.xemu.xemu",
                     "description": "A free and open-source application that emulates the original Microsoft Xbox game console"
+                },
+                "install_prism_launcher": {
+                    "name": "Prism Launcher",
+                    "command": "flatpak install -y flathub org.prismlauncher.PrismLauncher",
+                    "description": "An open-source Minecraft launcher that allows you to manage multiple instances, mods and versions"
                 }
             }
         },
@@ -865,6 +894,19 @@
                     "name": "Warp",
                     "command": "flatpak install -y flathub app.drey.Warp",
                     "description": "Securely send files via the internet or local network by exchanging a word-based code"
+                },
+                "install_dropbox": {
+                    "name": "Dropbox",
+                    "installation_types": {
+                        "Flatpak": {
+                            "command": "flatpak install -y flathub com.dropbox.Client"
+                        },
+                        "DNF": {
+                            "command": "dnf install -y dropbox nautilus-dropbox",
+                            "dependencies": ["enable_rpmfusion"]
+                        }
+                    },
+                    "description": "Cloud file storage and synchronization service (DNF option installs the daemon plus Nautilus integration from RPM Fusion)"
                 }
             }
         },
@@ -944,7 +986,7 @@
                     "core": {
                         "command": [
                             "dnf install -y curl cabextract xorg-x11-font-utils fontconfig",
-                            "rpm -i https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm"
+                            "rpm --nodigest --nofiledigest -i https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm"
                         ]
                     },
                     "windows": {
@@ -1024,6 +1066,42 @@
                     "sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.interface icon-theme \"Numix-Circle\""
                 ],
                 "description": "A flat colorful design icon theme for linux desktops"
+            },
+            "install_nerd_fonts": {
+                "name": "Nerd Fonts",
+                "installation_types": {
+                    "JetBrainsMono": {
+                        "command": [
+                            "dnf install -y wget unzip fontconfig",
+                            "wget -q --show-progress https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip -O /tmp/JetBrainsMono.zip",
+                            "mkdir -p $ACTUAL_HOME/.local/share/fonts/NerdFonts",
+                            "unzip -o /tmp/JetBrainsMono.zip -d $ACTUAL_HOME/.local/share/fonts/NerdFonts",
+                            "rm -f /tmp/JetBrainsMono.zip",
+                            "fc-cache -fv"
+                        ]
+                    },
+                    "FiraCode": {
+                        "command": [
+                            "dnf install -y wget unzip fontconfig",
+                            "wget -q --show-progress https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip -O /tmp/FiraCode.zip",
+                            "mkdir -p $ACTUAL_HOME/.local/share/fonts/NerdFonts",
+                            "unzip -o /tmp/FiraCode.zip -d $ACTUAL_HOME/.local/share/fonts/NerdFonts",
+                            "rm -f /tmp/FiraCode.zip",
+                            "fc-cache -fv"
+                        ]
+                    },
+                    "MesloLGS": {
+                        "command": [
+                            "dnf install -y wget unzip fontconfig",
+                            "wget -q --show-progress https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip -O /tmp/Meslo.zip",
+                            "mkdir -p $ACTUAL_HOME/.local/share/fonts/NerdFonts",
+                            "unzip -o /tmp/Meslo.zip -d $ACTUAL_HOME/.local/share/fonts/NerdFonts",
+                            "rm -f /tmp/Meslo.zip",
+                            "fc-cache -fv"
+                        ]
+                    }
+                },
+                "description": "Patched developer fonts with a high number of glyphs (icons) for terminals and code editors"
             }
         }
     }

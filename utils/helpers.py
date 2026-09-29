@@ -64,15 +64,21 @@ def should_quiet_redirect(command: str) -> bool:
     """
     # List of patterns that should not have quiet redirection
     noisy_patterns = ['dnf update', 'dnf upgrade', 'reboot']
-    
+
     # Never redirect color_echo messages with supported colors
     command_clean = command.strip()
     if command_clean.startswith('color_echo') and any(
-        command_clean.startswith(f'color_echo "{color}"') 
+        command_clean.startswith(f'color_echo "{color}"')
         for color in ['red', 'green', 'yellow', 'blue']
     ):
         return False
-        
+
+    # Never redirect shell control-flow lines (if/else/fi and friends):
+    # redirecting them can silence the whole block, including progress
+    # messages that must stay visible in quiet mode.
+    if command_clean.split(' ', 1)[0] in ('if', 'then', 'else', 'elif', 'fi', '}'):
+        return False
+
     return not any(pattern in command for pattern in noisy_patterns)
 
 def generate_options() -> Dict[str, Any]:

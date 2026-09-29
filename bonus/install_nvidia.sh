@@ -35,7 +35,7 @@ handle_error() {
     local exit_code=$?
     local message="$1"
     if [ $exit_code -ne 0 ]; then
-        color_echo \"red\" "ERROR: $message"
+        color_echo "red" "ERROR: $message"
         exit $exit_code
     fi
 }
@@ -70,6 +70,32 @@ echo "4. After installation, reboot your system"
 echo ""
 echo "If you're not comfortable with this process, please seek assistance from an experienced user."
 echo ""
+
+# Detect the NVIDIA GPU to pick the correct driver branch.
+# Maxwell, Pascal and Volta GPUs are no longer supported by the mainline
+# driver: they need the 580xx legacy branch, otherwise the GUI breaks.
+# Detection is name-based; the user always gets a chance to override.
+dnf install -y pciutils > /dev/null 2>&1
+GPU_MODEL=$(lspci 2>/dev/null | grep -iE 'vga.*nvidia|3d.*nvidia' | head -n1 | sed 's/^[^:]*: *//')
+DRIVER_PKG="akmod-nvidia"
+
+if echo "$GPU_MODEL" | grep -qiE 'GTX ?9[0-9]{2}|GTX ?10[0-9]{2}|GT ?10[0-9]{2}|GTX ?7[45]0|[89][0-9]{2}M |[89][0-9]{2}MX$|MX1[0-9]{2}|MX2[0-9]{2}|MX3[0-9]0|TITAN X|TITAN V|Quadro (M|P)[0-9]{3,4}|Quadro GV100'; then
+    DRIVER_PKG="akmod-nvidia-580xx"
+    color_echo "yellow" "Legacy NVIDIA GPU detected (Maxwell/Pascal/Volta)."
+    color_echo "yellow" "These GPUs need the 580xx legacy driver branch - the mainline driver would break the GUI."
+elif echo "$GPU_MODEL" | grep -qiE 'GT ?6[0-9]{2}|GTX ?6[0-9]{2}|GT ?7[0-9]{2}|GTX ?7[0-9]{2}|GTX ?TITAN($| Black| Z)|Quadro K[0-9]{3,4}'; then
+    color_echo "yellow" "Very old NVIDIA GPU detected (Kepler generation)."
+    color_echo "yellow" "The mainline driver does not support it; Kepler needs the 'akmod-nvidia-470xx' branch from RPM Fusion."
+fi
+
+echo "Detected GPU: ${GPU_MODEL:-unknown (no NVIDIA card found)}"
+echo "Driver package to install: $DRIVER_PKG"
+echo ""
+read -p "Continue with $DRIVER_PKG? Install a different package manually by typing its name, or press Enter to accept: " custom_pkg
+if [ -n "$custom_pkg" ]; then
+    DRIVER_PKG="$custom_pkg"
+fi
+echo ""
 echo "Please choose the installation method:"
 echo "1) RPM Fusion method (recommended)"
 echo "2) NVIDIA official .run file method"
@@ -90,9 +116,9 @@ case $choice in
         dnf update -y
         handle_error "Failed to update the system"
 
-        # Install NVIDIA drivers
-        color_echo "yellow" "Installing NVIDIA drivers..."
-        dnf install -y akmod-nvidia
+        # Install NVIDIA drivers (580xx legacy branch for Pascal/Maxwell/Volta GPUs)
+        color_echo "yellow" "Installing NVIDIA drivers ($DRIVER_PKG)..."
+        dnf install -y "$DRIVER_PKG"
         handle_error "Failed to install NVIDIA drivers"
 
         # Install CUDA (optional)
@@ -105,7 +131,14 @@ case $choice in
         ;;
     2)
         color_echo "blue" "NVIDIA official .run file method selected"
-        
+
+        # Warn legacy GPU users: the latest .run file will not support their card
+        if [ "$DRIVER_PKG" = "akmod-nvidia-580xx" ]; then
+            color_echo "red" "WARNING: the official .run installer only ships the latest mainline driver,"
+            color_echo "red" "which does NOT support your Maxwell/Pascal/Volta GPU. Use the RPM Fusion"
+            color_echo "red" "method (option 1) instead - it provides the 580xx legacy branch."
+        fi
+
         # Install necessary packages
         color_echo "yellow" "Installing necessary packages..."
         dnf install -y kernel-devel kernel-headers gcc make dkms acpid libglvnd-glx libglvnd-opengl libglvnd-devel pkgconfig
