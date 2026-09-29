@@ -21,10 +21,10 @@ Features:
 - Profile-based configurations
 - Customizable installation options
 
-Author: Karl Stefan Danisz
-Contact: https://mktr.sbs/linkedin
-GitHub: https://mktr.sbs/github
-Version: 25.08 / 100 Stars Edition
+Author: Karol Stefan Danisz
+Contact: https://www.linkedin.com/in/karol-stefan-danisz/
+GitHub: https://github.com/k-mktr
+Version: 26.09 / F45 / 200+ Stars Edition
 License: GNU General Public License v3.0
 
 Usage:
@@ -64,7 +64,7 @@ st.set_page_config(
         
         If you find this tool useful, consider sharing it with others.
 
-        Created by [Karl Stefan Danisz](https://mktr.sbs/linkedin)        
+        Created by [Karol Stefan Danisz](https://www.linkedin.com/in/karol-stefan-danisz/)        
         
         [GitHub Repository](https://github.com/k-mktr/fedora-things-to-do)
         """

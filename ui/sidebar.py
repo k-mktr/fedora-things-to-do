@@ -461,7 +461,7 @@ def render_sidebar() -> None:
     </div>
     <div style="text-align: center; padding: 21px 0;">
         <p style="margin-bottom: 5px;">Created with ❤️ for Open Source</p>
-        <a href="https://mktr.sbs/linkedin" target="_blank" style="text-decoration: none; color: #8da9c4;" aria-label="Karol Stefan Danisz LinkedIn">
+        <a href="https://www.linkedin.com/in/karol-stefan-danisz/" target="_blank" style="text-decoration: none; color: #8da9c4;" aria-label="Karol Stefan Danisz LinkedIn">
             <i>by Karol Stefan Danisz</i>
         </a>
     </div>
