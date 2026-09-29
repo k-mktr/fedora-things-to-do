@@ -138,6 +138,18 @@
             ],
             "description": "Configure power settings to prevent system sleep and hibernation"
         },
+        "update_flatpak_apps": {
+            "name": "Update Flatpak Applications",
+            "command": [
+                "color_echo \"yellow\" \"Updating Flatpak applications...\"",
+                "if command -v flatpak &>/dev/null; then",
+                "    flatpak update -y",
+                "else",
+                "    color_echo \"blue\" \"Flatpak not installed - skipping Flatpak updates.\"",
+                "fi"
+            ],
+            "description": "Update all Flatpak applications alongside the system upgrade (Flatpak apps are not touched by dnf upgrade)"
+        },
         "enable_wake_on_lan": {
             "name": "Enable Wake-on-LAN",
             "command": [
