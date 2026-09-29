@@ -497,7 +497,7 @@
                         "if rpm -q docker-ce >/dev/null 2>&1; then",
                         "  color_echo \"yellow\" \"Docker is already installed - skipping installation.\"",
                         "else",
-                        "  dnf remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine --noautoremove",
+                        "  dnf remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine --noautoremove || true",
                         "  dnf -y install dnf-plugins-core",
                         "  if command -v dnf4 &>/dev/null; then",
                         "    dnf4 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo",
@@ -509,7 +509,6 @@
                         "  systemctl enable --now containerd",
                         "  groupadd docker 2>/dev/null || true",
                         "  usermod -aG docker $ACTUAL_USER",
-                        "  rm -rf $ACTUAL_HOME/.docker",
                         "  echo \"Docker installed successfully. Please log out and back in for the group changes to take effect.\"",
                         "fi"
 
