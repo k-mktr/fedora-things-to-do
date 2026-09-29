@@ -5,6 +5,7 @@
 
 <p align="center">
   <a href="https://nattdf.streamlit.app"><img src="https://img.shields.io/badge/webapp-visit-brightgreen" alt="Webapp"></a>
+  <a href="https://github.com/k-mktr/fedora-things-to-do/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/k-mktr/fedora-things-to-do/ci.yml?branch=master&label=CI" alt="CI"></a>
   <img src="https://img.shields.io/github/last-commit/k-mktr/fedora-things-to-do" alt="Last Commit">
   <img src="https://img.shields.io/github/issues/k-mktr/fedora-things-to-do" alt="GitHub issues">
   <img src="https://img.shields.io/github/license/k-mktr/fedora-things-to-do" alt="GitHub license">
@@ -26,7 +27,20 @@ This project offers a Streamlit-based web application for generating a tailored 
 
 *(As of 2026-09-29)*
 
+- Added an **AI Coding Agents & Harnesses** category with 13 verified terminal agents: Hermes Agent, Claude Code, Codex CLI, OpenCode, Gemini CLI, Qwen Code, Aider, Goose, Crush, Droid, Amp, Pi and Unsloth Studio — preferring native installers over npm where available
+- Added a **Node.js 22 + npm** system option; apps that need it (Gemini CLI, Qwen Code, Crush, Pi) enable it automatically with a notification
+- Added **⚡ Quick Setup profiles**: one-click presets (Developer, Creative, Minimal, Everything…) plus save/load of custom profiles as JSON
+- Added UX niceties: **Select all / Clear all** per section (search-aware), selection counters, and an NVIDIA + codecs ordering heads-up
+- Added a **freshness radar** (`check_freshness.py` + weekly CI job): verifies every Flatpak ID and URL in the app catalog against Flathub and HTTP checks; opens/updates/closes a `stale-links` issue automatically — reporting only, never blocking
+- Added a full **CI pipeline** (pytest suite, generated-script shell-syntax checks, ruff lint) plus a non-blocking ruff config in `ruff.toml`
+- Added an `update_flatpak_apps` option to System Configuration
+- Updated Vivaldi to 8.2.4133.76 (DNF URL verified live)
+- Fixed DuckStation (removed from Flathub in 2024) — replaced with the official GitHub-release AppImage + desktop entry
+- Fixed LibreWolf Flatpak ID (`io.gitlab.librewolf-community`) and Thunderbird Flatpak ID (lowercase `org.mozilla.thunderbird` — Flatpak IDs are case-sensitive)
 - Fixed multimedia codec installation on Fedora 43/44: DNF5 no longer accepts `@group` syntax in `dnf update`, switched to `dnf group install` (Issue #35)
+<details>
+<summary>Previous changes (2026-09-25)</summary>
+
 - Fixed RPM Fusion enabling step (`dnf update @core` → `dnf group install core`) for the same reason
 - Fixed Microsoft fonts installation on Fedora 43+ (`rpm --nodigest --nofiledigest -i`) (Issue #31)
 - Fixed Docker installation conflicting with Fedora's own `moby-engine`/`docker-compose` packages (Issue #22)
@@ -39,6 +53,7 @@ This project offers a Streamlit-based web application for generating a tailored 
 - Kept RPM Fusion URLs on `download1.rpmfusion.org`: the `mirrors.` hostname does not serve repository metadata
 - Fixed quiet-mode script generation redirecting `if`/`else`/`fi` control-flow lines
 - New logo (F45 / 200+ Stars Edition) and refreshed README
+</details>
 
 <details>
 <summary>Previous changes (2025-08-04)</summary>
@@ -116,17 +131,20 @@ Check out the [Debian Things To Do](https://github.com/k-mktr/debian-things-to-d
 
 ## Features
 
-- **System Configuration**: Set hostname, configure DNF, enable auto-updates, install SSH, check for firmware updates, and enable RPM Fusion repositories.
+- **System Configuration**: Set hostname, configure DNF, enable auto-updates, install SSH, check for firmware updates, enable RPM Fusion repositories, install Node.js + npm, or update Flatpak apps.
 - **Essential Apps**: Install popular command-line tools and utilities with detailed descriptions.
 - **Additional Apps**: Choose from a wide range of applications categorized by purpose:
   - Internet & Communication (browsers, email clients, messaging apps)
   - Office & Productivity
   - Coding & DevOps
+  - AI Coding Agents & Harnesses (Hermes Agent, Claude Code, Codex CLI, OpenCode, Gemini CLI, Aider, Goose and more)
   - Media & Graphics
   - Gaming & Emulation
   - System Tools
   - Remote Access & Networking
   - File Sharing & Download
+- **⚡ Quick Setup Profiles**: one-click presets plus export/import of custom profiles as JSON.
+- **UX niceties**: search-aware Select all / Clear all per section and live selection counters.
 - **Customization**: 
   - Install fonts (Windows, Google, Adobe Source)
   - Install themes (e.g., Tela Icon Theme)
@@ -139,8 +157,8 @@ Check out the [Debian Things To Do](https://github.com/k-mktr/debian-things-to-d
 
 ## Requirements
 
-- Python 3.7+
-- Streamlit
+- Python 3.12+
+- Streamlit 1.49+
 - A modern web browser
 
 ## Installation
@@ -220,10 +238,10 @@ Future plans for this project include:
 - ✅ Adding Advanced Section for a custom Shell Commands
 - ✅ Further organizing the code, improving readability
 - ✅ Improving the Quiet Mode code logic
-- 🚧 Adding more applications and configuration options
 - ✅ Implementing predefined configuration Profiles (one-click apply + save/load custom selections)
-- 🚧 Developing versions for other Linux distributions (e.g., Debian/Ubuntu)
-- Implementing a feature to save and load custom profiles 
+- ✅ Developing versions for other Linux distributions (Debian edition available)
+- ✅ Automated freshness checking of the application catalog (weekly CI radar)
+- 🚧 Adding more applications and configuration options 
 
 
 ## Star History
