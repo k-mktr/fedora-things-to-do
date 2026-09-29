@@ -285,7 +285,7 @@ def render_sidebar() -> None:
 
                 ux_select_all_buttons(
                     "essential",
-                    [(app["name"], options["essential_apps"].get(app["name"], False))
+                    [(app["name"], st.session_state.get(f"essential_app_{app['name']}", False))
                      for app in essential_apps if isinstance(app, dict) and "name" in app],
                     visible_essential,
                     search_query,
@@ -353,7 +353,7 @@ def render_sidebar() -> None:
 
                         ux_select_all_buttons(
                             f"addcat_{category}",
-                            [(app_id, (options["additional_apps"].get(category, {}).get(app_id, {}) or {}).get('selected', False))
+                            [(app_id, st.session_state.get(f"app_{category}_{app_id}", False))
                              for app_id, app_info in category_data["apps"].items() if isinstance(app_info, dict)],
                             visible_cat,
                             search_query,

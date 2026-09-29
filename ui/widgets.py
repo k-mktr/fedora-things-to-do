@@ -17,11 +17,13 @@ def selection_counter(label: str, items: List[Tuple[str, bool]]) -> None:
     if total == 0:
         return
     if selected == 0:
-        color = "#8da9c4"  # muted blue
+        color = "gray"
     elif selected == total:
-        color = "#2ecc71"  # green
+        color = "green"
     else:
-        color = "#f39c12"  # orange
+        color = "orange"
+    # NOTE: Streamlit's colored-text syntax supports named colors only -
+    # hex values render literally (raw markup leak).
     st.caption(f":{color}[**{selected}** / {total} {label}]")
 
 
@@ -38,7 +40,7 @@ def select_all_buttons(
     set_value: Callable[[str, bool], None],
 ) -> None:
     """
-    Render Select all / Clear all buttons for a section.
+    Render "✓ All" / "✗ None" buttons for a section.
 
     The buttons operate on Streamlit widget session keys through the
     ``set_value`` callback (a widget key -> checkbox assignment), so they work
@@ -56,14 +58,17 @@ def select_all_buttons(
         return
     selection_counter("", items)
 
-    col_all, col_none, _ = st.columns([1, 1, 2])
+    # Two equal columns without a spacer: sidebar is narrow, a third
+    # spacer column shrinks the buttons until their labels clip.
+    col_all, col_none = st.columns([1, 1])
     target_ids = visible_ids if search_query else [i for i, _ in items]
     action = None
     with col_all:
-        if st.button("Select all", key=f"{scope_key}_select_all", use_container_width=True):
+        # Short labels: sidebar columns are narrow and longer text clips.
+        if st.button("✓ All", key=f"{scope_key}_select_all", use_container_width=True):
             action = True
     with col_none:
-        if st.button("Clear all", key=f"{scope_key}_clear_all", use_container_width=True):
+        if st.button("✗ None", key=f"{scope_key}_clear_all", use_container_width=True):
             action = False
     if action is not None:
         for item_id in target_ids:
