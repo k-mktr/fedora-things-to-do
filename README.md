@@ -221,7 +221,7 @@ Future plans for this project include:
 - ✅ Further organizing the code, improving readability
 - ✅ Improving the Quiet Mode code logic
 - 🚧 Adding more applications and configuration options
-- 🚧 Implementing predefined configuration Profiles
+- ✅ Implementing predefined configuration Profiles (one-click apply + save/load custom selections)
 - 🚧 Developing versions for other Linux distributions (e.g., Debian/Ubuntu)
 - Implementing a feature to save and load custom profiles 
 
