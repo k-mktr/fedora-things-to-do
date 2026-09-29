@@ -77,7 +77,7 @@ def initialize_state():
     """
     if 'app_state' not in st.session_state:
         # Create AppState instance
-        app_state = AppState.get_instance()
+        AppState.get_instance()
         logging.info("Application state initialized")
 
 def main():

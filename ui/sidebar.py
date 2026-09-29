@@ -1,11 +1,16 @@
 import streamlit as st
 import re
 import logging
-from typing import Dict, Any, Tuple
+from typing import Any, Callable
 
 from utils import load_nattd, generate_options, load_bonus_scripts, AppState
 from ui.widgets import select_all_buttons as ux_select_all_buttons
 from ui.widgets import selection_counter as ux_selection_counter
+
+def format_windows_font_label(x: Any) -> str:
+    """Label the Windows-fonts install-method radio options nicely."""
+    return "Core Fonts" if x == "core" else "Windows Fonts"
+
 
 def matches_search(item_name: str, description: str, search_query: str) -> bool:
     """
@@ -414,12 +419,12 @@ def render_sidebar() -> None:
 
                         # Apps with multiple installation methods get a radio choice
                         if selected and 'installation_types' in app_info:
+                            fmt: Callable[[Any], str] | None = None
                             if app_id == "install_microsoft_fonts":
                                 radio_label = "Windows Fonts Installation Method"
-                                fmt = lambda x: "Core Fonts" if x == "core" else "Windows Fonts"
+                                fmt = format_windows_font_label
                             else:
                                 radio_label = f"Choose {app_info['name']} installation type:"
-                                fmt = None
                             choices = list(app_info['installation_types'].keys())
                             default_type = prev.get('installation_type') if isinstance(prev, dict) else None
                             idx = choices.index(default_type) if default_type in choices else 0

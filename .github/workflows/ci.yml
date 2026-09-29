@@ -10,10 +10,10 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -31,21 +31,20 @@ jobs:
           bash -n template.sh
           for f in bonus/*.sh; do bash -n "$f"; done
 
-  # Lint the Python application code; non-blocking for now so existing
-  # issues don't gate unrelated PRs.
+  # Lint the Python application code (blocking: ruleset is fixed in
+  # pyproject.toml so the result is deterministic).
   lint:
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
       - name: Install ruff
-        run: pip install ruff
+        run: pip install "ruff==0.16.9"
 
-      - name: Ruff (non-blocking)
+      - name: Ruff
         run: ruff check .

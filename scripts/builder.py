@@ -6,7 +6,7 @@ including dependency resolution and script composition.
 
 import logging
 import copy
-from typing import Dict, Any, List, Union, Optional, Tuple
+from typing import Dict, Any, List, Tuple
 from utils import load_nattd, should_quiet_redirect
 
 # Constants for dependencies and configurations
@@ -527,7 +527,6 @@ def _summarize_selection(options: Dict[str, Any]) -> str:
                 lines.append(app.get("name", app))
 
         for category, category_data in (options.get("additional_apps") or {}).items():
-            cat_name = nattd_data.get("additional_apps", {}).get(category, {}).get("name", category)
             for app_id, app_data in category_data.items():
                 if isinstance(app_data, dict) and app_data.get("selected", False):
                     app_config = nattd_data.get("additional_apps", {}).get(category, {}).get("apps", {}).get(app_id, {})
@@ -551,7 +550,7 @@ def _summarize_selection(options: Dict[str, Any]) -> str:
         if not lines:
             return "#   (nothing selected - system upgrade only)"
 
-        return "\n".join(f"#   - {l}" for l in lines)
+        return "\n".join(f"#   - {entry}" for entry in lines)
     except Exception as e:
         logging.warning(f"Could not summarize selection for header: {e}")
         return "#   (summary unavailable)"

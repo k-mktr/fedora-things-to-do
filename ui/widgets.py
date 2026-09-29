@@ -1,5 +1,5 @@
 """Small UX helpers shared by the sidebar sections (select-all, counters)."""
-from typing import Any, Callable, Dict, List, Tuple
+from typing import Callable, List, Tuple
 
 import streamlit as st
 

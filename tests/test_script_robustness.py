@@ -1,6 +1,5 @@
 """Tests for script robustness features: failure tracking, metadata header, docker safety."""
 import os
-import re
 import subprocess
 import sys
 import unittest

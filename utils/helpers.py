@@ -1,7 +1,7 @@
 import json
 import logging
 import streamlit as st
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 
 # Configure logging
 logging.basicConfig(
