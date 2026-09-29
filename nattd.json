@@ -992,7 +992,7 @@
                     "windows": {
                         "command": [
                             "dnf install -y wget cabextract xorg-x11-font-utils fontconfig",
-                            "wget -O /tmp/winfonts.zip https://mktr.sbs/fonts",
+                            "wget -O /tmp/winfonts.zip https://github.com/k-mktr/fedora-things-to-do/releases/download/fonts/win-fonts.zip",
                             "mkdir -p $ACTUAL_HOME/.local/share/fonts/windows",
                             "unzip /tmp/winfonts.zip -d $ACTUAL_HOME/.local/share/fonts/windows",
                             "rm -f /tmp/winfonts.zip",
