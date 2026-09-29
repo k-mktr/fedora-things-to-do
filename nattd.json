@@ -339,7 +339,7 @@
                             "command": "dnf install -y thunderbird"
                         },
                         "Flatpak": {
-                            "command": "flatpak install -y flathub org.mozilla.Thunderbird"
+                            "command": "flatpak install -y flathub org.mozilla.thunderbird"
                         }
                     }
                 },
@@ -909,7 +909,21 @@
                 },
                 "install_duckstation": {
                     "name": "DuckStation",
-                    "command": "flatpak install -y flathub org.duckstation.DuckStation",
+                    "command": [
+                        "color_echo \"yellow\" \"Installing DuckStation (PlayStation 1 emulator)...\"",
+                        "ACTUAL_HOME=$(getent passwd $(logname 2>/dev/null || echo \"$USER\") | cut -d: -f6)",
+                        "mkdir -p \"$ACTUAL_HOME/.local/bin\" \"$ACTUAL_HOME/.local/share/applications\"",
+                        "wget -q --show-progress -O \"$ACTUAL_HOME/.local/bin/DuckStation-x64.AppImage\" \"https://github.com/stenzek/duckstation/releases/latest/download/DuckStation-x64.AppImage\"",
+                        "chmod +x \"$ACTUAL_HOME/.local/bin/DuckStation-x64.AppImage\"",
+                        "cat > \"$ACTUAL_HOME/.local/share/applications/duckstation.desktop\" <<EOF",
+                        "[Desktop Entry]",
+                        "Type=Application",
+                        "Name=DuckStation",
+                        "Exec=$ACTUAL_HOME/.local/bin/DuckStation-x64.AppImage",
+                        "Categories=Game;Emulator;",
+                        "EOF",
+                        "color_echo \"green\" \"DuckStation installed.\""
+                    ],
                     "description": "An simulator/emulator of the Sony PlayStation(TM) console"
                 },
                 "install_ppsspp": {

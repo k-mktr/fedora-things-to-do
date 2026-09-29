@@ -1,0 +1,46 @@
+name: Freshness radar
+
+# Non-blocking resource radar: checks that every Flatpak id and URL in
+# nattd.json still exists. NEVER fails the build - it reports via a
+# job summary, an artifact, and an auto-managed "stale-links" issue.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    - cron: "0 5 * * 1" # Mondays 05:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run freshness check
+        id: check
+        run: |
+          python3 check_freshness.py --report freshness-report.md | tee freshness-output.txt
+          n_dead=$(grep -oP '(?<=🧟 )\d+(?= dead)' freshness-output.txt || echo 0)
+          echo "dead=$n_dead" >> "$GITHUB_OUTPUT"
+
+      - name: Write job summary
+        if: always()
+        run: cat freshness-report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: freshness-report
+          path: freshness-report.md
+          retention-days: 30
+
+      - name: Update stale-links issue
+        if: github.event_name != 'pull_request'
+        run: python3 check_freshness.py --report freshness-report.md --github
