@@ -4,6 +4,8 @@ import logging
 from typing import Dict, Any, Tuple
 
 from utils import load_nattd, generate_options, load_bonus_scripts, AppState
+from ui.widgets import select_all_buttons as ux_select_all_buttons
+from ui.widgets import selection_counter as ux_selection_counter
 
 def matches_search(item_name: str, description: str, search_query: str) -> bool:
     """
@@ -267,6 +269,24 @@ def render_sidebar() -> None:
         try:
             if "essential_apps" in nattd_data and "apps" in nattd_data["essential_apps"]:
                 essential_apps = nattd_data["essential_apps"]["apps"]
+                visible_essential = [
+                    app["name"] for app in essential_apps
+                    if isinstance(app, dict) and "name" in app and "description" in app
+                    and matches_search(app["name"], app["description"], search_query)
+                ]
+
+                def _set_essential(app_name: str, value: bool):
+                    st.session_state[f"essential_app_{app_name}"] = value
+
+                ux_select_all_buttons(
+                    "essential",
+                    [(app["name"], options["essential_apps"].get(app["name"], False))
+                     for app in essential_apps if isinstance(app, dict) and "name" in app],
+                    visible_essential,
+                    search_query,
+                    _set_essential,
+                )
+
                 for app in essential_apps:
                     if isinstance(app, dict) and "name" in app and "description" in app and matches_search(app["name"], app["description"], search_query):
                         options["essential_apps"][app["name"]] = st.checkbox(
@@ -275,6 +295,11 @@ def render_sidebar() -> None:
                             key=f"essential_app_{app['name']}",
                             help=app["description"]
                         )
+                ux_selection_counter(
+                    "Essential Applications",
+                    [(app["name"], options["essential_apps"].get(app["name"], False))
+                     for app in essential_apps if isinstance(app, dict) and "name" in app],
+                )
             else:
                 st.sidebar.warning("No essential applications found")
         except Exception as e:
@@ -310,7 +335,26 @@ def render_sidebar() -> None:
                         if category not in options["additional_apps"]:
                             options["additional_apps"][category] = {}
                         category_has_matches = False
-                        
+
+                        # Select all / Clear all for this category (search-aware)
+                        visible_cat = [
+                            app_id for app_id, app_info in category_data["apps"].items()
+                            if isinstance(app_info, dict) and "name" in app_info and "description" in app_info
+                            and matches_search(app_info['name'], app_info['description'], search_query)
+                        ]
+
+                        def _set_category_app(app_id: str, value: bool, _cat=category):
+                            st.session_state[f"app_{_cat}_{app_id}"] = value
+
+                        ux_select_all_buttons(
+                            f"addcat_{category}",
+                            [(app_id, (options["additional_apps"].get(category, {}).get(app_id, {}) or {}).get('selected', False))
+                             for app_id, app_info in category_data["apps"].items() if isinstance(app_info, dict)],
+                            visible_cat,
+                            search_query,
+                            _set_category_app,
+                        )
+
                         for app_id, app_info in category_data["apps"].items():
                             if isinstance(app_info, dict) and "name" in app_info and "description" in app_info and matches_search(app_info['name'], app_info['description'], search_query):
                                 app_selected = st.checkbox(
@@ -395,6 +439,16 @@ def render_sidebar() -> None:
                                 st.warning("⚠️ This method requires a valid Windows license. "
                                         "Please ensure you comply with Microsoft's licensing terms.")
                                 st.markdown("[Learn more about Windows fonts licensing](https://learn.microsoft.com/en-us/typography/fonts/font-faq)")
+
+                # Selection counter for this section
+                def _cust_selected(app_id: str) -> bool:
+                    v = options["customization"].get(app_id, False)
+                    return v.get('selected', False) if isinstance(v, dict) else bool(v)
+
+                ux_selection_counter(
+                    "Customization options",
+                    [(app_id, _cust_selected(app_id)) for app_id in customization_apps],
+                )
             else:
                 st.sidebar.warning("No customization options found")
         except Exception as e:
@@ -439,6 +493,18 @@ def render_sidebar() -> None:
         try:
             bonus_scripts = load_bonus_scripts()
             if bonus_scripts:
+                # Heads-up: NVIDIA driver installation conflicts with codec/GPU driver
+                # swaps done in the same run - a reboot must sit between them.
+                _nvidia_selected = "Install Nvidia" in bonus_scripts
+                if _nvidia_selected:
+                    codec_options = ["install_multimedia_codecs", "install_intel_codecs", "install_amd_codecs"]
+                    has_codec = any(options["system_config"].get(c, False) for c in codec_options)
+                    if has_codec:
+                        st.warning(
+                            "⚠️ **NVIDIA driver + codecs in one run:** the driver installer needs a "
+                            "reboot before (or after) codec driver swaps. Recommended order: run the "
+                            "main script first, reboot, then download and run the NVIDIA script."
+                        )
                 for script_name, script_data in bonus_scripts.items():
                     st.markdown(f"**{script_name}**")
                     st.markdown(script_data["description"])
