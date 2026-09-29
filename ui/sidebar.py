@@ -44,6 +44,52 @@ def render_sidebar() -> None:
     )
     
     st.sidebar.header("Configuration Options")
+
+    # Quick Setup: predefined profiles + export/import of the current selection
+    with st.sidebar.expander("⚡ Quick Setup"):
+        try:
+            from profiles import PROFILES, apply_profile, apply_imported_selection
+            profile_names = list(PROFILES.keys())
+            profile_name = st.selectbox(
+                "Predefined profile",
+                profile_names,
+                key="profile_select",
+                help="Applying a profile replaces the current selection with the profile's contents."
+            )
+            st.caption(PROFILES[profile_name].get("description", ""))
+
+            if st.button("✅ Apply profile", key="profile_apply", use_container_width=True):
+                apply_profile(app_state, profile_name)
+                st.toast(f"Profile '{profile_name}' applied.", icon="⚡")
+                st.rerun()
+
+            st.divider()
+
+            exported = st.session_state.get("app_state")
+            import json as _json
+            export_data = _json.dumps(
+                exported.get_options() if exported else {}, indent=2, default=str)
+            st.download_button(
+                "⬇️ Export my selection",
+                data=export_data,
+                file_name="nattd-profile.json",
+                mime="application/json",
+                key="profile_export",
+                use_container_width=True,
+            )
+
+            uploaded = st.file_uploader("⬆️ Import selection (JSON)", type=["json"], key="profile_import")
+            if uploaded is not None and st.button("Load imported selection", key="profile_import_btn", use_container_width=True):
+                try:
+                    apply_imported_selection(app_state, _json.loads(uploaded.getvalue().decode("utf-8")))
+                    st.toast("Selection imported.", icon="⬆️")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Could not import selection: {e}")
+        except Exception as e:
+            st.sidebar.error(f"Quick Setup error: {e}")
+            logging.error(f"Quick Setup rendering error: {str(e)}", exc_info=True)
+
     
     # Initialize options in the app state if not already present
     options = app_state.get_options()
@@ -164,7 +210,7 @@ def render_sidebar() -> None:
                         )
                     
                     if option == "set_hostname" and options["system_config"][option]:
-                        hostname = st.text_input("Enter the new hostname:", value=app_state.hostname or "")
+                        hostname = st.text_input("Enter the new hostname:", value=app_state.hostname or "", key="hostname_input")
                         options["hostname"] = hostname
                         app_state.hostname = hostname
 
@@ -311,27 +357,41 @@ def render_sidebar() -> None:
                 customization_apps = nattd_data["customization"]["apps"]
                 for app_id, app_info in customization_apps.items():
                     if isinstance(app_info, dict) and "name" in app_info and "description" in app_info and matches_search(app_info['name'], app_info['description'], search_query):
-                        options["customization"][app_id] = st.checkbox(
+                        # previous stored value can be a bool or a dict with 'selected'
+                        prev = options["customization"].get(app_id, False)
+                        prev_selected = prev.get('selected', False) if isinstance(prev, dict) else bool(prev)
+                        selected = st.checkbox(
                             app_info['name'],
-                            value=options["customization"].get(app_id, False),
+                            value=prev_selected,
                             key=f"customization_{app_id}",
                             help=app_info['description']
                         )
-                        
-                        # Special handling for Windows Fonts
-                        if app_id == "install_microsoft_fonts" and options["customization"][app_id]:
+                        options["customization"][app_id] = selected
+
+                        # Apps with multiple installation methods get a radio choice
+                        if selected and 'installation_types' in app_info:
+                            if app_id == "install_microsoft_fonts":
+                                radio_label = "Windows Fonts Installation Method"
+                                fmt = lambda x: "Core Fonts" if x == "core" else "Windows Fonts"
+                            else:
+                                radio_label = f"Choose {app_info['name']} installation type:"
+                                fmt = None
+                            choices = list(app_info['installation_types'].keys())
+                            default_type = prev.get('installation_type') if isinstance(prev, dict) else None
+                            idx = choices.index(default_type) if default_type in choices else 0
+                            radio = st.radio(
+                                radio_label,
+                                choices,
+                                index=idx,
+                                format_func=fmt,
+                                key=f"customization_{app_id}_install_type",
+                            )
                             options["customization"][app_id] = {
                                 'selected': True,
-                                'installation_type': st.radio(
-                                    "Windows Fonts Installation Method",
-                                    ('core', 'windows'),
-                                    format_func=lambda x: "Core Fonts" if x == "core" else "Windows Fonts",
-                                    key=f"customization_{app_id}_install_type",
-                                    help="Choose how to install Windows fonts."
-                                )
+                                'installation_type': radio
                             }
-                            
-                            if options["customization"][app_id]['installation_type'] == 'windows':
+
+                            if app_id == "install_microsoft_fonts" and radio == 'windows':
                                 st.warning("⚠️ This method requires a valid Windows license. "
                                         "Please ensure you comply with Microsoft's licensing terms.")
                                 st.markdown("[Learn more about Windows fonts licensing](https://learn.microsoft.com/en-us/typography/fonts/font-faq)")
