@@ -138,6 +138,17 @@
             ],
             "description": "Configure power settings to prevent system sleep and hibernation"
         },
+        "install_nodejs": {
+            "name": "Node.js 22 + npm",
+            "command": [
+                "color_echo \"yellow\" \"Installing Node.js and npm...\"",
+                "dnf install -y nodejs npm",
+                "node --version",
+                "npm --version",
+                "color_echo \"green\" \"Node.js and npm installed successfully.\""
+            ],
+            "description": "JavaScript runtime and package manager, required by several AI coding agents (Gemini CLI, Qwen Code, Crush, Pi, npm variant of Claude Code) and other Node-based tools"
+        },
         "update_flatpak_apps": {
             "name": "Update Flatpak Applications",
             "command": [
@@ -594,6 +605,132 @@
                     "name": "Android Studio",
                     "command": "flatpak install -y flathub com.google.AndroidStudio",
                     "description": "The official Integrated Development Environment (IDE) for Android app development"
+                }
+            }
+        },
+        "ai_agents": {
+            "name": "AI Coding Agents & Harnesses",
+            "apps": {
+                "install_hermes_agent": {
+                    "name": "Hermes Agent",
+                    "command": [
+                        "color_echo \"yellow\" \"Installing Hermes Agent (Nous Research)...\"",
+                        "curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash",
+                        "color_echo \"blue\" \"Run 'hermes setup' to pick a model/provider, then 'hermes' to start.\""
+                    ],
+                    "description": "Open-source, provider-agnostic AI agent framework: terminal, TUI, desktop app, and messaging-platform gateway (Telegram/Discord/Slack and more), with skills and persistent memory"
+                },
+                "install_claude_code": {
+                    "name": "Claude Code",
+                    "installation_types": {
+                        "Native": {
+                            "command": [
+                                "curl -fsSL https://claude.ai/install.sh | bash",
+                                "color_echo \"blue\" \"Run 'claude' in a project directory to start (login on first run).\""
+                            ]
+                        },
+                        "npm": {
+                            "command": [
+                                "npm install -g @anthropic-ai/claude-code",
+                                "color_echo \"blue\" \"Run 'claude' in a project directory to start (login on first run).\""
+                            ],
+                            "dependencies": ["install_nodejs"]
+                        }
+                    },
+                    "description": "Anthropic's agentic coding CLI (native installer recommended; npm variant requires Node.js)"
+                },
+                "install_codex_cli": {
+                    "name": "Codex CLI",
+                    "command": [
+                        "curl -fsSL https://chatgpt.com/codex/install.sh | sh",
+                        "color_echo \"blue\" \"Run 'codex' in a project directory and sign in on first start.\""
+                    ],
+                    "description": "OpenAI's open-source coding agent CLI with sandboxed command execution"
+                },
+                "install_opencode": {
+                    "name": "OpenCode",
+                    "command": [
+                        "curl -fsSL https://opencode.ai/install | bash",
+                        "color_echo \"blue\" \"Run 'opencode' in a project directory to start.\""
+                    ],
+                    "description": "Provider-agnostic open-source terminal coding agent (also available via pacman/AUR on Arch)"
+                },
+                "install_gemini_cli": {
+                    "name": "Gemini CLI",
+                    "command": [
+                        "npm install -g @google/gemini-cli",
+                        "color_echo \"blue\" \"Run 'gemini' in a project directory to start.\""
+                    ],
+                    "dependencies": ["install_nodejs"],
+                    "description": "Google's open-source Gemini agent for the terminal (requires Node.js 18+)"
+                },
+                "install_qwen_code": {
+                    "name": "Qwen Code",
+                    "command": [
+                        "npm install -g @qwen-code/qwen-code@latest",
+                        "color_echo \"blue\" \"Run 'qwen' in a project directory to start.\""
+                    ],
+                    "dependencies": ["install_nodejs"],
+                    "description": "Alibaba's Qwen coding agent CLI, fork of Gemini CLI adapted for Qwen models (requires Node.js 22+)"
+                },
+                "install_aider": {
+                    "name": "Aider",
+                    "command": [
+                        "curl -LsSf https://aider.chat/install.sh | sh",
+                        "color_echo \"blue\" \"Run 'aider' in a git repository to start pair-coding.\""
+                    ],
+                    "description": "AI pair-programming tool that edits code in your local git repository with automatic commits"
+                },
+                "install_goose": {
+                    "name": "Goose",
+                    "command": [
+                        "curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash",
+                        "color_echo \"blue\" \"Run 'goose' to start; 'goose configure' to change providers/extensions.\""
+                    ],
+                    "description": "Block's (Square) open-source extensible AI agent for automating engineering tasks"
+                },
+                "install_crush": {
+                    "name": "Crush",
+                    "command": [
+                        "npm install -g @charmland/crush",
+                        "color_echo \"blue\" \"Run 'crush' in a project directory to start.\""
+                    ],
+                    "dependencies": ["install_nodejs"],
+                    "description": "Charmbracelet's terminal coding agent with a beautiful TUI, multi-provider support"
+                },
+                "install_droid": {
+                    "name": "Droid CLI",
+                    "command": [
+                        "dnf install -y xdg-utils",
+                        "curl -fsSL https://app.factory.ai/cli | sh",
+                        "color_echo \"blue\" \"Run 'droid' in a project directory to start.\""
+                    ],
+                    "description": "Factory.ai's coding agent CLI for the terminal (xdg-utils required on Linux)"
+                },
+                "install_amp": {
+                    "name": "Amp",
+                    "command": [
+                        "curl -fsSL https://ampcode.com/install.sh | bash",
+                        "color_echo \"blue\" \"Run 'amp' in a project directory to start.\""
+                    ],
+                    "description": "Sourcegraph's agentic coding tool, free tier with model orchestration"
+                },
+                "install_pi_agent": {
+                    "name": "Pi",
+                    "command": [
+                        "npm install -g --ignore-scripts @earendil-works/pi-coding-agent",
+                        "color_echo \"blue\" \"Run 'pi' in a project directory to start.\""
+                    ],
+                    "dependencies": ["install_nodejs"],
+                    "description": "Earendil's minimal open-source coding agent CLI (requires Node.js 22.19+)"
+                },
+                "install_unsloth_studio": {
+                    "name": "Unsloth Studio",
+                    "command": [
+                        "curl -fsSL https://unsloth.ai/install.sh | sh",
+                        "color_echo \"blue\" \"Launch with: unsloth studio -H 0.0.0.0 -p 8888\""
+                    ],
+                    "description": "Unsloth's browser-based UI for fine-tuning and running LLMs locally (GPU recommended)"
                 }
             }
         },

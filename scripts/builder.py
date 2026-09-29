@@ -16,7 +16,8 @@ DEFAULT_HOSTNAME = "fedora-workstation"
 
 # Dependency descriptions for notifications
 DEPENDENCY_MESSAGES = {
-    DEPENDENCY_RPMFUSION: "RPM Fusion has been automatically enabled because it's required for {app_name}. This provides necessary packages and codecs."
+    DEPENDENCY_RPMFUSION: "RPM Fusion has been automatically enabled because it's required for {app_name}. This provides necessary packages and codecs.",
+    "install_nodejs": "Node.js + npm will be installed automatically because {app_name} requires them."
 }
 
 def check_dependencies(options: Dict[str, Any]) -> Dict[str, Any]:
@@ -159,24 +160,31 @@ def process_installation_dependencies(app_data: Dict[str, Any], install_type: st
     updated_options = copy.deepcopy(options)
     notifications = []
     
-    if ('installation_types' in app_data and 
-        install_type in app_data['installation_types'] and 
-        'dependencies' in app_data['installation_types'][install_type]):
-        
-        deps = app_data['installation_types'][install_type]['dependencies']
-        if not isinstance(deps, list):
-            deps = [deps]
-            
-        for dep in deps:
-            if dep == DEPENDENCY_RPMFUSION:
+    # Collect dependencies: app-level first, then install-type-level
+    deps: List[Any] = []
+
+    if 'dependencies' in app_data and (install_type is None or 'installation_types' not in app_data):
+        d = app_data['dependencies']
+        deps.extend(d if isinstance(d, list) else [d])
+
+    if (install_type is not None and 'installation_types' in app_data and
+            install_type in app_data['installation_types'] and
+            'dependencies' in app_data['installation_types'][install_type]):
+        d = app_data['installation_types'][install_type]['dependencies']
+        deps.extend(d if isinstance(d, list) else [d])
+
+    for dep in deps:
+            # Only dependencies with a user-facing message are auto-enabled here;
+            # unknown deps are passed through untouched (validated by CI).
+            if dep in DEPENDENCY_MESSAGES:
                 if "system_config" not in updated_options:
                     updated_options["system_config"] = {}
-                # Only add notification if RPM Fusion wasn't already enabled
-                if not updated_options["system_config"].get(DEPENDENCY_RPMFUSION, False):
-                    updated_options["system_config"][DEPENDENCY_RPMFUSION] = True
+                # Only add notification if dependency wasn't already enabled
+                if not updated_options["system_config"].get(dep, False):
+                    updated_options["system_config"][dep] = True
                     app_name = app_data.get('name', 'this application')
-                    notifications.append(DEPENDENCY_MESSAGES[DEPENDENCY_RPMFUSION].format(app_name=app_name))
-                    logging.info(f"RPM Fusion automatically enabled due to {app_name} dependency")
+                    notifications.append(DEPENDENCY_MESSAGES[dep].format(app_name=app_name))
+                    logging.info(f"{dep} automatically enabled due to {app_name} dependency")
     
     return updated_options, notifications
 
@@ -434,9 +442,19 @@ def process_all_dependencies(options: Dict[str, Any], nattd_data: Dict[str, Any]
                     continue
                     
                 app_config = nattd_data['additional_apps'][category]['apps'][app_id]
-                if ('installation_types' in app_config and 
-                    'installation_type' in app_data):
-                    install_type = app_data['installation_type']
+
+                # App-level dependencies (apps without installation_types declare
+                # them directly on the app entry).
+                if 'dependencies' in app_config:
+                    updated_options, notifications = process_installation_dependencies(
+                        app_config, None, updated_options)
+                    all_notifications.extend(notifications)
+
+                if 'installation_types' in app_config:
+                    # The sidebar always sets installation_type for multi-method apps;
+                    # fall back to the first declared type for robustness (imports,
+                    # programmatic use).
+                    install_type = app_data.get('installation_type') or list(app_config['installation_types'].keys())[0]
                     updated_options, notifications = process_installation_dependencies(app_config, install_type, updated_options)
                     all_notifications.extend(notifications)
     
