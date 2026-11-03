@@ -1,4 +1,6 @@
 import streamlit as st
+import base64
+from pathlib import Path
 from utils import safely_load_file, AppState
 from scripts import build_script, build_full_script
 
@@ -6,7 +8,10 @@ def render_header():
     """
     Render the application header with logo and title.
     """
-    st.markdown("""
+    logo_path = Path(__file__).resolve().parents[1] / "assets" / "fedora-logo-white.svg"
+    logo_data = base64.b64encode(logo_path.read_bytes()).decode("ascii")
+    logo_data_uri = f"data:image/svg+xml;base64,{logo_data}"
+    header_markup = """
     <style>
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -19,7 +24,8 @@ def render_header():
             margin-bottom: 2rem;
         }
         .logo {
-            width: 400px;
+            width: min(280px, 90vw);
+            max-width: 100%;
             height: auto;
             margin-bottom: 1rem;
             animation: fadeIn 1s ease-out;
@@ -44,11 +50,12 @@ def render_header():
         }
     </style>
     <div class="header-container">
-        <img src="https://fedoraproject.org/assets/images/fedora-workstation-logo.png" alt="Fedora Logo" class="logo">
+        <img src="__FEDORA_LOGO_DATA_URI__" alt="Fedora logo" class="logo">
         <h1 class="main-header">Not Another <i>'Things To Do'!</i></h1>
         <h3 class="sub-header">Initial System Setup Shell Script Builder for Fedora Workstation</h3>
     </div>
-    """, unsafe_allow_html=True)
+    """
+    st.markdown(header_markup.replace("__FEDORA_LOGO_DATA_URI__", logo_data_uri), unsafe_allow_html=True)
 
 def render_script_preview():
     """
