@@ -1,7 +1,7 @@
 # Fedora Workstation: Not Another 'Things To Do'!
 **Initial System Setup Shell Script Builder for Fedora Workstation**
 
-![Fedora Workstation NATTD](./assets/cover.png)
+![NATTD — Fedora Workstation setup builder](./assets/nattd-ascii-pixel-hero.png)
 
 <p align="center">
   <a href="https://nattdf.streamlit.app"><img src="https://img.shields.io/badge/webapp-visit-brightgreen" alt="Webapp"></a>
