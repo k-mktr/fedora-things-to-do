@@ -1,4 +1,6 @@
 import streamlit as st
+import base64
+from pathlib import Path
 import re
 import logging
 from typing import Any, Callable
@@ -38,18 +40,20 @@ def render_sidebar() -> None:
     nattd_data = load_nattd()
     all_options = generate_options()
     
-    # Add centered, clickable logo to the top of the sidebar using HTML
+    # Show the local NATTD brand mark without relying on an external raw GitHub URL.
+    logo_path = Path(__file__).resolve().parents[1] / "assets" / "nattd-ascii-pixel-logo.svg"
+    logo_data = base64.b64encode(logo_path.read_bytes()).decode("ascii")
     st.sidebar.markdown(
-        """
+        f"""
         <div style="display: flex; justify-content: center; align-items: center; padding: 10px;">
             <a href="/" target="_self">
-                <img src="https://github.com/k-mktr/fedora-things-to-do/blob/master/assets/logo.png?raw=true" width="250" alt="Logo">
+                <img src="data:image/svg+xml;base64,{logo_data}" width="250" alt="Not Another Things To Do">
             </a>
         </div>
         """,
         unsafe_allow_html=True
     )
-    
+
     st.sidebar.header("Configuration Options")
 
     # Quick Setup: predefined profiles + export/import of the current selection
